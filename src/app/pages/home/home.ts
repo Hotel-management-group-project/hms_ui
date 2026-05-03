@@ -1,8 +1,10 @@
 // Student ID: S2401885
 // Student Name: Aiman Ahmed
 // Module: Advanced Software Development (UFCF8S-30-2)
-import { Component } from '@angular/core';
+import { Component, OnDestroy, afterNextRender } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { NavbarComponent } from '../../shared/components/navbar/navbar';
 import { FooterComponent } from '../../shared/components/footer/footer';
 
@@ -11,10 +13,84 @@ import { FooterComponent } from '../../shared/components/footer/footer';
   imports: [RouterLink, NavbarComponent, FooterComponent],
   templateUrl: './home.html',
 })
-export class HomeComponent {
-  features = [
-    { icon: '★', title: 'Luxury Rooms', desc: 'From standard doubles to penthouse suites — every room curated for comfort.' },
-    { icon: '⚡', title: 'Instant Booking', desc: 'Search, select, and confirm your stay in minutes with our seamless platform.' },
-    { icon: '✦', title: 'Premium Service', desc: 'Airport transfers, spa access, and personalised ancillary services.' },
+export class HomeComponent implements OnDestroy {
+
+  readonly roomTypes = [
+    {
+      name: 'Standard Double',
+      type: 'standard',
+      capacity: '2 Guests',
+      size: '28 m²',
+      priceFrom: 'From £120 / night',
+      desc: 'Elegant comfort for two, with premium bedding and city views.',
+    },
+    {
+      name: 'Deluxe King',
+      type: 'deluxe',
+      capacity: '2 Guests',
+      size: '38 m²',
+      priceFrom: 'From £180 / night',
+      desc: 'Spacious king room with lounge area, marble bath, and panoramic views.',
+    },
+    {
+      name: 'Family Suite',
+      type: 'family',
+      capacity: '4 Guests',
+      size: '55 m²',
+      priceFrom: 'From £240 / night',
+      desc: 'Two-bedroom suite with living room, perfect for families and groups.',
+    },
+    {
+      name: 'Penthouse',
+      type: 'penthouse',
+      capacity: '4 Guests',
+      size: '110 m²',
+      priceFrom: 'From £500 / night',
+      desc: 'The pinnacle of luxury — private terrace, butler service, and skyline views.',
+    },
   ];
+
+  constructor() {
+    afterNextRender(() => this.initAnimations());
+  }
+
+  ngOnDestroy() {
+    ScrollTrigger.getAll().forEach(t => t.kill());
+  }
+
+  private initAnimations() {
+    // Skill rule: respect prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero entrance — staggered, ease-out for entering elements (skill rule)
+    gsap.from('.hero-content > *', {
+      y: 32,
+      opacity: 0,
+      duration: 1.1,
+      stagger: 0.18,
+      ease: 'power3.out',
+      delay: 0.2,
+      clearProps: 'all',
+    });
+
+    // Scroll-triggered reveal for every .scroll-reveal element
+    // skill rule: use transform/opacity, not width/height
+    gsap.utils.toArray<Element>('.scroll-reveal').forEach((el, i) => {
+      gsap.from(el, {
+        y: 40,
+        opacity: 0,
+        duration: 0.85,
+        ease: 'power2.out',
+        delay: i % 4 * 0.08, // subtle stagger within each row
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+        clearProps: 'all',
+      });
+    });
+  }
 }
