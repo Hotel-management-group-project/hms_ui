@@ -1,0 +1,25 @@
+<div class="min-h-screen bg-luxury flex items-center justify-center px-4 py-16">
+  <div class="w-full max-w-md space-y-8">
+    <div class="text-center space-y-2">
+      <p class="text-gold-400 text-xs tracking-[0.3em] uppercase font-semibold">Welcome Back</p>
+      <h1 class="font-serif text-4xl text-cream-200">Sign In</h1>
+      <div class="w-12 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto mt-3"></div>
+    </div>
+
+    <div class="card p-8 space-y-5 bg-navy-700/80 border-navy-600">
+      <div>
+        <label class="label text-cream-300">Email address</label>
+        <input type="email" class="input" placeholder="you@example.com" />
+      </div>
+      <div>
+        <label class="label text-cream-300">Password</label>
+        <input type="password" class="input" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary w-full py-4 text-base tracking-wide">Sign In</button>
+      <p class="text-center text-cream-300/50 text-sm">
+        No account?
+        <a routerLink="/auth/register" class="text-gold-400 hover:text-gold-300 transition-colors ml-1">Register here</a>
+      </p>
+    </div>
+  </div>
+</div>

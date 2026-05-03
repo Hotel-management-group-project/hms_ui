@@ -1,0 +1,56 @@
+<nav class="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-white/10">
+  <div class="container-luxury">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center gap-2">
+        <span class="font-serif text-xl text-gold-400 tracking-wider">HMS</span>
+        <span class="hidden sm:block text-cream-200/50 text-xs tracking-widest uppercase font-light">Hotels</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-8">
+        <a routerLink="/home" routerLinkActive="text-gold-400" class="nav-link text-cream-300 hover:text-cream-100">Home</a>
+        <a routerLink="/guest/search" routerLinkActive="text-gold-400" class="nav-link text-cream-300 hover:text-cream-100">Rooms</a>
+        @if (auth.isAuthenticated()) {
+          <a routerLink="/guest/my-bookings" routerLinkActive="text-gold-400" class="nav-link text-cream-300 hover:text-cream-100">My Bookings</a>
+        }
+      </div>
+
+      <!-- Auth actions -->
+      <div class="hidden md:flex items-center gap-3">
+        @if (auth.isAuthenticated()) {
+          <a routerLink="/guest/profile" class="btn-ghost text-sm px-4 py-2">Profile</a>
+        } @else {
+          <a routerLink="/auth/login" class="btn-ghost text-sm px-4 py-2">Sign In</a>
+          <a routerLink="/auth/register" class="btn-primary text-sm px-4 py-2">Book Now</a>
+        }
+      </div>
+
+      <!-- Mobile menu button -->
+      <button (click)="toggleMenu()" class="md:hidden text-cream-200 p-2" aria-label="Toggle menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          @if (menuOpen()) {
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          } @else {
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          }
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    @if (menuOpen()) {
+      <div class="md:hidden py-4 border-t border-white/10 space-y-3">
+        <a routerLink="/home" (click)="toggleMenu()" class="block text-cream-300 hover:text-gold-400 py-2 text-sm">Home</a>
+        <a routerLink="/guest/search" (click)="toggleMenu()" class="block text-cream-300 hover:text-gold-400 py-2 text-sm">Rooms</a>
+        @if (!auth.isAuthenticated()) {
+          <div class="pt-2 flex flex-col gap-2">
+            <a routerLink="/auth/login" (click)="toggleMenu()" class="btn-secondary text-sm text-center">Sign In</a>
+            <a routerLink="/auth/register" (click)="toggleMenu()" class="btn-primary text-sm text-center">Book Now</a>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</nav>

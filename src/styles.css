@@ -1,1 +1,199 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg:               #FAFAF8;
+    --color-bg-secondary:     #F5F0E8;
+    --color-surface:          #FFFFFF;
+    --color-surface-elevated: #FFFFFF;
+    --color-text-primary:     #0A1628;
+    --color-text-secondary:   #4A5568;
+    --color-text-muted:       #8A8070;
+    --color-border:           #E0D4BC;
+    --color-border-subtle:    #EDE5D5;
+
+    --color-navy:      #0A1628;
+    --color-navy-light:#1A3461;
+    --color-gold:      #C9A84C;
+    --color-gold-light:#E5BF61;
+    --color-gold-dark: #B8973F;
+    --color-cream:     #F5F0E8;
+
+    --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.08);
+    --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.10);
+    --shadow-lg: 0 8px 32px rgba(10, 22, 40, 0.15);
+    --shadow-xl: 0 16px 64px rgba(10, 22, 40, 0.20);
+
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --color-bg:               #050D1A;
+    --color-bg-secondary:     #0A1628;
+    --color-surface:          #0F1F38;
+    --color-surface-elevated: #1A2E4A;
+    --color-text-primary:     #F5F0E8;
+    --color-text-secondary:   #B8A89A;
+    --color-text-muted:       #7A7060;
+    --color-border:           #1A3461;
+    --color-border-subtle:    #0F2449;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-gold-400 text-navy-700 font-semibold text-sm tracking-wide rounded-sm transition-all duration-200 hover:bg-gold-300 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    box-shadow: 0 4px 16px rgba(201, 168, 76, 0.25);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 6px 24px rgba(201, 168, 76, 0.4);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-gold-400 text-gold-400 font-semibold text-sm tracking-wide rounded-sm bg-transparent transition-all duration-200 hover:bg-gold-400 hover:text-navy-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-cream-200 font-medium text-sm rounded-sm bg-transparent transition-all duration-200 hover:bg-white/10 active:scale-95 focus:outline-none;
+  }
+
+  .card {
+    @apply bg-white dark:bg-navy-700 rounded-sm border border-cream-300 dark:border-navy-600;
+    box-shadow: var(--shadow-md);
+  }
+
+  .input {
+    @apply w-full px-4 py-3 bg-white dark:bg-navy-800 border border-cream-300 dark:border-navy-600 rounded-sm text-navy-700 dark:text-cream-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all duration-200 text-sm;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-navy-600 dark:text-cream-300 mb-1.5;
+  }
+
+  .section-title {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-base md:text-lg leading-relaxed;
+    color: var(--color-text-secondary);
+  }
+
+  .gold-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent;
+  }
+
+  .container-luxury {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .nav-link {
+    @apply relative text-sm font-medium tracking-wide transition-colors duration-200;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-0.5 left-0 w-0 h-px bg-gold-400 transition-all duration-300;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  .page-hero {
+    @apply relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-gold {
+    @apply badge bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-300;
+  }
+
+  .badge-navy {
+    @apply badge bg-navy-100 text-navy-700 dark:bg-navy-700 dark:text-cream-200;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-cream-300 dark:bg-navy-600 rounded;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(90deg, #C9A84C 0%, #E5BF61 50%, #C9A84C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-luxury {
+    background: linear-gradient(135deg, #0A1628 0%, #1A3461 50%, #0A1628 100%);
+  }
+
+  .glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply bg-white/10 border border-white/20;
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply bg-black/20 border border-white/10;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}

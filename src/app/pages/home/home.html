@@ -1,0 +1,41 @@
+<!-- Home page — video hero will be implemented in full build -->
+<app-navbar />
+
+<main class="pt-16">
+  <!-- Hero -->
+  <section class="min-h-screen bg-luxury flex items-center justify-center relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/assets/hero-placeholder.jpg')] bg-cover bg-center opacity-20"></div>
+    <div class="relative z-10 text-center space-y-8 px-4 max-w-4xl mx-auto">
+      <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase">UWE Bristol — HMS</p>
+      <h1 class="font-serif text-5xl md:text-7xl text-cream-200 font-semibold leading-tight">
+        Your Perfect Stay<br/>
+        <span class="text-gradient-gold">Awaits You</span>
+      </h1>
+      <div class="w-24 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
+      <p class="text-cream-300/70 text-lg font-light max-w-xl mx-auto leading-relaxed">
+        Discover luxury rooms, seamless booking, and an unforgettable hospitality experience.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+        <a routerLink="/guest/search" class="btn-primary px-10 py-4 text-base">Browse Rooms</a>
+        <a routerLink="/auth/register" class="btn-secondary px-10 py-4 text-base">Create Account</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features strip -->
+  <section class="bg-navy-700 py-16">
+    <div class="container-luxury">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        @for (feature of features; track feature.title) {
+          <div class="space-y-3">
+            <div class="text-gold-400 text-3xl">{{ feature.icon }}</div>
+            <h3 class="font-serif text-xl text-cream-200">{{ feature.title }}</h3>
+            <p class="text-cream-300/60 text-sm leading-relaxed">{{ feature.desc }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</main>
+
+<app-footer />
