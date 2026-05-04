@@ -1,8 +1,242 @@
-<div class="min-h-screen bg-navy-800 flex items-center justify-center">
-  <div class="text-center space-y-4 px-4">
-    <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase">Front Desk</p>
-    <h1 class="font-serif text-5xl text-cream-200">Check In</h1>
-    <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
-    <p class="text-cream-300/60 text-sm">QR scan & manual check-in coming soon.</p>
+<!-- Staff Check-In Page -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto space-y-8 animate-fade-in">
+
+    <!-- Header -->
+    <div>
+      <a routerLink="/staff/dashboard" class="inline-flex items-center text-gold-400 hover:text-gold-300 text-sm mb-6 transition-colors">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Dashboard
+      </a>
+      <h1 class="font-serif text-4xl text-cream-200">Guest Check-In</h1>
+      <p class="text-cream-300/50 text-sm mt-1">Scan a QR code or look up a booking by reference number.</p>
+    </div>
+
+    <!-- Mode Toggle -->
+    <div class="flex bg-navy-800/80 p-1 rounded-lg border border-navy-700 w-fit">
+      <button (click)="setMode('manual')"
+              class="px-6 py-2 text-sm rounded-md transition-colors"
+              [class]="mode() === 'manual' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
+        Manual Lookup
+      </button>
+      <button (click)="setMode('qr')"
+              class="px-6 py-2 text-sm rounded-md transition-colors flex items-center gap-2"
+              [class]="mode() === 'qr' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 4h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+        </svg>
+        QR Scanner
+      </button>
+    </div>
+
+    <!-- ── MANUAL MODE ── -->
+    @if (mode() === 'manual') {
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 shadow-2xl">
+        <h2 class="font-serif text-xl text-cream-200 mb-5">Lookup by Reference Number</h2>
+        <form [formGroup]="refForm" (ngSubmit)="lookupByReference()" class="flex flex-col sm:flex-row gap-3">
+          <div class="flex-1">
+            <input
+              type="text"
+              formControlName="referenceNumber"
+              class="input uppercase tracking-widest font-mono"
+              placeholder="HMS-2024-00001"
+              [class.border-red-500]="refForm.controls.referenceNumber.touched && refForm.controls.referenceNumber.invalid">
+            @if (refForm.controls.referenceNumber.touched && refForm.controls.referenceNumber.hasError('pattern')) {
+              <p class="text-red-400 text-xs mt-1">Format must be HMS-YYYY-NNNNN</p>
+            }
+          </div>
+          <button type="submit" class="btn-primary px-8 py-3 shrink-0" [disabled]="loading()">
+            @if (loading()) {
+              <span class="flex items-center gap-2">
+                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Searching...
+              </span>
+            } @else {
+              Find Booking
+            }
+          </button>
+        </form>
+      </div>
+    }
+
+    <!-- ── QR SCANNER MODE ── -->
+    @if (mode() === 'qr') {
+      <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden shadow-2xl">
+        <div class="p-6 border-b border-navy-700">
+          <h2 class="font-serif text-xl text-cream-200">QR Code Scanner</h2>
+          <p class="text-cream-300/50 text-sm mt-1">Point the camera at the guest's check-in QR code.</p>
+        </div>
+
+        @if (scanState() === 'idle' || scanState() === 'error') {
+          <div class="relative bg-navy-900 overflow-hidden" style="min-height: 280px">
+            <zxing-scanner
+              [enable]="scannerEnabled()"
+              [device]="selectedDevice()"
+              (camerasFound)="onCamerasFound($event)"
+              (scanSuccess)="onScanSuccess($event)"
+              class="w-full">
+            </zxing-scanner>
+            <!-- Corner brackets overlay -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div class="w-56 h-56 relative">
+                <span class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gold-400 rounded-tl-sm"></span>
+                <span class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-gold-400 rounded-tr-sm"></span>
+                <span class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-gold-400 rounded-bl-sm"></span>
+                <span class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gold-400 rounded-br-sm"></span>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (scanState() === 'scanning') {
+          <div class="flex items-center justify-center py-16 gap-4">
+            <svg class="animate-spin w-6 h-6 text-gold-400" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-cream-300/60 font-serif">Loading booking details...</p>
+          </div>
+        }
+
+        @if (error() && mode() === 'qr') {
+          <div class="p-6 bg-red-900/20 border-t border-red-500/20 flex items-center justify-between gap-4">
+            <p class="text-red-400 text-sm">{{ error() }}</p>
+            <button (click)="resetScan()" class="text-xs border border-red-400/30 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded transition-colors">
+              Try Again
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- ── BOOKING PREVIEW CARD ── -->
+    @if (booking(); as b) {
+      <div class="bg-navy-800 border rounded-xl shadow-2xl overflow-hidden animate-slide-up"
+           [class]="checkedIn() ? 'border-green-500/40' : 'border-navy-700'">
+
+        @if (checkedIn()) {
+          <div class="bg-green-900/30 border-b border-green-500/30 px-6 py-3 flex items-center gap-3">
+            <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-green-400 font-medium text-sm">Check-in confirmed. Room key may now be issued.</p>
+          </div>
+        }
+
+        <div class="p-6">
+          <div class="flex items-start justify-between gap-4 mb-6">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-1">Booking Reference</p>
+              <p class="font-mono text-2xl text-gold-400 tracking-wider">{{ b.referenceNumber }}</p>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded border shrink-0 mt-1" [class]="statusClass(b.status)">
+              {{ b.status }}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 pb-6 border-b border-navy-700">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-1">Check-in</p>
+              <p class="text-cream-200 text-sm">{{ b.checkInDate }}</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-1">Check-out</p>
+              <p class="text-cream-200 text-sm">{{ b.checkOutDate }}</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-1">Duration</p>
+              <p class="text-cream-200 text-sm">{{ nights }} night{{ nights === 1 ? '' : 's' }}</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-1">Total Paid</p>
+              <p class="text-cream-200 text-sm font-semibold">£{{ b.totalPrice }}</p>
+            </div>
+          </div>
+
+          @if (b.rooms && b.rooms.length > 0) {
+            <div class="mb-6">
+              <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Assigned Rooms</p>
+              <div class="flex flex-wrap gap-2">
+                @for (room of b.rooms; track room.id) {
+                  <div class="bg-navy-900 border border-navy-600 rounded-lg px-4 py-2 text-sm">
+                    <span class="text-gold-400 font-mono">Room {{ room.roomNumber }}</span>
+                    <span class="text-cream-300/50 ml-2">{{ room.type }} · Floor {{ room.floor }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          @if (b.ancillaryServices && b.ancillaryServices.length > 0) {
+            <div class="mb-6">
+              <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Booked Extras</p>
+              <div class="space-y-1.5">
+                @for (svc of b.ancillaryServices; track svc.id) {
+                  <div class="flex justify-between text-sm text-cream-300/70">
+                    <span>{{ svc.service?.name ?? 'Extra Service' }} × {{ svc.quantity }}</span>
+                    <span class="text-cream-200">£{{ svc.totalPrice }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="flex flex-col sm:flex-row gap-3 pt-2">
+            @if (!checkedIn() && b.status === 'Confirmed') {
+              <button (click)="confirmCheckIn()" class="btn-primary flex-1 py-3" [disabled]="confirming()">
+                @if (confirming()) {
+                  <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Confirming Check-In...
+                } @else {
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Confirm Check-In
+                }
+              </button>
+            } @else if (b.status === 'CheckedIn') {
+              <div class="flex-1 flex items-center justify-center gap-2 py-3 border border-green-500/30 rounded-sm text-green-400 text-sm">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Already Checked In
+              </div>
+            } @else {
+              <div class="flex-1 flex items-center justify-center gap-2 py-3 border border-amber-500/30 rounded-sm text-amber-400 text-sm">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Cannot check in — status is {{ b.status }}
+              </div>
+            }
+
+            @if (mode() === 'qr') {
+              <button (click)="resetScan()" class="btn-secondary py-3 px-6">
+                Scan Next Guest
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Error (manual mode) -->
+    @if (error() && mode() === 'manual') {
+      <div class="bg-red-900/20 border border-red-500/20 rounded-xl p-4 text-red-400 text-sm flex items-center gap-3">
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        {{ error() }}
+      </div>
+    }
+
   </div>
 </div>

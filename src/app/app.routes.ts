@@ -106,9 +106,19 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/manager/reports/reports').then(m => m.ReportsComponent),
       },
       {
-        path: 'settings',
-        loadComponent: () => import('./pages/manager/settings/settings').then(m => m.ManagerSettingsComponent),
+        path: 'room-rates',
+        loadComponent: () => import('./pages/manager/room-rates/room-rates').then(m => m.RoomRatesComponent),
       },
+      {
+        path: 'staff-accounts',
+        loadComponent: () => import('./pages/manager/staff-accounts/staff-accounts').then(m => m.StaffAccountsComponent),
+      },
+      {
+        path: 'audit-logs',
+        loadComponent: () => import('./pages/manager/audit-logs/audit-logs').then(m => m.AuditLogsComponent),
+      },
+      // keep old settings path alive to avoid broken links
+      { path: 'settings', redirectTo: 'room-rates', pathMatch: 'full' },
     ],
   },
 

@@ -1,8 +1,204 @@
-<div class="min-h-screen bg-navy-800 flex items-center justify-center">
-  <div class="text-center space-y-4 px-4">
-    <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase">Front Desk</p>
-    <h1 class="font-serif text-5xl text-cream-200">Room Management</h1>
-    <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
-    <p class="text-cream-300/60 text-sm">Room status board & housekeeping coming soon.</p>
+<!-- Room Management Page -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto space-y-6 animate-fade-in">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <a routerLink="/staff/dashboard" class="inline-flex items-center text-gold-400 hover:text-gold-300 text-sm mb-4 transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Back to Dashboard
+        </a>
+        <h1 class="font-serif text-4xl text-cream-200">Room Management</h1>
+        <p class="text-cream-300/50 text-sm mt-1">{{ rooms().length }} rooms total</p>
+      </div>
+
+      <!-- View toggle + Refresh -->
+      <div class="flex items-center gap-3">
+        <button (click)="fetchRooms()" class="p-2 text-cream-300/50 hover:text-gold-400 transition-colors" title="Refresh">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+        </button>
+        <div class="flex bg-navy-800/80 p-1 rounded-lg border border-navy-700">
+          <button (click)="setView('table')"
+                  class="px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-1.5"
+                  [class]="view() === 'table' ? 'bg-gold-500 text-navy-900 font-medium' : 'text-cream-300 hover:text-cream-100'">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18M10 4v16M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z"/>
+            </svg>
+            Table
+          </button>
+          <button (click)="setView('board')"
+                  class="px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-1.5"
+                  [class]="view() === 'board' ? 'bg-gold-500 text-navy-900 font-medium' : 'text-cream-300 hover:text-cream-100'">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
+            </svg>
+            Board
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Summary Bar -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      @for (s of statusOptions; track s) {
+        <button (click)="filterStatus.set(filterStatus() === s ? 'All' : s)"
+                class="rounded-xl p-4 text-left border transition-all"
+                [class]="filterStatus() === s
+                  ? statusBadge(s) + ' border-current/30'
+                  : 'bg-navy-800 border-navy-700 hover:border-navy-600'">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="w-2 h-2 rounded-full" [class]="columnHeader(s).dot"></span>
+            <span class="text-xs uppercase tracking-widest text-cream-300/50">{{ columnHeader(s).label }}</span>
+          </div>
+          <p class="font-serif text-2xl" [class]="statusBadge(s).split(' ')[0]">{{ countByStatus(s) }}</p>
+        </button>
+      }
+    </div>
+
+    <!-- Filters (table mode) -->
+    @if (view() === 'table') {
+      <div class="flex flex-wrap gap-3 items-center">
+        <span class="text-cream-300/50 text-xs uppercase tracking-widest">Filter type:</span>
+        @for (t of roomTypes; track t) {
+          <button (click)="filterType.set(t)"
+                  class="px-3 py-1.5 rounded text-xs transition-colors"
+                  [class]="filterType() === t
+                    ? 'bg-gold-500 text-navy-900 font-medium'
+                    : 'bg-navy-800 border border-navy-700 text-cream-300 hover:border-navy-600'">
+            {{ t }}
+          </button>
+        }
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="flex items-center justify-center py-24">
+        <div class="w-10 h-10 border-t-2 border-gold-400 rounded-full animate-spin"></div>
+      </div>
+    }
+
+    <!-- ── TABLE VIEW ── -->
+    @if (!loading() && view() === 'table') {
+      <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden shadow-2xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-navy-700 text-left">
+                <th class="px-5 py-4 text-xs uppercase tracking-widest text-cream-300/50 font-medium">Room</th>
+                <th class="px-5 py-4 text-xs uppercase tracking-widest text-cream-300/50 font-medium">Type</th>
+                <th class="px-5 py-4 text-xs uppercase tracking-widest text-cream-300/50 font-medium">Floor</th>
+                <th class="px-5 py-4 text-xs uppercase tracking-widest text-cream-300/50 font-medium">Capacity</th>
+                <th class="px-5 py-4 text-xs uppercase tracking-widest text-cream-300/50 font-medium">Rate / night</th>
+                <th class="px-5 py-4 text-xs uppercase tracking-widest text-cream-300/50 font-medium">Status</th>
+                <th class="px-5 py-4 text-xs uppercase tracking-widest text-cream-300/50 font-medium">Change Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-navy-700/50">
+              @if (filteredRooms().length === 0) {
+                <tr>
+                  <td colspan="7" class="text-center py-12 text-cream-300/40">No rooms match the current filters.</td>
+                </tr>
+              }
+              @for (room of filteredRooms(); track room.id) {
+                <tr class="hover:bg-navy-700/30 transition-colors group">
+                  <td class="px-5 py-4">
+                    <span class="font-mono text-gold-400 font-medium">{{ room.roomNumber }}</span>
+                  </td>
+                  <td class="px-5 py-4 text-cream-200">{{ room.type }}</td>
+                  <td class="px-5 py-4 text-cream-300/70">{{ room.floor }}</td>
+                  <td class="px-5 py-4 text-cream-300/70">{{ room.capacity }} guests</td>
+                  <td class="px-5 py-4 text-cream-300/70">
+                    £{{ room.priceOffPeak }}
+                    <span class="text-cream-300/40 text-xs ml-1">/ £{{ room.pricePeak }} peak</span>
+                  </td>
+                  <td class="px-5 py-4">
+                    <span class="text-xs px-2.5 py-1 rounded border" [class]="statusBadge(room.status)">
+                      {{ room.status }}
+                    </span>
+                  </td>
+                  <td class="px-5 py-4">
+                    <select
+                      [value]="room.status"
+                      (change)="updateStatus(room, $any($event.target).value)"
+                      class="text-xs bg-navy-900 border border-navy-600 text-cream-200 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-gold-400 cursor-pointer hover:border-navy-500 transition-colors">
+                      @for (s of statusOptions; track s) {
+                        <option [value]="s">{{ s }}</option>
+                      }
+                    </select>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- ── BOARD VIEW (CDK Drag-Drop) ── -->
+    @if (!loading() && view() === 'board') {
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        @for (col of boardColumns; track col.status) {
+          <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden flex flex-col">
+            <!-- Column header -->
+            <div class="px-4 py-3 border-b border-navy-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full" [class]="columnHeader(col.status).dot"></span>
+                <span class="text-xs uppercase tracking-widest text-cream-200 font-medium">
+                  {{ columnHeader(col.status).label }}
+                </span>
+              </div>
+              <span class="text-xs text-cream-300/50 bg-navy-900 border border-navy-700 rounded-full px-2 py-0.5">
+                {{ col.rooms.length }}
+              </span>
+            </div>
+
+            <!-- Drop zone -->
+            <div
+              cdkDropList
+              [id]="columnDropId(col.status)"
+              [cdkDropListData]="col.rooms"
+              [cdkDropListConnectedTo]="allDropIds()"
+              (cdkDropListDropped)="onDrop($event, col.status)"
+              class="p-3 space-y-2 flex-1 min-h-24 transition-colors"
+              [class.bg-navy-700/20]="col.rooms.length === 0">
+
+              @if (col.rooms.length === 0) {
+                <div class="flex items-center justify-center h-16 border-2 border-dashed border-navy-700 rounded-lg">
+                  <p class="text-cream-300/30 text-xs">Drop rooms here</p>
+                </div>
+              }
+
+              @for (room of col.rooms; track room.id) {
+                <div cdkDrag class="bg-navy-900 border border-navy-600 rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-gold-500/30 transition-all group/card">
+                  <!-- Drag handle visual -->
+                  <div cdkDragHandle class="flex items-center justify-between mb-2">
+                    <span class="font-mono text-gold-400 text-sm font-medium">{{ room.roomNumber }}</span>
+                    <svg class="w-4 h-4 text-cream-300/20 group-hover/card:text-cream-300/50 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 6a2 2 0 100-4 2 2 0 000 4zM8 14a2 2 0 100-4 2 2 0 000 4zM8 22a2 2 0 100-4 2 2 0 000 4zM16 6a2 2 0 100-4 2 2 0 000 4zM16 14a2 2 0 100-4 2 2 0 000 4zM16 22a2 2 0 100-4 2 2 0 000 4z"/>
+                    </svg>
+                  </div>
+                  <p class="text-cream-300/70 text-xs">{{ room.type }}</p>
+                  <p class="text-cream-300/40 text-xs mt-0.5">Floor {{ room.floor }} · {{ room.capacity }} guests</p>
+
+                  <!-- Drag placeholder -->
+                  <div *cdkDragPlaceholder class="bg-navy-700/40 border border-dashed border-navy-600 rounded-lg h-16"></div>
+                  <!-- Drag preview -->
+                  <div *cdkDragPreview class="bg-navy-700 border border-gold-500/40 rounded-lg p-3 shadow-xl w-40">
+                    <p class="font-mono text-gold-400 text-sm">{{ room.roomNumber }}</p>
+                    <p class="text-cream-300/60 text-xs">{{ room.type }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
   </div>
 </div>

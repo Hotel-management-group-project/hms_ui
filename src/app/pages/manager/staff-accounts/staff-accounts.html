@@ -1,0 +1,196 @@
+<!-- Staff Accounts -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto space-y-8 animate-fade-in">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1">Manager</p>
+        <h1 class="font-serif text-4xl text-cream-200">Staff Accounts</h1>
+        <p class="text-cream-300/50 text-sm mt-1">Manage FrontDesk & Manager accounts</p>
+      </div>
+      <button (click)="openModal()"
+              class="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        New Staff Account
+      </button>
+    </div>
+
+    <!-- Role filter -->
+    <div class="flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
+      @for (f of [['all','All'],['FrontDesk','Front Desk'],['Manager','Manager']]; track f[0]) {
+        <button (click)="filterRole.set($any(f[0]))"
+                [class]="filterRole() === f[0]
+                  ? 'px-4 py-1.5 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
+                  : 'px-4 py-1.5 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+          {{ f[1] }}
+        </button>
+      }
+    </div>
+
+    <!-- Error -->
+    @if (error()) {
+      <div class="bg-red-400/10 border border-red-400/30 rounded-lg px-4 py-3 text-red-400 text-sm">{{ error() }}</div>
+    }
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="space-y-3">
+        @for (i of [1,2,3]; track i) {
+          <div class="h-20 bg-navy-800 border border-navy-700 rounded-xl animate-pulse"></div>
+        }
+      </div>
+    }
+
+    <!-- Staff table -->
+    @if (!loading()) {
+      <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-navy-700 flex items-center justify-between">
+          <h2 class="font-serif text-lg text-cream-200">Staff Members</h2>
+          <span class="text-xs text-cream-300/40">{{ filteredStaff.length }} account{{ filteredStaff.length !== 1 ? 's' : '' }}</span>
+        </div>
+
+        @if (filteredStaff.length === 0) {
+          <div class="p-12 text-center text-cream-300/40 text-sm">No staff accounts found.</div>
+        } @else {
+          <div class="divide-y divide-navy-700/50">
+            @for (user of filteredStaff; track user.id) {
+              <div class="px-6 py-4 flex items-center gap-4">
+
+                <!-- Avatar initials -->
+                <div class="w-10 h-10 rounded-full bg-navy-700 flex items-center justify-center shrink-0">
+                  <span class="text-cream-300/70 text-sm font-medium">
+                    {{ user.firstName[0] }}{{ user.lastName[0] }}
+                  </span>
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <p class="text-cream-200 font-medium text-sm">{{ user.firstName }} {{ user.lastName }}</p>
+                    <span class="text-xs px-1.5 py-0.5 rounded border" [class]="roleClass(user.role)">{{ user.role }}</span>
+                    @if (!user.isActive) {
+                      <span class="text-xs px-1.5 py-0.5 rounded border text-red-400 border-red-400/20 bg-red-400/10">Inactive</span>
+                    }
+                  </div>
+                  <p class="text-cream-300/40 text-xs mt-0.5">{{ user.email }}</p>
+                  @if (user.phoneNumber) {
+                    <p class="text-cream-300/30 text-xs">{{ user.phoneNumber }}</p>
+                  }
+                </div>
+
+                <!-- Joined -->
+                <div class="hidden sm:block text-right shrink-0">
+                  <p class="text-cream-300/30 text-xs">Joined</p>
+                  <p class="text-cream-300/50 text-xs">{{ user.createdAt | date:'dd MMM yyyy' }}</p>
+                </div>
+
+                <!-- Toggle active -->
+                <button (click)="toggleActive(user)"
+                        [disabled]="togglingId() === user.id"
+                        [class]="user.isActive
+                          ? 'shrink-0 text-xs border border-red-400/30 text-red-400 hover:bg-red-400 hover:text-navy-900 px-3 py-1.5 rounded transition-colors disabled:opacity-40'
+                          : 'shrink-0 text-xs border border-green-400/30 text-green-400 hover:bg-green-400 hover:text-navy-900 px-3 py-1.5 rounded transition-colors disabled:opacity-40'">
+                  {{ togglingId() === user.id ? '...' : user.isActive ? 'Deactivate' : 'Activate' }}
+                </button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>
+
+<!-- Create Staff Modal -->
+@if (showModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/80 backdrop-blur-sm">
+    <div class="bg-navy-800 border border-navy-700 rounded-2xl w-full max-w-md shadow-2xl animate-fade-in">
+
+      <!-- Modal header -->
+      <div class="px-6 py-5 border-b border-navy-700 flex items-center justify-between">
+        <h2 class="font-serif text-xl text-cream-200">New Staff Account</h2>
+        <button (click)="closeModal()" class="text-cream-300/40 hover:text-cream-200 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="form" (ngSubmit)="createStaff()" class="px-6 py-5 space-y-4">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">First Name</label>
+            <input formControlName="firstName" type="text"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   [class.border-red-400/60]="fieldError('firstName','required') || fieldError('firstName','minlength')">
+            @if (fieldError('firstName','required') || fieldError('firstName','minlength')) {
+              <p class="text-red-400 text-xs mt-1">Required (min 2 chars)</p>
+            }
+          </div>
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Last Name</label>
+            <input formControlName="lastName" type="text"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   [class.border-red-400/60]="fieldError('lastName','required') || fieldError('lastName','minlength')">
+            @if (fieldError('lastName','required') || fieldError('lastName','minlength')) {
+              <p class="text-red-400 text-xs mt-1">Required (min 2 chars)</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Email</label>
+          <input formControlName="email" type="email"
+                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 [class.border-red-400/60]="fieldError('email','required') || fieldError('email','email')">
+          @if (fieldError('email','required') || fieldError('email','email')) {
+            <p class="text-red-400 text-xs mt-1">Valid email required</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Password</label>
+          <input formControlName="password" type="password"
+                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 [class.border-red-400/60]="fieldError('password','required') || fieldError('password','minlength')">
+          @if (fieldError('password','required') || fieldError('password','minlength')) {
+            <p class="text-red-400 text-xs mt-1">Minimum 8 characters</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Role</label>
+            <select formControlName="role"
+                    class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60">
+              <option value="FrontDesk">Front Desk</option>
+              <option value="Manager">Manager</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Phone (optional)</label>
+            <input formControlName="phoneNumber" type="tel"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60">
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="submit" [disabled]="creating()"
+                  class="flex-1 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors disabled:opacity-50">
+            {{ creating() ? 'Creating...' : 'Create Account' }}
+          </button>
+          <button type="button" (click)="closeModal()" [disabled]="creating()"
+                  class="px-5 py-2.5 border border-navy-600 text-cream-300/60 hover:text-cream-200 text-sm rounded-lg transition-colors disabled:opacity-50">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

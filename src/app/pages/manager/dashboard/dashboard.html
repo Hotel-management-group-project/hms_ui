@@ -1,8 +1,125 @@
-<div class="min-h-screen bg-navy-800 flex items-center justify-center">
-  <div class="text-center space-y-4 px-4">
-    <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase">Manager</p>
-    <h1 class="font-serif text-5xl text-cream-200">Manager Dashboard</h1>
-    <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
-    <p class="text-cream-300/60 text-sm">Occupancy overview & analytics coming soon.</p>
+<!-- Manager Dashboard -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto space-y-8 animate-fade-in">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1">Manager</p>
+        <h1 class="font-serif text-4xl text-cream-200">Operations Overview</h1>
+        <p class="text-cream-300/50 text-sm mt-1">{{ today }}</p>
+      </div>
+      <div class="flex items-center gap-2 text-sm">
+        @if (occupancy.connecting()) {
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span class="text-amber-400">Connecting...</span>
+        } @else if (occupancy.connected()) {
+          <span class="w-2 h-2 rounded-full bg-green-400"></span>
+          <span class="text-green-400">Live</span>
+        } @else {
+          <span class="w-2 h-2 rounded-full bg-red-400"></span>
+          <span class="text-red-400/70">Disconnected</span>
+        }
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <!-- Occupancy Rate -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-gold-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Occupancy Rate</p>
+        <div>
+          <p class="font-serif text-4xl text-gold-400">{{ occupancy.stats().occupancyRate }}%</p>
+          <p class="text-xs text-cream-300/40 mt-1">{{ occupancy.stats().occupied }} / {{ occupancy.stats().totalRooms }} rooms</p>
+        </div>
+        <div class="mt-4 h-1.5 bg-navy-700 rounded-full overflow-hidden">
+          <div class="h-full bg-gold-400 rounded-full transition-all duration-700"
+               [style.width.%]="occupancy.stats().occupancyRate"></div>
+        </div>
+      </div>
+
+      <!-- Revenue Today -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-green-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Revenue Today</p>
+        @if (loadingRevenue()) {
+          <div class="h-9 w-28 bg-navy-700 animate-pulse rounded"></div>
+        } @else if (summary()) {
+          <p class="font-serif text-4xl text-green-400">{{ formatCurrency(summary()!.revenueToday) }}</p>
+          <p class="text-xs text-green-400/50 mt-1">from confirmed bookings</p>
+        } @else {
+          <p class="font-serif text-4xl text-cream-300/30">—</p>
+          <p class="text-xs text-cream-300/30 mt-1">unavailable</p>
+        }
+      </div>
+
+      <!-- Arrivals Today -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Arrivals Today</p>
+        <p class="font-serif text-4xl text-blue-400">{{ occupancy.arrivalsCount() }}</p>
+        <p class="text-xs text-blue-400/50 mt-1">expected check-ins</p>
+      </div>
+
+      <!-- Departures Today -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-amber-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Departures Today</p>
+        <p class="font-serif text-4xl text-amber-400">{{ occupancy.departuresCount() }}</p>
+        <p class="text-xs text-amber-400/50 mt-1">expected check-outs</p>
+      </div>
+    </div>
+
+    <!-- Room Status Row -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+        <span class="w-2.5 h-2.5 rounded-full bg-green-400 shrink-0"></span>
+        <div>
+          <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().available }}</p>
+          <p class="text-cream-300/40 text-xs">Available</p>
+        </div>
+      </div>
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+        <span class="w-2.5 h-2.5 rounded-full bg-blue-400 shrink-0"></span>
+        <div>
+          <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().occupied }}</p>
+          <p class="text-cream-300/40 text-xs">Occupied</p>
+        </div>
+      </div>
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
+        <div>
+          <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().cleaning }}</p>
+          <p class="text-cream-300/40 text-xs">Cleaning</p>
+        </div>
+      </div>
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+        <span class="w-2.5 h-2.5 rounded-full bg-red-400 shrink-0"></span>
+        <div>
+          <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().outOfService }}</p>
+          <p class="text-cream-300/40 text-xs">Out of Service</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Cards -->
+    <div>
+      <h2 class="font-serif text-xl text-cream-200 mb-4">Management</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        @for (link of navLinks; track link.path) {
+          <a [routerLink]="link.path"
+             class="bg-navy-800 border border-navy-700 rounded-xl p-6 hover:border-gold-400/40 hover:bg-navy-750 transition-all group block">
+            <svg class="w-6 h-6 text-gold-400/70 group-hover:text-gold-400 transition-colors mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" [attr.d]="link.icon"/>
+            </svg>
+            <p class="text-cream-200 font-medium mb-1">{{ link.label }}</p>
+            <p class="text-cream-300/40 text-xs leading-relaxed">{{ link.desc }}</p>
+          </a>
+        }
+      </div>
+    </div>
+
   </div>
 </div>
