@@ -63,19 +63,31 @@ export class MyBookingsComponent implements OnInit {
     this.currentTab.set(tab);
   }
 
-  // 14 days = 1209600000 ms
-  // 72 hours = 259200000 ms
+  private getFirstNightPrice(booking: Booking): number {
+    const room = booking.rooms?.[0];
+    if (room) {
+      const month = new Date(booking.checkInDate).getMonth() + 1;
+      return [6, 7, 8, 12].includes(month) ? room.pricePeak : room.priceOffPeak;
+    }
+    const nights = Math.max(1, Math.ceil(
+      (new Date(booking.checkOutDate).getTime() - new Date(booking.checkInDate).getTime()) / 86400000
+    ));
+    return booking.totalPrice / nights;
+  }
+
+  // 14 days = 1209600000 ms  |  72 hours = 259200000 ms
   calculateCancellationFee(booking: Booking): { fee: number; message: string } {
     const checkIn = new Date(booking.checkInDate).getTime();
     const now = Date.now();
     const diff = checkIn - now;
-    
+    const firstNight = Math.round(this.getFirstNightPrice(booking));
+
     if (diff > 1209600000) {
       return { fee: 0, message: 'Free cancellation (more than 14 days prior to check-in).' };
     } else if (diff > 259200000) {
-      return { fee: booking.totalPrice * 0.5, message: '50% fee applies (between 3 and 14 days prior to check-in).' };
+      return { fee: Math.round(firstNight * 0.5), message: '50% of first night applies (3–14 days prior to check-in).' };
     } else {
-      return { fee: booking.totalPrice, message: '100% fee applies (less than 72 hours prior to check-in).' };
+      return { fee: firstNight, message: '100% of first night applies (less than 72 hours prior to check-in).' };
     }
   }
 
