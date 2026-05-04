@@ -1,8 +1,6 @@
-// Student ID: S2401885
-// Student Name: Aiman Ahmed
-// Module: Advanced Software Development (UFCF8S-30-2)
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { noAuthGuard } from './core/guards/no-auth.guard';
 import { staffGuard } from './core/guards/staff.guard';
 import { managerGuard } from './core/guards/manager.guard';
 import { adminGuard } from './core/guards/admin.guard';
@@ -19,17 +17,19 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home').then(m => m.HomeComponent),
   },
 
-  // Auth
+  // Auth — block if already logged in
   {
     path: 'auth/login',
+    canActivate: [noAuthGuard],
     loadComponent: () => import('./pages/auth/login/login').then(m => m.LoginComponent),
   },
   {
     path: 'auth/register',
+    canActivate: [noAuthGuard],
     loadComponent: () => import('./pages/auth/register/register').then(m => m.RegisterComponent),
   },
 
-  // Guest routes
+  // Guest routes — any authenticated user
   {
     path: 'guest',
     canActivate: [authGuard],
@@ -54,6 +54,14 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadComponent: () => import('./pages/guest/profile/profile').then(m => m.ProfileComponent),
+      },
+      {
+        path: 'payment/:bookingId',
+        loadComponent: () => import('./pages/guest/payment/payment').then(m => m.PaymentComponent),
+      },
+      {
+        path: 'confirmation/:bookingId',
+        loadComponent: () => import('./pages/guest/confirmation/confirmation').then(m => m.ConfirmationComponent),
       },
     ],
   },

@@ -1,13 +1,165 @@
-<app-navbar />
-<div class="min-h-screen bg-cream-200 dark:bg-navy-800 pt-24 pb-16">
-  <div class="container-luxury space-y-8">
-    <div class="text-center space-y-2">
-      <p class="text-gold-500 text-xs tracking-[0.3em] uppercase font-semibold">Guest</p>
-      <h1 class="section-title text-navy-700 dark:text-cream-200">Room Detail</h1>
+<!-- Room Detail Page -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  @if (loading()) {
+    <div class="flex items-center justify-center min-h-[50vh]">
+      <div class="animate-pulse flex flex-col items-center">
+        <div class="w-12 h-12 border-t-2 border-gold-400 rounded-full animate-spin"></div>
+        <p class="text-cream-300 mt-4 font-serif">Loading Sanctuary Details...</p>
+      </div>
     </div>
-    <div class="card p-6 text-center text-navy-400 dark:text-cream-300">
-      Room details, photos & booking widget coming soon.
+  } @else if (room(); as r) {
+    <div class="max-w-7xl mx-auto space-y-12 animate-fade-in">
+      
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-6">
+        <div>
+          <a routerLink="/guest/search" [queryParams]="{ checkIn: checkIn(), checkOut: checkOut() }" class="inline-flex items-center text-gold-400 hover:text-gold-300 text-sm mb-6 transition-colors">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Search
+          </a>
+          <div class="flex items-center gap-3 mb-2">
+            <span class="bg-navy-800 text-cream-200 text-xs px-2.5 py-1 rounded border border-navy-700 tracking-widest uppercase">
+              Room {{ r.roomNumber }}
+            </span>
+            <span class="bg-gold-900/50 text-gold-400 text-xs px-2.5 py-1 rounded border border-gold-400/20 tracking-widest uppercase">
+              {{ r.type }}
+            </span>
+          </div>
+          <h1 class="font-serif text-4xl md:text-5xl text-cream-200">{{ r.type }} at HMS</h1>
+        </div>
+        
+        <div class="text-left md:text-right bg-navy-800/80 p-6 rounded-xl border border-navy-700 backdrop-blur shadow-xl">
+          <p class="text-sm text-cream-300/60 uppercase tracking-wider mb-1">
+            {{ isPeakSeason() ? 'Peak Season Rate' : 'Off-Peak Rate' }}
+          </p>
+          <div class="flex items-end md:justify-end gap-2">
+            <span class="text-4xl font-serif text-gold-400">£{{ displayPrice() }}</span>
+            <span class="text-cream-300/40 pb-1">/ night</span>
+          </div>
+          <a 
+            [routerLink]="['/guest/booking']" 
+            [queryParams]="{ roomId: r.id, checkIn: checkIn(), checkOut: checkOut() }"
+            class="btn-primary w-full md:w-auto mt-4 px-8 py-3 inline-block text-center"
+          >
+            Book Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div #galleryRef class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <!-- Main Image -->
+        <div class="md:col-span-8 aspect-video overflow-hidden rounded-xl relative group">
+          <img 
+            [src]="r.imageUrls?.[0] || 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1200&auto=format&fit=crop'" 
+            [alt]="r.type"
+            class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          >
+        </div>
+        <!-- Side Images -->
+        <div class="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-4">
+          <div class="aspect-square md:aspect-video overflow-hidden rounded-xl relative group">
+            <img 
+              [src]="r.imageUrls?.[1] || 'https://images.unsplash.com/photo-1582719478250-c89404bb8a0e?q=80&w=600&auto=format&fit=crop'" 
+              [alt]="r.type"
+              class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            >
+          </div>
+          <div class="aspect-square md:aspect-video overflow-hidden rounded-xl relative group">
+            <img 
+              [src]="r.imageUrls?.[2] || 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=600&auto=format&fit=crop'" 
+              [alt]="r.type"
+              class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2 space-y-8">
+          <section>
+            <h2 class="font-serif text-2xl text-cream-200 mb-4">About this Room</h2>
+            <div class="prose prose-invert prose-p:text-cream-300/80 prose-headings:text-cream-200 max-w-none">
+              <p class="leading-relaxed">{{ r.description }}</p>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="font-serif text-2xl text-cream-200 mb-4">Room Features</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-lg border border-navy-700">
+                <svg class="w-6 h-6 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <div class="text-sm">
+                  <span class="block text-cream-200">Capacity</span>
+                  <span class="block text-cream-300/60">Up to {{ r.capacity }} Guests</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-lg border border-navy-700">
+                <svg class="w-6 h-6 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <div class="text-sm">
+                  <span class="block text-cream-200">Location</span>
+                  <span class="block text-cream-300/60">Floor {{ r.floor }}</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-lg border border-navy-700">
+                <svg class="w-6 h-6 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                </svg>
+                <div class="text-sm">
+                  <span class="block text-cream-200">Connectivity</span>
+                  <span class="block text-cream-300/60">Free High-Speed WiFi</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <div class="bg-navy-800 p-6 rounded-xl border border-navy-700">
+            <h3 class="font-serif text-xl text-cream-200 mb-4">Your Selection</h3>
+            
+            @if (checkIn() && checkOut()) {
+              <div class="space-y-4 mb-6">
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-cream-300/60">Check-in</span>
+                  <span class="text-cream-200">{{ checkIn() }}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-cream-300/60">Check-out</span>
+                  <span class="text-cream-200">{{ checkOut() }}</span>
+                </div>
+              </div>
+            } @else {
+              <div class="bg-amber-900/20 border border-amber-500/20 rounded p-4 mb-6 text-sm text-amber-200/80">
+                Please select dates on the search page to see exact total pricing.
+              </div>
+            }
+            
+            <a 
+              [routerLink]="['/guest/booking']" 
+              [queryParams]="{ roomId: r.id, checkIn: checkIn(), checkOut: checkOut() }"
+              class="btn-primary w-full py-3 block text-center"
+            >
+              Continue to Booking
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  } @else {
+    <!-- Not Found -->
+    <div class="flex flex-col items-center justify-center min-h-[50vh] text-center">
+      <h2 class="font-serif text-3xl text-cream-200 mb-2">Room Not Found</h2>
+      <p class="text-cream-300/60 mb-6">The sanctuary you are looking for does not exist or is currently unavailable.</p>
+      <a routerLink="/guest/search" class="btn-secondary px-8 py-3">Return to Search</a>
+    </div>
+  }
 </div>
-<app-footer />

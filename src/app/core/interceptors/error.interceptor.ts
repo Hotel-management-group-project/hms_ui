@@ -1,17 +1,26 @@
-// Student ID: S2401885
-// Student Name: Aiman Ahmed
-// Module: Advanced Software Development (UFCF8S-30-2)
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { ToastService } from '../../shared/components/toast/toast';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
+  const toast = inject(ToastService);
+
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      if (err.status === 401) router.navigate(['/auth/login']);
-      if (err.status === 403) router.navigate(['/']);
+      // 401 is handled by jwtInterceptor (silent refresh), skip here
+      if (err.status === 403) {
+        toast.error('You do not have permission to perform this action.');
+        router.navigate(['/']);
+      }
+      if (err.status === 0) {
+        toast.error('Unable to connect to the server. Please check your connection.');
+      }
+      if (err.status >= 500) {
+        toast.error('An unexpected server error occurred. Please try again later.');
+      }
       return throwError(() => err);
     }),
   );

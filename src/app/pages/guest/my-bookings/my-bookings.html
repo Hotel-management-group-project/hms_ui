@@ -1,13 +1,162 @@
-<app-navbar />
-<div class="min-h-screen bg-cream-200 dark:bg-navy-800 pt-24 pb-16">
-  <div class="container-luxury space-y-8">
-    <div class="text-center space-y-2">
-      <p class="text-gold-500 text-xs tracking-[0.3em] uppercase font-semibold">Guest</p>
-      <h1 class="section-title text-navy-700 dark:text-cream-200">My Bookings</h1>
+<!-- My Bookings Page -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto animate-fade-in">
+    
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <h1 class="font-serif text-3xl md:text-4xl text-cream-200 mb-2">My Bookings</h1>
+        <p class="text-cream-300/60">Manage your upcoming stays and review past visits.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex bg-navy-800/80 p-1 rounded-lg border border-navy-700 w-fit">
+        <button 
+          (click)="setTab('upcoming')"
+          class="px-6 py-2 text-sm rounded-md transition-colors"
+          [class]="currentTab() === 'upcoming' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
+          Upcoming Stays
+        </button>
+        <button 
+          (click)="setTab('past')"
+          class="px-6 py-2 text-sm rounded-md transition-colors"
+          [class]="currentTab() === 'past' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
+          Past Stays
+        </button>
+      </div>
     </div>
-    <div class="card p-6 text-center text-navy-400 dark:text-cream-300">
-      Booking history, QR codes & invoices coming soon.
-    </div>
+
+    @if (loading()) {
+      <div class="flex items-center justify-center py-20">
+        <div class="w-10 h-10 border-t-2 border-gold-400 rounded-full animate-spin"></div>
+      </div>
+    } @else {
+      
+      <!-- Upcoming Stays -->
+      @if (currentTab() === 'upcoming') {
+        <div class="space-y-6 animate-fade-up">
+          @if (upcomingBookings().length === 0) {
+            <div class="text-center py-16 bg-navy-800/50 rounded-xl border border-navy-700 border-dashed">
+              <p class="text-cream-300/60 mb-4">You have no upcoming stays.</p>
+              <a routerLink="/guest/search" class="btn-primary px-6 py-2 text-sm">Find a Room</a>
+            </div>
+          } @else {
+            @for (b of upcomingBookings(); track b.id) {
+              <div class="card bg-navy-800 border-navy-700 p-6 flex flex-col md:flex-row gap-6 items-start md:items-center">
+                <div class="flex-1 space-y-2 text-sm">
+                  <div class="flex items-center gap-3 mb-2">
+                    <span class="text-xs uppercase tracking-widest text-gold-400 border border-gold-400/20 bg-gold-400/10 px-2 py-0.5 rounded">
+                      Ref: {{ b.referenceNumber }}
+                    </span>
+                    <span class="text-xs uppercase tracking-widest px-2 py-0.5 rounded border"
+                          [class]="b.status === 'Confirmed' ? 'text-green-400 border-green-400/20 bg-green-400/10' : 'text-amber-400 border-amber-400/20 bg-amber-400/10'">
+                      {{ b.status }}
+                    </span>
+                  </div>
+                  <div class="flex flex-col sm:flex-row sm:items-center gap-4 text-cream-200">
+                    <div>
+                      <span class="text-cream-300/50 block text-xs uppercase mb-0.5">Check-in</span>
+                      {{ b.checkInDate }}
+                    </div>
+                    <div class="hidden sm:block w-px h-6 bg-navy-600"></div>
+                    <div>
+                      <span class="text-cream-300/50 block text-xs uppercase mb-0.5">Check-out</span>
+                      {{ b.checkOutDate }}
+                    </div>
+                  </div>
+                  <p class="text-cream-300/80 pt-2 border-t border-navy-700/50 mt-4">Total: <span class="text-cream-200">£{{ b.totalPrice }}</span></p>
+                </div>
+                
+                <div class="flex w-full md:w-auto flex-row md:flex-col gap-3 shrink-0">
+                  <a [routerLink]="['/guest/confirmation', b.id]" class="btn-secondary flex-1 py-2 text-sm text-center">View QR</a>
+                  @if (b.status !== 'Cancelled') {
+                    <button (click)="confirmCancellation(b)" class="btn-secondary flex-1 py-2 text-sm !border-red-500/30 !text-red-400 hover:!bg-red-500 hover:!text-white">Cancel Booking</button>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      <!-- Past Stays -->
+      @if (currentTab() === 'past') {
+        <div class="space-y-6 animate-fade-up">
+          @if (pastBookings().length === 0) {
+            <div class="text-center py-16 bg-navy-800/50 rounded-xl border border-navy-700 border-dashed">
+              <p class="text-cream-300/60">You have no past stays on record.</p>
+            </div>
+          } @else {
+            @for (b of pastBookings(); track b.id) {
+              <div class="card bg-navy-800 border-navy-700 p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between opacity-80 hover:opacity-100 transition-opacity">
+                <div class="space-y-2 text-sm">
+                  <div class="flex items-center gap-3">
+                    <span class="text-cream-200">{{ b.checkInDate }} to {{ b.checkOutDate }}</span>
+                    <span class="text-xs uppercase tracking-widest px-2 py-0.5 rounded border"
+                          [class]="b.status === 'Cancelled' ? 'text-red-400 border-red-400/20 bg-red-400/10' : 'text-cream-400 border-cream-400/20 bg-cream-400/10'">
+                      {{ b.status }}
+                    </span>
+                  </div>
+                  <p class="text-cream-300/50">Ref: {{ b.referenceNumber }} • Total: £{{ b.totalPrice }}</p>
+                </div>
+                
+                @if (b.status !== 'Cancelled') {
+                  <button (click)="downloadInvoice(b.id)" class="btn-secondary py-2 px-4 text-sm whitespace-nowrap flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Invoice
+                  </button>
+                }
+              </div>
+            }
+          }
+        </div>
+      }
+    }
   </div>
 </div>
-<app-footer />
+
+<!-- Cancellation Modal -->
+@if (bookingToCancel(); as b) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/80 backdrop-blur-sm animate-fade-in">
+    <div class="card bg-navy-800 border-navy-700 w-full max-w-md p-6 space-y-6 shadow-2xl animate-slide-up relative">
+      
+      <div>
+        <h2 class="font-serif text-2xl text-cream-200">Cancel Booking</h2>
+        <p class="text-cream-300/70 text-sm mt-1">Reference: <span class="text-gold-400">{{ b.referenceNumber }}</span></p>
+      </div>
+
+      <div class="bg-red-900/20 border border-red-500/20 rounded-lg p-4 space-y-2">
+        <p class="text-red-400 font-medium text-sm">Cancellation Policy Warning</p>
+        <p class="text-cream-300/80 text-sm">{{ calculateCancellationFee(b).message }}</p>
+        <div class="flex justify-between items-end pt-2 mt-2 border-t border-red-500/20">
+          <span class="text-sm text-cream-300">Cancellation Fee:</span>
+          <span class="text-xl font-serif text-red-400">£{{ calculateCancellationFee(b).fee }}</span>
+        </div>
+      </div>
+
+      <p class="text-sm text-cream-300/60">Are you sure you want to proceed? This action cannot be undone, and the fee (if any) will be automatically deducted from your refund.</p>
+
+      <div class="flex gap-3">
+        <button 
+          (click)="closeCancelModal()"
+          class="btn-secondary flex-1 py-3"
+          [disabled]="isCancelling()"
+        >
+          Keep Booking
+        </button>
+        <button 
+          (click)="proceedWithCancellation()"
+          class="bg-red-500 hover:bg-red-600 text-white flex-1 py-3 rounded text-sm uppercase tracking-widest transition-colors font-medium"
+          [disabled]="isCancelling()"
+        >
+          @if (isCancelling()) {
+            Cancelling...
+          } @else {
+            Confirm Cancel
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}

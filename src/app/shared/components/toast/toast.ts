@@ -1,7 +1,4 @@
-// Student ID: S2401885
-// Student Name: Aiman Ahmed
-// Module: Advanced Software Development (UFCF8S-30-2)
-import { Component, signal, Injectable } from '@angular/core';
+import { Component, inject, signal, Injectable } from '@angular/core';
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
 
@@ -37,7 +34,7 @@ export class ToastService {
   templateUrl: './toast.html',
 })
 export class ToastComponent {
-  toastService = new ToastService();
+  toastService = inject(ToastService);
 
   toastClasses(type: ToastType): string {
     return {

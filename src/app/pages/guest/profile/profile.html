@@ -1,13 +1,86 @@
-<app-navbar />
-<div class="min-h-screen bg-cream-200 dark:bg-navy-800 pt-24 pb-16">
-  <div class="container-luxury space-y-8">
-    <div class="text-center space-y-2">
-      <p class="text-gold-500 text-xs tracking-[0.3em] uppercase font-semibold">Guest</p>
-      <h1 class="section-title text-navy-700 dark:text-cream-200">My Profile</h1>
+<!-- Profile Page -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto animate-fade-in">
+    
+    <div class="mb-10 text-center">
+      <h1 class="font-serif text-3xl md:text-4xl text-cream-200 mb-2">My Profile</h1>
+      <p class="text-cream-300/60">Manage your personal information.</p>
     </div>
-    <div class="card p-6 text-center text-navy-400 dark:text-cream-300">
-      Profile details & password change coming soon.
+
+    <div class="card bg-navy-800 border-navy-700 p-8 shadow-2xl">
+      <h2 class="font-serif text-2xl text-cream-200 mb-6 pb-4 border-b border-navy-700">Personal Details</h2>
+      
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="label text-cream-300">First Name</label>
+            <input type="text" formControlName="firstName" class="input">
+          </div>
+          <div>
+            <label class="label text-cream-300">Last Name</label>
+            <input type="text" formControlName="lastName" class="input">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="label text-cream-300">Email Address (Read-only)</label>
+            <input type="email" formControlName="email" class="input opacity-50 cursor-not-allowed">
+          </div>
+          <div>
+            <label class="label text-cream-300">Phone Number</label>
+            <input type="tel" formControlName="phoneNumber" class="input" placeholder="+44 7000 000000">
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-navy-700 flex justify-end">
+          <button type="submit" class="btn-primary px-8 py-3" [disabled]="updatingProfile()">
+            @if (updatingProfile()) {
+              Saving...
+            } @else {
+              Save Changes
+            }
+          </button>
+        </div>
+      </form>
     </div>
+
+    <!-- Password Change Section -->
+    <div class="card bg-navy-800 border-navy-700 p-8 shadow-2xl mt-8">
+      <h2 class="font-serif text-2xl text-cream-200 mb-6 pb-4 border-b border-navy-700">Change Password</h2>
+      
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="space-y-6">
+        <div>
+          <label class="label text-cream-300">Current Password</label>
+          <input type="password" formControlName="currentPassword" class="input">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="label text-cream-300">New Password</label>
+            <input type="password" formControlName="newPassword" class="input">
+          </div>
+          <div>
+            <label class="label text-cream-300">Confirm New Password</label>
+            <input type="password" formControlName="confirmPassword" class="input">
+          </div>
+        </div>
+
+        @if (passwordForm.errors?.['mismatch'] && (passwordForm.touched || passwordForm.dirty)) {
+          <p class="text-red-400 text-sm">Passwords do not match.</p>
+        }
+
+        <div class="pt-6 border-t border-navy-700 flex justify-end">
+          <button type="submit" class="btn-secondary px-8 py-3" [disabled]="updatingPassword() || passwordForm.invalid">
+            @if (updatingPassword()) {
+              Updating...
+            } @else {
+              Update Password
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+
   </div>
 </div>
-<app-footer />

@@ -1,0 +1,56 @@
+<!-- Booking Confirmation Page -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 flex items-center justify-center">
+  @if (loading()) {
+    <div class="animate-pulse flex flex-col items-center">
+      <div class="w-12 h-12 border-t-2 border-gold-400 rounded-full animate-spin"></div>
+    </div>
+  } @else if (booking(); as b) {
+    <div class="w-full max-w-2xl text-center space-y-8 animate-fade-up">
+      
+      <!-- Success Icon -->
+      <div class="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mx-auto border border-green-500/20">
+        <svg class="w-12 h-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+
+      <div>
+        <h1 class="font-serif text-4xl text-cream-200 mb-2">Booking Confirmed</h1>
+        <p class="text-cream-300/60">Thank you for choosing HMS. A confirmation email has been sent to you.</p>
+      </div>
+
+      <!-- Reference Card -->
+      <div class="card bg-navy-800 border-navy-700 p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent"></div>
+        
+        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-2">Reference Number</p>
+        <p class="font-mono text-3xl md:text-4xl tracking-widest text-gold-400 mb-8">{{ b.referenceNumber }}</p>
+
+        <div class="grid grid-cols-2 gap-6 text-left border-t border-navy-700 pt-6">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-1">Check-in</p>
+            <p class="text-cream-200">{{ b.checkInDate }}</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-1">Check-out</p>
+            <p class="text-cream-200">{{ b.checkOutDate }}</p>
+          </div>
+        </div>
+
+        @if (qrCodeUrl()) {
+          <div class="mt-8 border-t border-navy-700 pt-8 flex flex-col items-center">
+            <p class="text-sm text-cream-300/60 mb-4">Present this QR code at the front desk for quick check-in</p>
+            <div class="bg-white p-4 rounded-xl shadow-lg">
+              <img [src]="qrCodeUrl()" alt="Check-in QR Code" class="w-40 h-40 object-contain">
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+        <a routerLink="/guest/my-bookings" class="btn-primary px-8 py-3">View My Bookings</a>
+        <a routerLink="/guest/search" class="btn-secondary px-8 py-3">Return to Home</a>
+      </div>
+    </div>
+  }
+</div>
