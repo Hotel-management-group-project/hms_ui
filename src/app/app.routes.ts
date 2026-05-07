@@ -10,26 +10,30 @@ export const routes: Routes = [
 
   {
     path: 'welcome',
+    title: 'HMS — Welcome',
     loadComponent: () => import('./pages/welcome/welcome').then(m => m.WelcomeComponent),
   },
   {
     path: 'home',
+    title: 'HMS — Luxury Hotel Management',
     loadComponent: () => import('./pages/home/home').then(m => m.HomeComponent),
   },
 
-  // Auth — block if already logged in
+  // Auth
   {
     path: 'auth/login',
+    title: 'HMS — Sign In',
     canActivate: [noAuthGuard],
     loadComponent: () => import('./pages/auth/login/login').then(m => m.LoginComponent),
   },
   {
     path: 'auth/register',
+    title: 'HMS — Create Account',
     canActivate: [noAuthGuard],
     loadComponent: () => import('./pages/auth/register/register').then(m => m.RegisterComponent),
   },
 
-  // Guest routes — any authenticated user
+  // Guest routes
   {
     path: 'guest',
     canActivate: [authGuard],
@@ -37,30 +41,37 @@ export const routes: Routes = [
       { path: '', redirectTo: 'search', pathMatch: 'full' },
       {
         path: 'search',
+        title: 'HMS — Search Rooms',
         loadComponent: () => import('./pages/guest/search/search').then(m => m.SearchComponent),
       },
       {
         path: 'rooms/:id',
+        title: 'HMS — Room Details',
         loadComponent: () => import('./pages/guest/room-detail/room-detail').then(m => m.RoomDetailComponent),
       },
       {
         path: 'booking',
+        title: 'HMS — Book Your Stay',
         loadComponent: () => import('./pages/guest/booking/booking').then(m => m.BookingComponent),
       },
       {
         path: 'my-bookings',
+        title: 'HMS — My Bookings',
         loadComponent: () => import('./pages/guest/my-bookings/my-bookings').then(m => m.MyBookingsComponent),
       },
       {
         path: 'profile',
+        title: 'HMS — My Profile',
         loadComponent: () => import('./pages/guest/profile/profile').then(m => m.ProfileComponent),
       },
       {
         path: 'payment/:bookingId',
+        title: 'HMS — Payment',
         loadComponent: () => import('./pages/guest/payment/payment').then(m => m.PaymentComponent),
       },
       {
         path: 'confirmation/:bookingId',
+        title: 'HMS — Booking Confirmed',
         loadComponent: () => import('./pages/guest/confirmation/confirmation').then(m => m.ConfirmationComponent),
       },
     ],
@@ -74,18 +85,22 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
+        title: 'HMS — Staff Dashboard',
         loadComponent: () => import('./pages/staff/dashboard/dashboard').then(m => m.StaffDashboardComponent),
       },
       {
         path: 'check-in',
+        title: 'HMS — Check-in',
         loadComponent: () => import('./pages/staff/check-in/check-in').then(m => m.CheckInComponent),
       },
       {
         path: 'check-out',
+        title: 'HMS — Check-out',
         loadComponent: () => import('./pages/staff/check-out/check-out').then(m => m.CheckOutComponent),
       },
       {
         path: 'room-management',
+        title: 'HMS — Room Management',
         loadComponent: () => import('./pages/staff/room-management/room-management').then(m => m.RoomManagementComponent),
       },
     ],
@@ -99,26 +114,32 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
+        title: 'HMS — Manager Dashboard',
         loadComponent: () => import('./pages/manager/dashboard/dashboard').then(m => m.ManagerDashboardComponent),
       },
       {
         path: 'reports',
+        title: 'HMS — Reports & Analytics',
         loadComponent: () => import('./pages/manager/reports/reports').then(m => m.ReportsComponent),
       },
       {
         path: 'room-rates',
+        title: 'HMS — Room Rates',
         loadComponent: () => import('./pages/manager/room-rates/room-rates').then(m => m.RoomRatesComponent),
       },
       {
         path: 'staff-accounts',
+        title: 'HMS — Staff Accounts',
         loadComponent: () => import('./pages/manager/staff-accounts/staff-accounts').then(m => m.StaffAccountsComponent),
       },
       {
         path: 'audit-logs',
+        title: 'HMS — Audit Logs',
         loadComponent: () => import('./pages/manager/audit-logs/audit-logs').then(m => m.AuditLogsComponent),
       },
       {
         path: 'settings',
+        title: 'HMS — Settings',
         loadComponent: () => import('./pages/manager/settings/settings').then(m => m.ManagerSettingsComponent),
       },
     ],
@@ -132,19 +153,26 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
+        title: 'HMS — Admin Dashboard',
         loadComponent: () => import('./pages/admin/dashboard/dashboard').then(m => m.AdminDashboardComponent),
       },
       {
         path: 'users',
+        title: 'HMS — User Management',
         loadComponent: () => import('./pages/admin/users/users').then(m => m.AdminUsersComponent),
       },
       {
         path: 'hotels',
+        title: 'HMS — Hotel Configuration',
         loadComponent: () => import('./pages/admin/hotels/hotels').then(m => m.AdminHotelsComponent),
       },
     ],
   },
 
-  // Fallback
-  { path: '**', redirectTo: 'welcome' },
+  // 404
+  {
+    path: '**',
+    title: 'HMS — Page Not Found',
+    loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFoundComponent),
+  },
 ];

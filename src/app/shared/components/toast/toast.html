@@ -1,13 +1,25 @@
-<div class="fixed top-4 right-4 z-[100] flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+<!-- Toast container: top-right, stacked -->
+<div class="fixed top-20 right-4 z-[200] flex flex-col gap-2 w-full max-w-sm pointer-events-none">
   @for (toast of toastService.toasts(); track toast.id) {
-    <div
-      class="flex items-start gap-3 px-4 py-3 rounded-sm shadow-luxury-lg pointer-events-auto animate-fade-up"
-      [class]="toastClasses(toast.type)"
-    >
-      <span class="text-lg leading-none mt-0.5">{{ toastIcon(toast.type) }}</span>
-      <p class="text-sm font-medium flex-1">{{ toast.message }}</p>
-      <button (click)="toastService.dismiss(toast.id)" class="opacity-60 hover:opacity-100 transition-opacity text-lg leading-none">
-        &times;
+    <div class="flex items-start gap-3 px-4 py-3.5 rounded-xl border pointer-events-auto animate-slide-up"
+         [class]="wrapperClass(toast.type)">
+
+      <!-- Icon -->
+      <div class="shrink-0 mt-0.5">
+        <svg class="w-5 h-5" [class]="iconClass(toast.type)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="iconPath(toast.type)"/>
+        </svg>
+      </div>
+
+      <!-- Message -->
+      <p class="text-sm text-cream-200 font-medium flex-1 leading-snug">{{ toast.message }}</p>
+
+      <!-- Dismiss -->
+      <button (click)="toastService.dismiss(toast.id)"
+              class="shrink-0 mt-0.5 text-cream-300/40 hover:text-cream-100 transition-colors cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
       </button>
     </div>
   }
