@@ -31,6 +31,7 @@ export interface RegisterRequest {
 export interface AuthResponse {
   token: string;
   user: AuthUser;
+  requiresPasswordChange: boolean;
 }
 
 // ── JWT payload shape (from backend) ───────────────────

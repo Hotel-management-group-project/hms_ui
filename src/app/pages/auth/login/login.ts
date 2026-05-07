@@ -64,11 +64,14 @@ export class LoginComponent {
     this.loading.set(true);
 
     this.auth.login(this.form.getRawValue()).subscribe({
-      next: () => {
+      next: (res) => {
         this.loading.set(false);
         this.inactivity.start();
         this.toast.success('Welcome back!');
-        this.router.navigate([this.auth.getRoleDashboard()]);
+        const destination = res.requiresPasswordChange
+          ? '/auth/change-password'
+          : this.auth.getRoleDashboard();
+        this.router.navigate([destination]);
       },
       error: (err) => {
         this.loading.set(false);
