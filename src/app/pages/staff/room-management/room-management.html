@@ -17,14 +17,14 @@
 
       <!-- View toggle + Refresh -->
       <div class="flex items-center gap-3">
-        <button (click)="fetchRooms()" class="p-2 text-cream-300/50 hover:text-gold-400 transition-colors" title="Refresh">
+        <button (click)="fetchRooms()" class="p-2 text-cream-300/50 hover:text-gold-400 transition-colors cursor-pointer" title="Refresh">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
           </svg>
         </button>
         <div class="flex bg-navy-800/80 p-1 rounded-lg border border-navy-700">
           <button (click)="setView('table')"
-                  class="px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-1.5"
+                  class="px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-1.5 cursor-pointer"
                   [class]="view() === 'table' ? 'bg-gold-500 text-navy-900 font-medium' : 'text-cream-300 hover:text-cream-100'">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18M10 4v16M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z"/>
@@ -32,7 +32,7 @@
             Table
           </button>
           <button (click)="setView('board')"
-                  class="px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-1.5"
+                  class="px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-1.5 cursor-pointer"
                   [class]="view() === 'board' ? 'bg-gold-500 text-navy-900 font-medium' : 'text-cream-300 hover:text-cream-100'">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
@@ -47,7 +47,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       @for (s of statusOptions; track s) {
         <button (click)="filterStatus.set(filterStatus() === s ? 'All' : s)"
-                class="rounded-xl p-4 text-left border transition-all"
+                class="rounded-xl p-4 text-left border transition-all cursor-pointer"
                 [class]="filterStatus() === s
                   ? statusBadge(s) + ' border-current/30'
                   : 'bg-navy-800 border-navy-700 hover:border-navy-600'">
@@ -66,7 +66,7 @@
         <span class="text-cream-300/50 text-xs uppercase tracking-widest">Filter type:</span>
         @for (t of roomTypes; track t) {
           <button (click)="filterType.set(t)"
-                  class="px-3 py-1.5 rounded text-xs transition-colors"
+                  class="px-3 py-1.5 rounded text-xs transition-colors cursor-pointer"
                   [class]="filterType() === t
                     ? 'bg-gold-500 text-navy-900 font-medium'
                     : 'bg-navy-800 border border-navy-700 text-cream-300 hover:border-navy-600'">
@@ -105,7 +105,7 @@
                 </tr>
               }
               @for (room of filteredRooms(); track room.id) {
-                <tr class="hover:bg-navy-700/30 transition-colors group">
+                <tr class="room-row hover:bg-navy-700/30 transition-colors group">
                   <td class="px-5 py-4">
                     <span class="font-mono text-gold-400 font-medium">{{ room.roomNumber }}</span>
                   </td>
@@ -174,7 +174,7 @@
               }
 
               @for (room of col.rooms; track room.id) {
-                <div cdkDrag class="bg-navy-900 border border-navy-600 rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-gold-500/30 transition-all group/card">
+                <div cdkDrag class="board-room-card bg-navy-900 border border-navy-600 rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-gold-500/30 transition-all group/card">
                   <!-- Drag handle visual -->
                   <div cdkDragHandle class="flex items-center justify-between mb-2">
                     <span class="font-mono text-gold-400 text-sm font-medium">{{ room.roomNumber }}</span>

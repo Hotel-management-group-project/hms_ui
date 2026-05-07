@@ -4,6 +4,7 @@
 
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import gsap from 'gsap';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { RoomService } from '../../../core/services/room.service';
 import { ToastService } from '../../../shared/components/toast/toast';
@@ -61,6 +62,7 @@ export class RoomManagementComponent implements OnInit {
         this.rooms.set(data);
         this.rebuildBoard(data);
         this.loading.set(false);
+        this.animateRooms();
       },
       error: (err: unknown) => {
         console.error(err);
@@ -82,6 +84,22 @@ export class RoomManagementComponent implements OnInit {
     if (v === 'board') {
       this.rebuildBoard(this.rooms());
     }
+    this.animateRooms();
+  }
+
+  private animateRooms(): void {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const target = this.view() === 'board' ? '.board-room-card' : '.room-row';
+    setTimeout(() => {
+      gsap.from(target, {
+        opacity: 0,
+        y: 14,
+        duration: 0.4,
+        stagger: 0.025,
+        ease: 'power2.out',
+        clearProps: 'all',
+      });
+    }, 40);
   }
 
   // ── Inline Status Update (table mode) ────────────────

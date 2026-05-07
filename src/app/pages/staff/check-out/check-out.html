@@ -29,7 +29,7 @@
             <p class="text-red-400 text-xs mt-1">Format must be HMS-YYYY-NNNNN</p>
           }
         </div>
-        <button type="submit" class="btn-primary px-8 py-3 shrink-0" [disabled]="loading()">
+        <button type="submit" class="btn-primary px-8 py-3 shrink-0 cursor-pointer" [disabled]="loading()">
           @if (loading()) {
             <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -167,7 +167,7 @@
               <p class="text-cream-300/60 text-sm mb-5">
                 Confirm that the guest has vacated the room. This will update room status to Cleaning.
               </p>
-              <button (click)="confirmCheckOut()" class="btn-primary w-full py-3" [disabled]="confirming()">
+              <button (click)="confirmCheckOut()" class="btn-primary w-full py-3 cursor-pointer" [disabled]="confirming()">
                 @if (confirming()) {
                   <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -204,7 +204,7 @@
             <p class="text-cream-300/60 text-sm mb-5">
               Generate and download the itemised PDF invoice for this stay.
             </p>
-            <button (click)="downloadInvoice()" class="btn-secondary w-full py-3">
+            <button (click)="downloadInvoice()" class="btn-secondary w-full py-3 cursor-pointer">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
               </svg>

@@ -17,12 +17,12 @@
     <!-- Mode Toggle -->
     <div class="flex bg-navy-800/80 p-1 rounded-lg border border-navy-700 w-fit">
       <button (click)="setMode('manual')"
-              class="px-6 py-2 text-sm rounded-md transition-colors"
+              class="px-6 py-2 text-sm rounded-md transition-colors cursor-pointer"
               [class]="mode() === 'manual' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
         Manual Lookup
       </button>
       <button (click)="setMode('qr')"
-              class="px-6 py-2 text-sm rounded-md transition-colors flex items-center gap-2"
+              class="px-6 py-2 text-sm rounded-md transition-colors flex items-center gap-2 cursor-pointer"
               [class]="mode() === 'qr' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 4h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
@@ -47,7 +47,7 @@
               <p class="text-red-400 text-xs mt-1">Format must be HMS-YYYY-NNNNN</p>
             }
           </div>
-          <button type="submit" class="btn-primary px-8 py-3 shrink-0" [disabled]="loading()">
+          <button type="submit" class="btn-primary px-8 py-3 shrink-0 cursor-pointer" [disabled]="loading()">
             @if (loading()) {
               <span class="flex items-center gap-2">
                 <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -106,7 +106,7 @@
         @if (error() && mode() === 'qr') {
           <div class="p-6 bg-red-900/20 border-t border-red-500/20 flex items-center justify-between gap-4">
             <p class="text-red-400 text-sm">{{ error() }}</p>
-            <button (click)="resetScan()" class="text-xs border border-red-400/30 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded transition-colors">
+            <button (click)="resetScan()" class="text-xs border border-red-400/30 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded transition-colors cursor-pointer">
               Try Again
             </button>
           </div>
@@ -188,7 +188,7 @@
 
           <div class="flex flex-col sm:flex-row gap-3 pt-2">
             @if (!checkedIn() && b.status === 'Confirmed') {
-              <button (click)="confirmCheckIn()" class="btn-primary flex-1 py-3" [disabled]="confirming()">
+              <button (click)="confirmCheckIn()" class="btn-primary flex-1 py-3 cursor-pointer" [disabled]="confirming()">
                 @if (confirming()) {
                   <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -219,7 +219,7 @@
             }
 
             @if (mode() === 'qr') {
-              <button (click)="resetScan()" class="btn-secondary py-3 px-6">
+              <button (click)="resetScan()" class="btn-secondary py-3 px-6 cursor-pointer">
                 Scan Next Guest
               </button>
             }

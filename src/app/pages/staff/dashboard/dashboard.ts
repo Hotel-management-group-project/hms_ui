@@ -2,8 +2,9 @@
 // Student Name: Mohamed Iyaadh Ahmed
 // Module: Advanced Software Development (UFCF8S-30-2)
 
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, afterNextRender } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import gsap from 'gsap';
 import { OccupancyService } from '../../../core/services/occupancy.service';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -15,6 +16,29 @@ import { AuthService } from '../../../core/services/auth.service';
 export class StaffDashboardComponent implements OnInit, OnDestroy {
   readonly occupancy = inject(OccupancyService);
   readonly auth = inject(AuthService);
+
+  constructor() {
+    afterNextRender(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      gsap.from('.gsap-stat-card', {
+        y: 24,
+        opacity: 0,
+        duration: 0.55,
+        stagger: 0.08,
+        ease: 'power2.out',
+        clearProps: 'all',
+      });
+      gsap.from('.gsap-action-card', {
+        y: 16,
+        opacity: 0,
+        duration: 0.45,
+        stagger: 0.07,
+        ease: 'power2.out',
+        delay: 0.35,
+        clearProps: 'all',
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.occupancy.connect();

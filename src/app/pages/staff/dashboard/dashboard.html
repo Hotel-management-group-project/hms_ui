@@ -27,7 +27,7 @@
     <!-- Occupancy Stats -->
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
       <!-- Occupancy Rate (wide) -->
-      <div class="col-span-2 md:col-span-1 bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+      <div class="gsap-stat-card col-span-2 md:col-span-1 bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
         <div class="absolute inset-0 bg-gradient-to-br from-gold-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
         <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Occupancy Rate</p>
         <div>
@@ -41,25 +41,25 @@
         </div>
       </div>
 
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
+      <div class="gsap-stat-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
         <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Available</p>
         <p class="font-serif text-3xl text-green-400">{{ occupancy.stats().available }}</p>
         <p class="text-xs text-green-400/50 mt-1">rooms ready</p>
       </div>
 
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
+      <div class="gsap-stat-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
         <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Occupied</p>
         <p class="font-serif text-3xl text-blue-400">{{ occupancy.stats().occupied }}</p>
         <p class="text-xs text-blue-400/50 mt-1">guests in-house</p>
       </div>
 
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
+      <div class="gsap-stat-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
         <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Cleaning</p>
         <p class="font-serif text-3xl text-amber-400">{{ occupancy.stats().cleaning }}</p>
         <p class="text-xs text-amber-400/50 mt-1">housekeeping</p>
       </div>
 
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
+      <div class="gsap-stat-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between">
         <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Out of Service</p>
         <p class="font-serif text-3xl text-red-400">{{ occupancy.stats().outOfService }}</p>
         <p class="text-xs text-red-400/50 mt-1">unavailable</p>
@@ -68,7 +68,7 @@
 
     <!-- Quick Actions -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <a routerLink="/staff/check-in" class="group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
+      <a routerLink="/staff/check-in" class="gsap-action-card group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
         <div class="w-12 h-12 bg-gold-400/10 rounded-lg flex items-center justify-center group-hover:bg-gold-400/20 transition-colors shrink-0">
           <svg class="w-6 h-6 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -80,7 +80,7 @@
         </div>
       </a>
 
-      <a routerLink="/staff/check-out" class="group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
+      <a routerLink="/staff/check-out" class="gsap-action-card group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
         <div class="w-12 h-12 bg-blue-400/10 rounded-lg flex items-center justify-center group-hover:bg-blue-400/20 transition-colors shrink-0">
           <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -92,7 +92,7 @@
         </div>
       </a>
 
-      <a routerLink="/staff/room-management" class="group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
+      <a routerLink="/staff/room-management" class="gsap-action-card group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
         <div class="w-12 h-12 bg-green-400/10 rounded-lg flex items-center justify-center group-hover:bg-green-400/20 transition-colors shrink-0">
           <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -104,7 +104,7 @@
         </div>
       </a>
 
-      <a routerLink="/staff/check-in" [queryParams]="{ mode: 'qr' }" class="group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
+      <a routerLink="/staff/check-in" [queryParams]="{ mode: 'qr' }" class="gsap-action-card group bg-navy-800 border border-navy-700 hover:border-gold-500/50 rounded-xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5">
         <div class="w-12 h-12 bg-purple-400/10 rounded-lg flex items-center justify-center group-hover:bg-purple-400/20 transition-colors shrink-0">
           <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 4h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
