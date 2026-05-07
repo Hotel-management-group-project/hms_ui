@@ -98,97 +98,231 @@
 
 
 <!-- ═══════════════════════════════════════
-     ROOM TYPES — Scroll-reveal card grid
-     Theme-aware: bg-surface / bg-raised / text-ink
+     OUR PROPERTIES — Filtered hotel slider
+     Left sidebar tabs filter by tier; cards
+     scroll horizontally like a luxury portal
      ═══════════════════════════════════════ -->
-<section class="py-28 bg-surface" aria-label="Our rooms">
-  <div class="container-luxury">
+<section class="bg-surface overflow-hidden" aria-label="Our properties">
 
-    <div class="text-center mb-16 scroll-reveal">
+  <!-- Section header -->
+  <div class="container-luxury pt-24 pb-10">
+    <div class="text-center scroll-reveal">
       <p class="text-gold text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans mb-3">
-        Accommodation
+        Our Portfolio
       </p>
-      <h2 class="font-serif text-ink mb-4"
-          style="font-size: clamp(2rem, 4vw, 3rem);">
-        Our Rooms
+      <h2 class="font-serif text-ink mb-4" style="font-size: clamp(2rem, 4vw, 3rem);">
+        Our Properties
       </h2>
       <div style="width: 4rem; height: 1px; margin: 0 auto;
            background: linear-gradient(90deg, transparent, var(--color-gold), transparent);"></div>
+      <p class="font-sans text-sm mt-4 text-ink-2/55 max-w-md mx-auto leading-relaxed">
+        Handpicked hotels across multiple locations — each one a world unto itself.
+      </p>
     </div>
+  </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      @for (room of roomTypes; track room.name) {
-        <article
-          class="scroll-reveal group cursor-pointer flex flex-col overflow-hidden
-                 bg-raised border border-rim
-                 transition-all duration-300 hover:border-gold/40"
-          [attr.aria-label]="room.name + ' room details'"
+  <!-- Sidebar + slider layout -->
+  <div class="flex" style="height: 72vh; min-height: 500px; max-height: 720px;">
+
+    <!-- ── Left sidebar tabs ── -->
+    <div class="flex flex-col w-[68px] sm:w-[88px] shrink-0 border-r border-rim bg-surface">
+      @for (tab of tabs; track tab.id; let last = $last) {
+        <button
+          type="button"
+          (click)="setTab(tab.id)"
+          class="relative flex flex-1 items-center justify-center cursor-pointer transition-colors duration-200"
+          [class.bg-raised]="activeTab() === tab.id"
+          [class.border-b]="!last"
+          [class.border-rim]="!last"
         >
-          <!-- Room image placeholder -->
-          <div class="relative h-44 overflow-hidden flex-shrink-0 bg-gradient-to-br from-navy-700 to-navy-600">
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-              <span class="font-serif font-bold select-none text-gold/[0.08]"
-                    style="font-size: 4.5rem; letter-spacing: -0.02em;">
-                HMS
-              </span>
-            </div>
-            <!-- Subtle shimmer on hover -->
-            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none
-                        bg-gradient-to-br from-gold/[0.04] to-transparent" aria-hidden="true"></div>
-          </div>
-
-          <div class="p-5 flex flex-col gap-3 flex-1">
-            <div class="flex items-start justify-between gap-2">
-              <h3 class="font-serif text-[1.05rem] leading-snug text-ink">
-                {{ room.name }}
-              </h3>
-              <span class="font-sans text-gold text-xs font-medium whitespace-nowrap pt-0.5">
-                {{ room.priceFrom.split('/')[0] }}
-              </span>
-            </div>
-
-            <p class="font-sans text-sm leading-relaxed flex-1 text-ink-2/80">
-              {{ room.desc }}
-            </p>
-
-            <div class="flex items-center gap-3 font-sans text-xs text-ink-2/50">
-              <!-- Guests icon -->
-              <span class="flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
-                </svg>
-                {{ room.capacity }}
-              </span>
-              <span aria-hidden="true">·</span>
-              <!-- Size icon -->
-              <span class="flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/>
-                </svg>
-                {{ room.size }}
-              </span>
-            </div>
-          </div>
-        </article>
+          <!-- Active indicator bar -->
+          @if (activeTab() === tab.id) {
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-10 bg-gold rounded-l-full"></div>
+          }
+          <span
+            class="font-sans text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-semibold transition-colors duration-200 select-none px-1"
+            style="writing-mode: vertical-lr; transform: rotate(180deg);"
+            [class.text-ink]="activeTab() === tab.id"
+            [class.text-ink-2]="activeTab() !== tab.id"
+          >
+            {{ tab.label }}
+          </span>
+        </button>
       }
     </div>
 
-    <div class="text-center mt-12 scroll-reveal">
-      <a
-        routerLink="/guest/search"
-        class="cursor-pointer inline-flex items-center gap-2 font-sans text-sm text-gold
-               tracking-[0.15em] uppercase transition-colors duration-200
-               focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
-        aria-label="View all available rooms"
-      >
-        View All Rooms
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-        </svg>
-      </a>
+    <!-- ── Slider area ── -->
+    <div class="relative flex-1 overflow-hidden bg-navy-900">
+
+      <!-- Loading skeletons -->
+      @if (hotelsLoading()) {
+        <div class="flex h-full gap-0.5">
+          @for (n of [1,2,3]; track n) {
+            <div class="h-full w-[420px] shrink-0 bg-navy-800 animate-pulse"></div>
+          }
+        </div>
+      }
+
+      <!-- Hotel cards -->
+      @if (!hotelsLoading() && filteredHotels().length > 0) {
+        <div
+          #hotelSlider
+          class="flex h-full no-scrollbar"
+          style="overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;"
+        >
+          @for (hotel of filteredHotels(); track hotel.id) {
+            <div
+              class="relative shrink-0 h-full border-r border-white/[0.06] group overflow-hidden"
+              style="width: 420px; scroll-snap-align: start;"
+            >
+              <!-- Background image -->
+              <div class="absolute inset-0">
+                @if (hotel.imageUrl) {
+                  <img
+                    [src]="hotel.imageUrl"
+                    [alt]="hotel.name"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  >
+                } @else {
+                  <!-- Fallback gradient -->
+                  <div class="w-full h-full bg-gradient-to-br from-navy-700 via-navy-800 to-navy-900 flex items-center justify-center">
+                    <span class="font-serif font-bold select-none pointer-events-none"
+                          style="font-size: 10rem; color: rgba(201,168,76,0.06);">HMS</span>
+                  </div>
+                }
+                <!-- Gradient overlay: darker at top and bottom -->
+                <div class="absolute inset-0" style="background: linear-gradient(
+                  to bottom,
+                  rgba(10,22,40,0.55) 0%,
+                  rgba(10,22,40,0.10) 35%,
+                  rgba(10,22,40,0.10) 55%,
+                  rgba(10,22,40,0.88) 100%
+                );"></div>
+              </div>
+
+              <!-- Card content -->
+              <div class="absolute inset-0 flex flex-col justify-between p-8">
+
+                <!-- Top: brand label + tier badge -->
+                <div class="flex items-start justify-between">
+                  <p class="font-sans text-[10px] tracking-[0.38em] uppercase text-white/60">
+                    HMS Hotels
+                  </p>
+                  <span class="font-sans text-[9px] tracking-[0.22em] uppercase px-2.5 py-1
+                                border text-white/70"
+                        [class.border-gold/50]="hotel.tier === 'luxury'"
+                        [class.text-gold]="hotel.tier === 'luxury'"
+                        [class.border-white/25]="hotel.tier === 'lifestyle'">
+                    {{ hotel.tier === 'luxury' ? 'Luxury' : 'Lifestyle' }}
+                  </span>
+                </div>
+
+                <!-- Centre: hotel name + location -->
+                <div class="text-center space-y-3">
+                  <h3 class="font-serif font-bold text-white leading-none"
+                      style="font-size: clamp(2.2rem, 3.5vw, 3.2rem); letter-spacing: -0.01em;">
+                    {{ hotel.name }}
+                  </h3>
+                  <!-- Decorative arrow -->
+                  <svg class="w-4 h-4 text-gold mx-auto opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/>
+                  </svg>
+                  <p class="font-sans text-[11px] tracking-[0.32em] uppercase text-white/65">
+                    {{ hotel.location }}
+                  </p>
+                  @if (hotel.description) {
+                    <p class="font-sans text-xs text-white/45 max-w-[280px] mx-auto leading-relaxed line-clamp-2 mt-1">
+                      {{ hotel.description }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Bottom: CTA buttons -->
+                <div class="flex gap-3">
+                  <a
+                    routerLink="/guest/search"
+                    [queryParams]="{ hotelId: hotel.id }"
+                    class="flex-1 py-3.5 text-center font-sans text-[10px] tracking-[0.22em] uppercase
+                           border border-white/35 text-white
+                           hover:bg-white/10 transition-colors duration-200 cursor-pointer"
+                  >
+                    View Hotel
+                  </a>
+                  <a
+                    routerLink="/guest/search"
+                    [queryParams]="{ hotelId: hotel.id }"
+                    class="flex-1 py-3.5 text-center font-sans text-[10px] tracking-[0.22em] uppercase font-semibold
+                           bg-gold text-navy-900
+                           hover:bg-gold-300 transition-colors duration-200 cursor-pointer"
+                  >
+                    Book Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Prev arrow -->
+        <button
+          type="button"
+          (click)="scrollPrev()"
+          aria-label="Previous property"
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-10
+                 w-11 h-11 rounded-full
+                 bg-black/30 backdrop-blur-sm border border-white/20
+                 flex items-center justify-center text-white
+                 hover:bg-black/55 hover:border-white/40
+                 transition-all duration-200 cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <!-- Next arrow -->
+        <button
+          type="button"
+          (click)="scrollNext()"
+          aria-label="Next property"
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-10
+                 w-11 h-11 rounded-full
+                 bg-black/30 backdrop-blur-sm border border-white/20
+                 flex items-center justify-center text-white
+                 hover:bg-black/55 hover:border-white/40
+                 transition-all duration-200 cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      }
+
+      <!-- Empty state (no hotels match the active filter) -->
+      @if (!hotelsLoading() && filteredHotels().length === 0) {
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white/40">
+          <svg class="w-10 h-10 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+          </svg>
+          <p class="font-sans text-xs tracking-[0.3em] uppercase">No properties in this collection</p>
+        </div>
+      }
     </div>
+  </div>
+
+  <!-- View all link -->
+  <div class="text-center py-10 scroll-reveal">
+    <a
+      routerLink="/guest/search"
+      class="cursor-pointer inline-flex items-center gap-2 font-sans text-sm text-gold
+             tracking-[0.15em] uppercase transition-colors duration-200
+             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
+    >
+      Explore All Properties
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+      </svg>
+    </a>
   </div>
 </section>
 
