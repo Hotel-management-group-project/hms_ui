@@ -1,8 +1,366 @@
-<div class="min-h-screen bg-navy-800 flex items-center justify-center">
-  <div class="text-center space-y-4 px-4">
-    <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase">Admin</p>
-    <h1 class="font-serif text-5xl text-cream-200">User Management</h1>
-    <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
-    <p class="text-cream-300/60 text-sm">Create & manage staff and guest accounts coming soon.</p>
+<!-- Admin User Management -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto space-y-6 animate-fade-in">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <a routerLink="/admin/dashboard" class="inline-flex items-center text-gold-400 hover:text-gold-300 text-sm mb-4 transition-colors cursor-pointer">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Back to Dashboard
+        </a>
+        <p class="text-red-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1">Admin</p>
+        <h1 class="font-serif text-4xl text-cream-200">User Management</h1>
+        <p class="text-cream-300/50 text-sm mt-1">{{ allUsers().length }} total accounts</p>
+      </div>
+      <button (click)="openCreate()"
+              class="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors cursor-pointer shrink-0">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Create User
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-navy-800 border border-navy-700 rounded-xl p-4">
+      <div class="flex flex-col sm:flex-row gap-3">
+
+        <!-- Search -->
+        <div class="flex-1 relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-300/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="resetPage()"
+                 placeholder="Search by name or email..."
+                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 placeholder-cream-300/30 rounded-lg pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60">
+        </div>
+
+        <!-- Role filter -->
+        <select [(ngModel)]="filterRole" (ngModelChange)="filterRole.set($any($event)); resetPage()"
+                [ngModel]="filterRole()"
+                class="bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
+          <option value="all">All Roles</option>
+          @for (r of roles; track r) {
+            <option [value]="r">{{ r }}</option>
+          }
+        </select>
+
+        <!-- Status filter -->
+        <select [ngModel]="filterStatus()"
+                (ngModelChange)="filterStatus.set($any($event)); resetPage()"
+                class="bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+
+        <!-- Refresh -->
+        <button (click)="loadUsers()" title="Refresh"
+                class="p-2.5 text-cream-300/50 hover:text-gold-400 transition-colors cursor-pointer border border-navy-600 rounded-lg hover:border-navy-500">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Error -->
+    @if (error()) {
+      <div class="bg-red-400/10 border border-red-400/30 rounded-lg px-4 py-3 text-red-400 text-sm">{{ error() }}</div>
+    }
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 space-y-3">
+        @for (i of [1,2,3,4,5]; track i) {
+          <div class="h-14 bg-navy-700/50 animate-pulse rounded-lg"></div>
+        }
+      </div>
+    }
+
+    <!-- Table -->
+    @if (!loading()) {
+      <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-navy-700 flex items-center justify-between">
+          <h2 class="font-serif text-lg text-cream-200">Accounts</h2>
+          <span class="text-xs text-cream-300/40">
+            @if (filteredUsers().length > 0) {
+              {{ pageStart }}–{{ pageEnd }} of {{ filteredUsers().length }}
+            } @else {
+              No results
+            }
+          </span>
+        </div>
+
+        @if (paginatedUsers().length === 0) {
+          <div class="p-12 text-center text-cream-300/40 text-sm">No users match your filters.</div>
+        } @else {
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-navy-700">
+                  <th class="px-5 py-3 text-left text-cream-300/40 text-xs uppercase tracking-widest font-normal">User</th>
+                  <th class="px-5 py-3 text-left text-cream-300/40 text-xs uppercase tracking-widest font-normal hidden md:table-cell">Email</th>
+                  <th class="px-5 py-3 text-left text-cream-300/40 text-xs uppercase tracking-widest font-normal">Role</th>
+                  <th class="px-5 py-3 text-left text-cream-300/40 text-xs uppercase tracking-widest font-normal hidden sm:table-cell">Status</th>
+                  <th class="px-5 py-3 text-left text-cream-300/40 text-xs uppercase tracking-widest font-normal hidden lg:table-cell">Joined</th>
+                  <th class="px-5 py-3 text-center text-cream-300/40 text-xs uppercase tracking-widest font-normal">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-navy-700/50">
+                @for (user of paginatedUsers(); track user.id) {
+                  <tr class="hover:bg-navy-700/20 transition-colors">
+
+                    <!-- Name + Avatar -->
+                    <td class="px-5 py-3">
+                      <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-navy-700 border border-navy-600 flex items-center justify-center shrink-0">
+                          <span class="text-xs font-medium text-cream-300/70">{{ initials(user) }}</span>
+                        </div>
+                        <div class="min-w-0">
+                          <p class="text-cream-200 text-sm font-medium truncate">{{ user.firstName }} {{ user.lastName }}</p>
+                          <p class="text-cream-300/40 text-xs md:hidden truncate">{{ user.email }}</p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Email -->
+                    <td class="px-5 py-3 text-cream-300/60 text-xs hidden md:table-cell max-w-[200px]">
+                      <span class="truncate block">{{ user.email }}</span>
+                    </td>
+
+                    <!-- Role (inline edit) -->
+                    <td class="px-5 py-3">
+                      @if (editingRoleId() === user.id) {
+                        <div class="flex items-center gap-1.5">
+                          <select [(ngModel)]="editingRoleValue"
+                                  class="text-xs bg-navy-900 border border-gold-400/40 text-cream-200 rounded px-2 py-1 focus:outline-none cursor-pointer">
+                            @for (r of roles; track r) {
+                              <option [value]="r">{{ r }}</option>
+                            }
+                          </select>
+                          <button (click)="saveRole(user)" class="text-green-400 hover:text-green-300 cursor-pointer" title="Save">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                            </svg>
+                          </button>
+                          <button (click)="cancelEditRole()" class="text-red-400 hover:text-red-300 cursor-pointer" title="Cancel">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                          </button>
+                        </div>
+                      } @else {
+                        <button (click)="startEditRole(user)"
+                                class="text-xs px-2 py-0.5 rounded border cursor-pointer hover:opacity-80 transition-opacity"
+                                [class]="roleClass(user.role)" title="Click to edit role">
+                          {{ user.role }}
+                        </button>
+                      }
+                    </td>
+
+                    <!-- Status -->
+                    <td class="px-5 py-3 hidden sm:table-cell">
+                      @if (user.isActive) {
+                        <span class="text-xs px-2 py-0.5 rounded border text-green-400 border-green-400/20 bg-green-400/10">Active</span>
+                      } @else {
+                        <span class="text-xs px-2 py-0.5 rounded border text-red-400 border-red-400/20 bg-red-400/10">Inactive</span>
+                      }
+                    </td>
+
+                    <!-- Joined -->
+                    <td class="px-5 py-3 text-cream-300/40 text-xs hidden lg:table-cell">
+                      {{ user.createdAt | date:'dd MMM yyyy' }}
+                    </td>
+
+                    <!-- Actions -->
+                    <td class="px-5 py-3">
+                      <div class="flex items-center justify-center gap-2">
+                        <!-- Toggle active -->
+                        <button (click)="toggleActive(user)"
+                                [disabled]="togglingId() === user.id"
+                                [title]="user.isActive ? 'Deactivate' : 'Activate'"
+                                class="p-1.5 rounded transition-colors cursor-pointer disabled:opacity-40"
+                                [class]="user.isActive ? 'text-red-400 hover:bg-red-400/10' : 'text-green-400 hover:bg-green-400/10'">
+                          @if (togglingId() === user.id) {
+                            <div class="w-3.5 h-3.5 border-t border-current rounded-full animate-spin"></div>
+                          } @else {
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    [attr.d]="user.isActive
+                                      ? 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'
+                                      : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'"/>
+                            </svg>
+                          }
+                        </button>
+                        <!-- Delete -->
+                        <button (click)="confirmDelete(user)"
+                                title="Delete user"
+                                class="p-1.5 rounded text-cream-300/30 hover:text-red-400 hover:bg-red-400/10 transition-colors cursor-pointer">
+                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+
+        <!-- Pagination -->
+        @if (filteredUsers().length > PAGE_SIZE) {
+          <div class="px-6 py-4 border-t border-navy-700 flex items-center justify-between">
+            <button (click)="prevPage()" [disabled]="page() <= 1"
+                    class="flex items-center gap-2 text-sm text-cream-300/60 hover:text-cream-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+              Previous
+            </button>
+            <span class="text-cream-300/40 text-xs">Page {{ page() }} of {{ totalPages() }}</span>
+            <button (click)="nextPage()" [disabled]="page() >= totalPages()"
+                    class="flex items-center gap-2 text-sm text-cream-300/60 hover:text-cream-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer">
+              Next
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        }
+      </div>
+    }
+
   </div>
 </div>
+
+<!-- ── Create User Modal ── -->
+@if (showCreateModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/80 backdrop-blur-sm">
+    <div class="bg-navy-800 border border-navy-700 rounded-2xl w-full max-w-md shadow-2xl animate-fade-in">
+
+      <div class="px-6 py-5 border-b border-navy-700 flex items-center justify-between">
+        <h2 class="font-serif text-xl text-cream-200">Create New User</h2>
+        <button (click)="closeCreate()" class="text-cream-300/40 hover:text-cream-200 transition-colors cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="createForm" (ngSubmit)="createUser()" class="px-6 py-5 space-y-4">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">First Name</label>
+            <input formControlName="firstName" type="text"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   [class.border-red-400/60]="fieldError('firstName','required') || fieldError('firstName','minlength')">
+            @if (fieldError('firstName','required') || fieldError('firstName','minlength')) {
+              <p class="text-red-400 text-xs mt-1">Min 2 characters</p>
+            }
+          </div>
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Last Name</label>
+            <input formControlName="lastName" type="text"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   [class.border-red-400/60]="fieldError('lastName','required') || fieldError('lastName','minlength')">
+            @if (fieldError('lastName','required') || fieldError('lastName','minlength')) {
+              <p class="text-red-400 text-xs mt-1">Min 2 characters</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Email</label>
+          <input formControlName="email" type="email"
+                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 [class.border-red-400/60]="fieldError('email','required') || fieldError('email','email')">
+          @if (fieldError('email','required') || fieldError('email','email')) {
+            <p class="text-red-400 text-xs mt-1">Valid email required</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Password</label>
+          <input formControlName="password" type="password"
+                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 [class.border-red-400/60]="fieldError('password','required') || fieldError('password','minlength')">
+          @if (fieldError('password','required') || fieldError('password','minlength')) {
+            <p class="text-red-400 text-xs mt-1">Minimum 8 characters</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Role</label>
+            <select formControlName="role"
+                    class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
+              @for (r of roles; track r) {
+                <option [value]="r">{{ r }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Phone (optional)</label>
+            <input formControlName="phoneNumber" type="tel"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60">
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="submit" [disabled]="creating()"
+                  class="flex-1 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors disabled:opacity-50 cursor-pointer">
+            {{ creating() ? 'Creating...' : 'Create User' }}
+          </button>
+          <button type="button" (click)="closeCreate()" [disabled]="creating()"
+                  class="px-5 py-2.5 border border-navy-600 text-cream-300/60 hover:text-cream-200 text-sm rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ── Delete Confirmation Modal ── -->
+@if (showDeleteModal() && userToDelete) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/80 backdrop-blur-sm">
+    <div class="bg-navy-800 border border-red-400/30 rounded-2xl w-full max-w-sm shadow-2xl animate-fade-in p-6 space-y-5">
+
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-red-400/10 flex items-center justify-center">
+          <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-cream-200 font-semibold">Delete User</h3>
+          <p class="text-cream-300/50 text-sm">This action cannot be undone.</p>
+        </div>
+      </div>
+
+      <p class="text-cream-300/70 text-sm">
+        Are you sure you want to delete
+        <span class="text-cream-200 font-medium">{{ userToDelete.firstName }} {{ userToDelete.lastName }}</span>
+        ({{ userToDelete.email }})?
+      </p>
+
+      <div class="flex gap-3">
+        <button (click)="deleteUser()" [disabled]="!!deletingId()"
+                class="flex-1 py-2.5 bg-red-500 hover:bg-red-400 text-white font-semibold text-sm rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
+          {{ deletingId() ? 'Deleting...' : 'Delete' }}
+        </button>
+        <button (click)="cancelDelete()" [disabled]="!!deletingId()"
+                class="px-5 py-2.5 border border-navy-600 text-cream-300/60 hover:text-cream-200 text-sm rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+}
