@@ -3,7 +3,7 @@
 // Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
-import { Router, RouterOutlet, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
+import { Router, RouterOutlet, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from './core/services/auth.service';
@@ -57,6 +57,7 @@ export class App implements OnInit {
       filter(e =>
         e instanceof NavigationStart ||
         e instanceof NavigationEnd ||
+        e instanceof NavigationCancel ||
         e instanceof NavigationError
       )
     ).subscribe(e => {

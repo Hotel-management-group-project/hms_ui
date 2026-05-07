@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        /* ── Fixed palette (brand / accent — do not theme) ── */
         navy: {
           50:  '#E8EDF4',
           100: '#C5D0E3',
@@ -41,6 +42,14 @@ module.exports = {
           400: '#E0D4BC',
           DEFAULT: '#F5F0E8',
         },
+        /* ── Semantic theme tokens (CSS-variable driven) ── */
+        surface: 'rgb(var(--hms-surface) / <alpha-value>)',
+        deep:    'rgb(var(--hms-deep)    / <alpha-value>)',
+        raised:  'rgb(var(--hms-raised)  / <alpha-value>)',
+        ink:     'rgb(var(--hms-ink)     / <alpha-value>)',
+        'ink-2': 'rgb(var(--hms-ink-2)   / <alpha-value>)',
+        rim:     'rgb(var(--hms-rim)     / <alpha-value>)',
+        'rim-2': 'rgb(var(--hms-rim-2)   / <alpha-value>)',
       },
       fontFamily: {
         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
@@ -81,8 +90,7 @@ module.exports = {
         'gold':      '0 4px 24px rgba(201, 168, 76, 0.3)',
       },
       backgroundImage: {
-        'gradient-luxury': 'linear-gradient(135deg, #0A1628 0%, #1A3461 50%, #0A1628 100%)',
-        'gradient-gold':   'linear-gradient(90deg, #C9A84C 0%, #E5BF61 50%, #C9A84C 100%)',
+        'gradient-gold': 'linear-gradient(90deg, #C9A84C 0%, #E5BF61 50%, #C9A84C 100%)',
       },
     },
   },

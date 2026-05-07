@@ -5,17 +5,17 @@
     <!-- Header -->
     <div class="gsap-section">
       <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1">Manager</p>
-      <h1 class="font-serif text-4xl text-cream-200">Settings</h1>
-      <p class="text-cream-300/50 text-sm mt-1">Room rates and staff account management</p>
+      <h1 class="font-serif text-4xl text-ink">Settings</h1>
+      <p class="text-ink-2/50 text-sm mt-1">Room rates and staff account management</p>
       <div class="w-10 h-px bg-gradient-to-r from-gold-400 to-transparent mt-3"></div>
     </div>
 
     <!-- Tab Switcher -->
-    <div class="gsap-section flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
+    <div class="gsap-section flex gap-1 bg-surface border border-rim rounded-xl p-1 w-fit">
       <button (click)="setTab('rates')" class="cursor-pointer"
               [class]="activeTab() === 'rates'
                 ? 'px-6 py-2 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
-                : 'px-6 py-2 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+                : 'px-6 py-2 rounded-lg text-sm text-ink-2/60 hover:text-ink transition-all'">
         <span class="flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -26,7 +26,7 @@
       <button (click)="setTab('staff')" class="cursor-pointer"
               [class]="activeTab() === 'staff'
                 ? 'px-6 py-2 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
-                : 'px-6 py-2 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+                : 'px-6 py-2 rounded-lg text-sm text-ink-2/60 hover:text-ink transition-all'">
         <span class="flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -43,13 +43,13 @@
         <!-- Hotel selector -->
         <div class="gsap-section flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="font-serif text-xl text-cream-200">Pricing by Room Type</h2>
-            <p class="text-cream-300/40 text-xs mt-0.5">Edit peak & off-peak pricing per hotel</p>
+            <h2 class="font-serif text-xl text-ink">Pricing by Room Type</h2>
+            <p class="text-ink-2/40 text-xs mt-0.5">Edit peak & off-peak pricing per hotel</p>
           </div>
           <div class="w-full sm:w-64">
-            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-2">Hotel</label>
+            <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-2">Hotel</label>
             <select [(ngModel)]="selectedHotelId" (ngModelChange)="loadRates()"
-                    class="w-full bg-navy-800 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
+                    class="w-full bg-surface border border-rim-2 text-ink rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
               @for (hotel of hotels(); track hotel.id) {
                 <option [value]="hotel.id">{{ hotel.name }}</option>
               }
@@ -66,7 +66,7 @@
         @if (loadingRates()) {
           <div class="space-y-3">
             @for (i of [1,2,3,4]; track i) {
-              <div class="h-20 bg-navy-800 border border-navy-700 rounded-xl animate-pulse"></div>
+              <div class="h-20 bg-surface border border-rim rounded-xl animate-pulse"></div>
             }
           </div>
         }
@@ -86,15 +86,15 @@
 
         <!-- Rates Table -->
         @if (!loadingRates() && rows().length > 0) {
-          <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
-            <div class="divide-y divide-navy-700/50">
+          <div class="bg-surface border border-rim rounded-xl overflow-hidden">
+            <div class="divide-y divide-rim/50">
               @for (row of rows(); track row.type) {
                 <div class="px-6 py-5">
                   <div class="flex flex-col sm:flex-row sm:items-center gap-4">
                     <!-- Type info -->
                     <div class="flex-1 min-w-0">
-                      <p class="text-cream-200 font-medium">{{ row.type }}</p>
-                      <p class="text-cream-300/40 text-xs mt-0.5">
+                      <p class="text-ink font-medium">{{ row.type }}</p>
+                      <p class="text-ink-2/40 text-xs mt-0.5">
                         {{ row.rooms.length }} room{{ row.rooms.length !== 1 ? 's' : '' }} ·
                         {{ row.rooms.map(r => r.roomNumber).join(', ') }}
                       </p>
@@ -104,10 +104,10 @@
                       <!-- View mode -->
                       <div class="flex items-center gap-6">
                         <div class="text-center">
-                          <p class="text-xs text-cream-300/40 uppercase tracking-wider mb-1">Off-Peak</p>
-                          <p class="text-cream-200 font-medium">{{ formatCurrency(row.priceOffPeak) }}</p>
+                          <p class="text-xs text-ink-2/40 uppercase tracking-wider mb-1">Off-Peak</p>
+                          <p class="text-ink font-medium">{{ formatCurrency(row.priceOffPeak) }}</p>
                         </div>
-                        <div class="w-px h-8 bg-navy-700"></div>
+                        <div class="w-px h-8 bg-raised"></div>
                         <div class="text-center">
                           <p class="text-xs text-amber-400/60 uppercase tracking-wider mb-1">Peak</p>
                           <p class="text-amber-400 font-medium">{{ formatCurrency(row.pricePeak) }}</p>
@@ -121,14 +121,14 @@
                       <!-- Edit mode -->
                       <div class="flex items-center gap-3 flex-wrap">
                         <div>
-                          <label class="block text-xs text-cream-300/50 uppercase tracking-wider mb-1">Off-Peak (£)</label>
+                          <label class="block text-xs text-ink-2/50 uppercase tracking-wider mb-1">Off-Peak (£)</label>
                           <input type="number" min="0" step="5" [(ngModel)]="row.priceOffPeak"
-                                 class="w-28 bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
+                                 class="w-28 bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
                         </div>
                         <div>
                           <label class="block text-xs text-amber-400/60 uppercase tracking-wider mb-1">Peak (£)</label>
                           <input type="number" min="0" step="5" [(ngModel)]="row.pricePeak"
-                                 class="w-28 bg-navy-900 border border-amber-400/20 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400/60">
+                                 class="w-28 bg-deep border border-amber-400/20 text-ink rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400/60">
                         </div>
                         <div class="flex items-end gap-2 pb-0.5">
                           <button (click)="saveRow(row)" [disabled]="row.saving"
@@ -136,7 +136,7 @@
                             {{ row.saving ? 'Saving...' : 'Save' }}
                           </button>
                           <button (click)="cancelEdit(row)" [disabled]="row.saving"
-                                  class="px-4 py-2 text-xs border border-navy-600 text-cream-300/60 hover:text-cream-200 rounded transition-colors disabled:opacity-50 cursor-pointer">
+                                  class="px-4 py-2 text-xs border border-rim-2 text-ink-2/60 hover:text-ink rounded transition-colors disabled:opacity-50 cursor-pointer">
                             Cancel
                           </button>
                         </div>
@@ -151,19 +151,19 @@
 
         <!-- Empty state -->
         @if (!loadingRates() && rows().length === 0 && !ratesError()) {
-          <div class="bg-navy-800 border border-navy-700 rounded-xl p-12 text-center">
-            <p class="text-cream-300/40 text-sm">No rooms found for this hotel.</p>
+          <div class="bg-surface border border-rim rounded-xl p-12 text-center">
+            <p class="text-ink-2/40 text-sm">No rooms found for this hotel.</p>
           </div>
         }
 
         <!-- Reference rates -->
-        <div class="bg-navy-800/50 border border-navy-700/50 rounded-xl p-5">
-          <p class="text-cream-300/40 text-xs uppercase tracking-widest mb-3">Reference — Default Rates</p>
+        <div class="bg-surface/50 border border-rim/50 rounded-xl p-5">
+          <p class="text-ink-2/40 text-xs uppercase tracking-widest mb-3">Reference — Default Rates</p>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             @for (entry of [['Standard Double', 120, 180],['Deluxe King', 180, 250],['Family Suite', 240, 320],['Penthouse', 500, 750]]; track entry[0]) {
               <div class="text-xs space-y-1">
-                <p class="text-cream-300/60 font-medium">{{ entry[0] }}</p>
-                <p class="text-cream-300/30">Off-Peak: £{{ entry[1] }}</p>
+                <p class="text-ink-2/60 font-medium">{{ entry[0] }}</p>
+                <p class="text-ink-2/30">Off-Peak: £{{ entry[1] }}</p>
                 <p class="text-amber-400/40">Peak: £{{ entry[2] }}</p>
               </div>
             }
@@ -179,8 +179,8 @@
         <!-- Staff header -->
         <div class="gsap-section flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 class="font-serif text-xl text-cream-200">Staff Accounts</h2>
-            <p class="text-cream-300/40 text-xs mt-0.5">Manage FrontDesk &amp; Manager accounts</p>
+            <h2 class="font-serif text-xl text-ink">Staff Accounts</h2>
+            <p class="text-ink-2/40 text-xs mt-0.5">Manage FrontDesk &amp; Manager accounts</p>
           </div>
           <button (click)="openModal()"
                   class="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors cursor-pointer">
@@ -192,12 +192,12 @@
         </div>
 
         <!-- Role filter -->
-        <div class="flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
+        <div class="flex gap-1 bg-surface border border-rim rounded-xl p-1 w-fit">
           @for (f of [['all','All'],['FrontDesk','Front Desk'],['Manager','Manager']]; track f[0]) {
             <button (click)="filterRole.set($any(f[0]))" class="cursor-pointer"
                     [class]="filterRole() === f[0]
                       ? 'px-4 py-1.5 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
-                      : 'px-4 py-1.5 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+                      : 'px-4 py-1.5 rounded-lg text-sm text-ink-2/60 hover:text-ink transition-all'">
               {{ f[1] }}
             </button>
           }
@@ -212,30 +212,30 @@
         @if (loadingStaff()) {
           <div class="space-y-3">
             @for (i of [1,2,3]; track i) {
-              <div class="h-20 bg-navy-800 border border-navy-700 rounded-xl animate-pulse"></div>
+              <div class="h-20 bg-surface border border-rim rounded-xl animate-pulse"></div>
             }
           </div>
         }
 
         <!-- Staff list -->
         @if (!loadingStaff()) {
-          <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
-            <div class="px-6 py-4 border-b border-navy-700 flex items-center justify-between">
-              <h3 class="font-serif text-lg text-cream-200">Staff Members</h3>
-              <span class="text-xs text-cream-300/40">
+          <div class="bg-surface border border-rim rounded-xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-rim flex items-center justify-between">
+              <h3 class="font-serif text-lg text-ink">Staff Members</h3>
+              <span class="text-xs text-ink-2/40">
                 {{ filteredStaff.length }} account{{ filteredStaff.length !== 1 ? 's' : '' }}
               </span>
             </div>
 
             @if (filteredStaff.length === 0) {
-              <div class="p-12 text-center text-cream-300/40 text-sm">No staff accounts found.</div>
+              <div class="p-12 text-center text-ink-2/40 text-sm">No staff accounts found.</div>
             } @else {
-              <div class="divide-y divide-navy-700/50">
+              <div class="divide-y divide-rim/50">
                 @for (user of filteredStaff; track user.id) {
                   <div class="px-6 py-4 flex items-center gap-4">
                     <!-- Avatar -->
-                    <div class="w-10 h-10 rounded-full bg-navy-700 flex items-center justify-center shrink-0">
-                      <span class="text-cream-300/70 text-sm font-medium">
+                    <div class="w-10 h-10 rounded-full bg-raised flex items-center justify-center shrink-0">
+                      <span class="text-ink-2/70 text-sm font-medium">
                         {{ user.firstName[0] }}{{ user.lastName[0] }}
                       </span>
                     </div>
@@ -243,19 +243,19 @@
                     <!-- Info -->
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center gap-2 flex-wrap">
-                        <p class="text-cream-200 font-medium text-sm">{{ user.firstName }} {{ user.lastName }}</p>
+                        <p class="text-ink font-medium text-sm">{{ user.firstName }} {{ user.lastName }}</p>
                         <span class="text-xs px-1.5 py-0.5 rounded border" [class]="roleClass(user.role)">{{ user.role }}</span>
                         @if (!user.isActive) {
                           <span class="text-xs px-1.5 py-0.5 rounded border text-red-400 border-red-400/20 bg-red-400/10">Inactive</span>
                         }
                       </div>
-                      <p class="text-cream-300/40 text-xs mt-0.5">{{ user.email }}</p>
+                      <p class="text-ink-2/40 text-xs mt-0.5">{{ user.email }}</p>
                     </div>
 
                     <!-- Joined date -->
                     <div class="hidden sm:block text-right shrink-0">
-                      <p class="text-cream-300/30 text-xs">Joined</p>
-                      <p class="text-cream-300/50 text-xs">{{ user.createdAt | date:'dd MMM yyyy' }}</p>
+                      <p class="text-ink-2/30 text-xs">Joined</p>
+                      <p class="text-ink-2/50 text-xs">{{ user.createdAt | date:'dd MMM yyyy' }}</p>
                     </div>
 
                     <!-- Toggle active -->
@@ -281,12 +281,12 @@
 
 <!-- ── Create Staff Modal ──────────────────────────── -->
 @if (showModal()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/80 backdrop-blur-sm animate-fade-in">
-    <div class="bg-navy-800 border border-navy-700 rounded-2xl w-full max-w-md shadow-2xl">
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-deep/80 backdrop-blur-sm animate-fade-in">
+    <div class="bg-surface border border-rim rounded-2xl w-full max-w-md shadow-2xl">
 
-      <div class="px-6 py-5 border-b border-navy-700 flex items-center justify-between">
-        <h2 class="font-serif text-xl text-cream-200">New Staff Account</h2>
-        <button (click)="closeModal()" class="text-cream-300/40 hover:text-cream-200 transition-colors cursor-pointer">
+      <div class="px-6 py-5 border-b border-rim flex items-center justify-between">
+        <h2 class="font-serif text-xl text-ink">New Staff Account</h2>
+        <button (click)="closeModal()" class="text-ink-2/40 hover:text-ink transition-colors cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
@@ -297,18 +297,18 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">First Name</label>
+            <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-1.5">First Name</label>
             <input formControlName="firstName" type="text"
-                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
                    [class.border-red-400]="fieldError('firstName','required') || fieldError('firstName','minlength')">
             @if (fieldError('firstName','required') || fieldError('firstName','minlength')) {
               <p class="text-red-400 text-xs mt-1">Required (min 2 chars)</p>
             }
           </div>
           <div>
-            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Last Name</label>
+            <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-1.5">Last Name</label>
             <input formControlName="lastName" type="text"
-                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
                    [class.border-red-400]="fieldError('lastName','required') || fieldError('lastName','minlength')">
             @if (fieldError('lastName','required') || fieldError('lastName','minlength')) {
               <p class="text-red-400 text-xs mt-1">Required (min 2 chars)</p>
@@ -317,9 +317,9 @@
         </div>
 
         <div>
-          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Email</label>
+          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-1.5">Email</label>
           <input formControlName="email" type="email"
-                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
                  [class.border-red-400]="fieldError('email','required') || fieldError('email','email')">
           @if (fieldError('email','required') || fieldError('email','email')) {
             <p class="text-red-400 text-xs mt-1">Valid email required</p>
@@ -327,9 +327,9 @@
         </div>
 
         <div>
-          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Password</label>
+          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-1.5">Password</label>
           <input formControlName="password" type="password"
-                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
                  [class.border-red-400]="fieldError('password','required') || fieldError('password','minlength')">
           @if (fieldError('password','required') || fieldError('password','minlength')) {
             <p class="text-red-400 text-xs mt-1">Minimum 8 characters</p>
@@ -338,17 +338,17 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Role</label>
+            <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-1.5">Role</label>
             <select formControlName="role"
-                    class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
+                    class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
               <option value="FrontDesk">Front Desk</option>
               <option value="Manager">Manager</option>
             </select>
           </div>
           <div>
-            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Phone (optional)</label>
+            <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-1.5">Phone (optional)</label>
             <input formControlName="phoneNumber" type="tel"
-                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60">
+                   class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60">
           </div>
         </div>
 
@@ -358,7 +358,7 @@
             {{ creating() ? 'Creating...' : 'Create Account' }}
           </button>
           <button type="button" (click)="closeModal()" [disabled]="creating()"
-                  class="px-5 py-2.5 border border-navy-600 text-cream-300/60 hover:text-cream-200 text-sm rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
+                  class="px-5 py-2.5 border border-rim-2 text-ink-2/60 hover:text-ink text-sm rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
             Cancel
           </button>
         </div>

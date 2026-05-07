@@ -5,21 +5,21 @@
     <!-- Page header -->
     <div class="text-center space-y-3">
       <p class="text-gold-400 text-xs tracking-[0.3em] uppercase font-semibold">Discover Your Stay</p>
-      <h1 class="font-serif text-4xl md:text-5xl text-cream-100">Find Your Sanctuary</h1>
+      <h1 class="font-serif text-4xl md:text-5xl text-ink">Find Your Sanctuary</h1>
       <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
-      <p class="text-cream-300/60 max-w-xl mx-auto text-sm leading-relaxed">
+      <p class="text-ink-2/60 max-w-xl mx-auto text-sm leading-relaxed">
         Uncompromising luxury across our hand-picked properties. Select your dates to see live availability.
       </p>
     </div>
 
     <!-- Search form -->
-    <div class="bg-navy-800/90 backdrop-blur-md border border-navy-700 rounded-2xl p-6 shadow-luxury-lg">
+    <div class="bg-surface/90 backdrop-blur-md border border-rim rounded-2xl p-6 shadow-luxury-lg">
       <form [formGroup]="form" (ngSubmit)="onSearch()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
 
         <!-- Location -->
         <div class="lg:col-span-1">
-          <label class="block text-xs uppercase tracking-wider text-cream-300/50 mb-2">Location</label>
-          <select formControlName="hotelId" class="input bg-navy-900/60 cursor-pointer">
+          <label class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Location</label>
+          <select formControlName="hotelId" class="input bg-deep/60 cursor-pointer">
             <option value="">Any Location</option>
             @for (hotel of hotels(); track hotel.id) {
               <option [value]="hotel.id">{{ hotel.location }}</option>
@@ -29,20 +29,20 @@
 
         <!-- Check-in -->
         <div class="lg:col-span-1">
-          <label class="block text-xs uppercase tracking-wider text-cream-300/50 mb-2">Check-in</label>
-          <input type="date" formControlName="checkIn" class="input bg-navy-900/60 [color-scheme:dark] cursor-pointer">
+          <label class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Check-in</label>
+          <input type="date" formControlName="checkIn" class="input bg-deep/60 [color-scheme:dark] cursor-pointer">
         </div>
 
         <!-- Check-out -->
         <div class="lg:col-span-1">
-          <label class="block text-xs uppercase tracking-wider text-cream-300/50 mb-2">Check-out</label>
-          <input type="date" formControlName="checkOut" class="input bg-navy-900/60 [color-scheme:dark] cursor-pointer">
+          <label class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Check-out</label>
+          <input type="date" formControlName="checkOut" class="input bg-deep/60 [color-scheme:dark] cursor-pointer">
         </div>
 
         <!-- Room type -->
         <div class="lg:col-span-1">
-          <label class="block text-xs uppercase tracking-wider text-cream-300/50 mb-2">Room Type</label>
-          <select formControlName="type" class="input bg-navy-900/60 cursor-pointer">
+          <label class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Room Type</label>
+          <select formControlName="type" class="input bg-deep/60 cursor-pointer">
             <option value="">Any Type</option>
             <option value="Standard Double">Standard Double</option>
             <option value="Deluxe King">Deluxe King</option>
@@ -53,8 +53,8 @@
 
         <!-- Guests -->
         <div class="lg:col-span-1">
-          <label class="block text-xs uppercase tracking-wider text-cream-300/50 mb-2">Guests</label>
-          <select formControlName="capacity" class="input bg-navy-900/60 cursor-pointer">
+          <label class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Guests</label>
+          <select formControlName="capacity" class="input bg-deep/60 cursor-pointer">
             <option value="">Any</option>
             <option value="1">1 Guest</option>
             <option value="2">2 Guests</option>
@@ -90,7 +90,7 @@
         @if (!loading()) {
           <div class="flex flex-wrap justify-between items-center gap-4">
             <div>
-              <h2 class="font-serif text-2xl text-cream-100">
+              <h2 class="font-serif text-2xl text-ink">
                 {{ rooms().length }} {{ rooms().length === 1 ? 'Room' : 'Rooms' }} Available
               </h2>
             </div>
@@ -107,25 +107,25 @@
         @if (loading()) {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (n of skeletons; track n) {
-              <div class="animate-pulse bg-navy-800 border border-navy-700 rounded-2xl overflow-hidden flex flex-col">
-                <div class="aspect-[4/3] bg-navy-700"></div>
+              <div class="animate-pulse bg-surface border border-rim rounded-2xl overflow-hidden flex flex-col">
+                <div class="aspect-[4/3] bg-raised"></div>
                 <div class="p-6 space-y-4 flex-1">
                   <div class="flex justify-between">
                     <div class="space-y-2">
-                      <div class="h-5 bg-navy-700 rounded w-36"></div>
-                      <div class="h-3 bg-navy-700 rounded w-24"></div>
+                      <div class="h-5 bg-raised rounded w-36"></div>
+                      <div class="h-3 bg-raised rounded w-24"></div>
                     </div>
                     <div class="space-y-2 items-end flex flex-col">
-                      <div class="h-3 bg-navy-700 rounded w-12"></div>
-                      <div class="h-7 bg-navy-700 rounded w-20"></div>
+                      <div class="h-3 bg-raised rounded w-12"></div>
+                      <div class="h-7 bg-raised rounded w-20"></div>
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <div class="h-3 bg-navy-700 rounded w-full"></div>
-                    <div class="h-3 bg-navy-700 rounded w-4/5"></div>
+                    <div class="h-3 bg-raised rounded w-full"></div>
+                    <div class="h-3 bg-raised rounded w-4/5"></div>
                   </div>
                   <div class="pt-2">
-                    <div class="h-10 bg-navy-700 rounded-lg w-full"></div>
+                    <div class="h-10 bg-raised rounded-lg w-full"></div>
                   </div>
                 </div>
               </div>
@@ -137,7 +137,7 @@
         @if (!loading() && rooms().length > 0) {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (room of rooms(); track room.id) {
-              <div class="room-card group bg-navy-800 border border-navy-700 rounded-2xl overflow-hidden hover:border-gold-500/40 transition-all duration-500 hover:shadow-[0_8px_40px_rgba(201,168,76,0.12)] flex flex-col cursor-pointer">
+              <div class="room-card group bg-surface border border-rim rounded-2xl overflow-hidden hover:border-gold-500/40 transition-all duration-500 hover:shadow-[0_8px_40px_rgba(201,168,76,0.12)] flex flex-col cursor-pointer">
 
                 <!-- Image -->
                 <div class="aspect-[4/3] overflow-hidden relative">
@@ -150,7 +150,7 @@
                   <div class="absolute inset-0 bg-gradient-to-t from-navy-900/60 to-transparent"></div>
                   <!-- Type badge -->
                   <div class="absolute top-4 left-4">
-                    <span class="bg-navy-900/85 backdrop-blur-sm text-cream-200 text-xs px-3 py-1 rounded-full tracking-widest uppercase border border-navy-700/50">
+                    <span class="bg-deep/85 backdrop-blur-sm text-ink text-xs px-3 py-1 rounded-full tracking-widest uppercase border border-rim/50">
                       {{ room.type }}
                     </span>
                   </div>
@@ -168,10 +168,10 @@
                 <div class="p-6 flex-1 flex flex-col gap-4">
                   <div class="flex justify-between items-start">
                     <div>
-                      <h3 class="font-serif text-xl text-cream-100 group-hover:text-gold-400 transition-colors duration-300">
+                      <h3 class="font-serif text-xl text-ink group-hover:text-gold-400 transition-colors duration-300">
                         Room {{ room.roomNumber }}
                       </h3>
-                      <div class="flex items-center gap-1.5 mt-1.5 text-cream-300/55 text-sm">
+                      <div class="flex items-center gap-1.5 mt-1.5 text-ink-2/55 text-sm">
                         <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
@@ -181,13 +181,13 @@
                       </div>
                     </div>
                     <div class="text-right shrink-0">
-                      <p class="text-cream-300/40 text-xs uppercase tracking-wider">From</p>
+                      <p class="text-ink-2/40 text-xs uppercase tracking-wider">From</p>
                       <p class="font-serif text-2xl text-gold-400">£{{ getDisplayPrice(room) }}</p>
-                      <p class="text-cream-300/35 text-xs">per night</p>
+                      <p class="text-ink-2/35 text-xs">per night</p>
                     </div>
                   </div>
 
-                  <p class="text-sm text-cream-300/65 line-clamp-2 leading-relaxed flex-1">
+                  <p class="text-sm text-ink-2/65 line-clamp-2 leading-relaxed flex-1">
                     {{ room.description }}
                   </p>
 
@@ -206,15 +206,15 @@
 
         <!-- Empty state -->
         @if (!loading() && rooms().length === 0) {
-          <div class="bg-navy-800/60 border border-navy-700 border-dashed rounded-2xl p-14 text-center space-y-5">
-            <div class="w-16 h-16 rounded-full bg-navy-700/60 flex items-center justify-center mx-auto">
-              <svg class="w-8 h-8 text-cream-300/25" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="bg-surface/60 border border-rim border-dashed rounded-2xl p-14 text-center space-y-5">
+            <div class="w-16 h-16 rounded-full bg-raised/60 flex items-center justify-center mx-auto">
+              <svg class="w-8 h-8 text-ink-2/25" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
               </svg>
             </div>
             <div>
-              <h3 class="font-serif text-2xl text-cream-200 mb-2">No Rooms Available</h3>
-              <p class="text-cream-300/55 max-w-sm mx-auto text-sm leading-relaxed">
+              <h3 class="font-serif text-2xl text-ink mb-2">No Rooms Available</h3>
+              <p class="text-ink-2/55 max-w-sm mx-auto text-sm leading-relaxed">
                 No rooms match your criteria for these dates. Try adjusting your filters, or join our waitlist to be notified when a room opens up.
               </p>
             </div>

@@ -5,17 +5,17 @@
     <!-- Header -->
     <div>
       <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1">Manager</p>
-      <h1 class="font-serif text-4xl text-cream-200">Reports & Analytics</h1>
+      <h1 class="font-serif text-4xl text-ink">Reports & Analytics</h1>
     </div>
 
     <!-- Filters -->
-    <div class="bg-navy-800 border border-navy-700 rounded-xl p-5">
+    <div class="bg-surface border border-rim rounded-xl p-5">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
         <div>
-          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-2">Hotel</label>
+          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-2">Hotel</label>
           <select [(ngModel)]="selectedHotelId" (ngModelChange)="loadReport()"
-                  class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
+                  class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
             <option value="">All Hotels</option>
             @for (hotel of hotels(); track hotel.id) {
               <option [value]="hotel.id">{{ hotel.name }}</option>
@@ -24,9 +24,9 @@
         </div>
 
         <div>
-          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-2">Period</label>
+          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-2">Period</label>
           <select [(ngModel)]="selectedPeriod" (ngModelChange)="loadReport()"
-                  class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
+                  class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
             <option value="daily">Daily</option>
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
@@ -34,21 +34,21 @@
         </div>
 
         <div>
-          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-2">From</label>
+          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-2">From</label>
           <input type="date" [(ngModel)]="dateFrom" (ngModelChange)="loadReport()"
-                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60 [color-scheme:dark]">
+                 class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60 [color-scheme:dark]">
         </div>
 
         <div>
-          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-2">To</label>
+          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-2">To</label>
           <input type="date" [(ngModel)]="dateTo" (ngModelChange)="loadReport()"
-                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60 [color-scheme:dark]">
+                 class="w-full bg-deep border border-rim-2 text-ink rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60 [color-scheme:dark]">
         </div>
       </div>
 
       <!-- Export -->
-      <div class="flex items-center gap-3 mt-4 pt-4 border-t border-navy-700">
-        <span class="text-cream-300/50 text-xs uppercase tracking-widest mr-1">Export</span>
+      <div class="flex items-center gap-3 mt-4 pt-4 border-t border-rim">
+        <span class="text-ink-2/50 text-xs uppercase tracking-widest mr-1">Export</span>
         <button (click)="exportReport('pdf')" [disabled]="exporting()"
                 class="flex items-center gap-2 px-4 py-2 text-xs border border-red-400/30 text-red-400 hover:bg-red-400 hover:text-navy-900 rounded transition-colors disabled:opacity-40 cursor-pointer">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,19 +64,19 @@
           Excel
         </button>
         @if (exporting()) {
-          <span class="text-cream-300/40 text-xs animate-pulse">Preparing download...</span>
+          <span class="text-ink-2/40 text-xs animate-pulse">Preparing download...</span>
         }
       </div>
     </div>
 
     <!-- Tabs -->
-    <div class="flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
+    <div class="flex gap-1 bg-surface border border-rim rounded-xl p-1 w-fit">
       @for (tab of [['occupancy','Occupancy'],['revenue','Revenue'],['demographics','Demographics']]; track tab[0]) {
         <button (click)="setTab($any(tab[0]))"
                 class="cursor-pointer"
                 [class]="activeTab() === tab[0]
                   ? 'px-5 py-2 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
-                  : 'px-5 py-2 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+                  : 'px-5 py-2 rounded-lg text-sm text-ink-2/60 hover:text-ink transition-all'">
           {{ tab[1] }}
         </button>
       }
@@ -87,32 +87,32 @@
     }
 
     @if (loading()) {
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6">
-        <div class="h-72 bg-navy-700/50 animate-pulse rounded-lg"></div>
+      <div class="bg-surface border border-rim rounded-xl p-6">
+        <div class="h-72 bg-raised/50 animate-pulse rounded-lg"></div>
       </div>
     }
 
     <!-- Occupancy Tab -->
     @if (!loading() && activeTab() === 'occupancy') {
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-navy-800 border border-navy-700 rounded-xl p-5">
-          <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-2">Avg Occupancy</p>
+        <div class="bg-surface border border-rim rounded-xl p-5">
+          <p class="text-xs uppercase tracking-widest text-ink-2/50 mb-2">Avg Occupancy</p>
           <p class="font-serif text-3xl text-gold-400">{{ avgOccupancy }}%</p>
         </div>
-        <div class="bg-navy-800 border border-navy-700 rounded-xl p-5">
-          <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-2">Data Points</p>
-          <p class="font-serif text-3xl text-cream-200">{{ occupancyData().length }}</p>
+        <div class="bg-surface border border-rim rounded-xl p-5">
+          <p class="text-xs uppercase tracking-widest text-ink-2/50 mb-2">Data Points</p>
+          <p class="font-serif text-3xl text-ink">{{ occupancyData().length }}</p>
         </div>
-        <div class="bg-navy-800 border border-navy-700 rounded-xl p-5">
-          <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-2">Period</p>
-          <p class="font-serif text-3xl text-cream-200 capitalize">{{ selectedPeriod }}</p>
+        <div class="bg-surface border border-rim rounded-xl p-5">
+          <p class="text-xs uppercase tracking-widest text-ink-2/50 mb-2">Period</p>
+          <p class="font-serif text-3xl text-ink capitalize">{{ selectedPeriod }}</p>
         </div>
       </div>
 
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6">
-        <h2 class="font-serif text-lg text-cream-200 mb-6">Occupancy Rate Over Time</h2>
+      <div class="bg-surface border border-rim rounded-xl p-6">
+        <h2 class="font-serif text-lg text-ink mb-6">Occupancy Rate Over Time</h2>
         @if (occupancyData().length === 0) {
-          <div class="h-72 flex items-center justify-center text-cream-300/40 text-sm">No data for the selected range.</div>
+          <div class="h-72 flex items-center justify-center text-ink-2/40 text-sm">No data for the selected range.</div>
         } @else {
           <div class="h-72">
             <canvas baseChart [data]="occupancyChartData()" [options]="occupancyChartOptions" type="bar"></canvas>
@@ -124,24 +124,24 @@
     <!-- Revenue Tab -->
     @if (!loading() && activeTab() === 'revenue') {
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-navy-800 border border-navy-700 rounded-xl p-5">
-          <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-2">Total Revenue</p>
+        <div class="bg-surface border border-rim rounded-xl p-5">
+          <p class="text-xs uppercase tracking-widest text-ink-2/50 mb-2">Total Revenue</p>
           <p class="font-serif text-3xl text-green-400">{{ formatCurrency(totalRevenue) }}</p>
         </div>
-        <div class="bg-navy-800 border border-navy-700 rounded-xl p-5">
-          <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-2">Total Bookings</p>
+        <div class="bg-surface border border-rim rounded-xl p-5">
+          <p class="text-xs uppercase tracking-widest text-ink-2/50 mb-2">Total Bookings</p>
           <p class="font-serif text-3xl text-blue-400">{{ totalBookings }}</p>
         </div>
-        <div class="bg-navy-800 border border-navy-700 rounded-xl p-5">
-          <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-2">Avg / Booking</p>
-          <p class="font-serif text-3xl text-cream-200">{{ totalBookings ? formatCurrency(totalRevenue / totalBookings) : '—' }}</p>
+        <div class="bg-surface border border-rim rounded-xl p-5">
+          <p class="text-xs uppercase tracking-widest text-ink-2/50 mb-2">Avg / Booking</p>
+          <p class="font-serif text-3xl text-ink">{{ totalBookings ? formatCurrency(totalRevenue / totalBookings) : '—' }}</p>
         </div>
       </div>
 
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6">
-        <h2 class="font-serif text-lg text-cream-200 mb-6">Revenue & Bookings Over Time</h2>
+      <div class="bg-surface border border-rim rounded-xl p-6">
+        <h2 class="font-serif text-lg text-ink mb-6">Revenue & Bookings Over Time</h2>
         @if (revenueData().length === 0) {
-          <div class="h-72 flex items-center justify-center text-cream-300/40 text-sm">No data for the selected range.</div>
+          <div class="h-72 flex items-center justify-center text-ink-2/40 text-sm">No data for the selected range.</div>
         } @else {
           <div class="h-72">
             <canvas baseChart [data]="revenueChartData()" [options]="revenueChartOptions" type="line"></canvas>
@@ -150,27 +150,27 @@
       </div>
 
       @if (revenueData().length > 0) {
-        <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
-          <div class="px-6 py-4 border-b border-navy-700">
-            <h2 class="font-serif text-lg text-cream-200">Revenue Breakdown</h2>
+        <div class="bg-surface border border-rim rounded-xl overflow-hidden">
+          <div class="px-6 py-4 border-b border-rim">
+            <h2 class="font-serif text-lg text-ink">Revenue Breakdown</h2>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
-                <tr class="border-b border-navy-700">
-                  <th class="px-6 py-3 text-left text-cream-300/50 text-xs uppercase tracking-widest font-normal">Period</th>
-                  <th class="px-6 py-3 text-right text-cream-300/50 text-xs uppercase tracking-widest font-normal">Revenue</th>
-                  <th class="px-6 py-3 text-right text-cream-300/50 text-xs uppercase tracking-widest font-normal">Bookings</th>
-                  <th class="px-6 py-3 text-right text-cream-300/50 text-xs uppercase tracking-widest font-normal">Avg / Booking</th>
+                <tr class="border-b border-rim">
+                  <th class="px-6 py-3 text-left text-ink-2/50 text-xs uppercase tracking-widest font-normal">Period</th>
+                  <th class="px-6 py-3 text-right text-ink-2/50 text-xs uppercase tracking-widest font-normal">Revenue</th>
+                  <th class="px-6 py-3 text-right text-ink-2/50 text-xs uppercase tracking-widest font-normal">Bookings</th>
+                  <th class="px-6 py-3 text-right text-ink-2/50 text-xs uppercase tracking-widest font-normal">Avg / Booking</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-navy-700/50">
+              <tbody class="divide-y divide-rim/50">
                 @for (row of revenueData(); track row.period) {
-                  <tr class="hover:bg-navy-700/20 transition-colors">
-                    <td class="px-6 py-3 text-cream-200">{{ row.period }}</td>
+                  <tr class="hover:bg-raised/20 transition-colors">
+                    <td class="px-6 py-3 text-ink">{{ row.period }}</td>
                     <td class="px-6 py-3 text-right text-green-400 font-medium">{{ formatCurrency(row.revenue) }}</td>
                     <td class="px-6 py-3 text-right text-blue-400">{{ row.bookingCount }}</td>
-                    <td class="px-6 py-3 text-right text-cream-300/60">{{ row.bookingCount ? formatCurrency(row.revenue / row.bookingCount) : '—' }}</td>
+                    <td class="px-6 py-3 text-right text-ink-2/60">{{ row.bookingCount ? formatCurrency(row.revenue / row.bookingCount) : '—' }}</td>
                   </tr>
                 }
               </tbody>
@@ -183,10 +183,10 @@
     <!-- Demographics Tab -->
     @if (!loading() && activeTab() === 'demographics') {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-navy-800 border border-navy-700 rounded-xl p-6">
-          <h2 class="font-serif text-lg text-cream-200 mb-6">Guest Distribution</h2>
+        <div class="bg-surface border border-rim rounded-xl p-6">
+          <h2 class="font-serif text-lg text-ink mb-6">Guest Distribution</h2>
           @if (demographicsData().length === 0) {
-            <div class="h-64 flex items-center justify-center text-cream-300/40 text-sm">No data available.</div>
+            <div class="h-64 flex items-center justify-center text-ink-2/40 text-sm">No data available.</div>
           } @else {
             <div class="h-64">
               <canvas baseChart [data]="demographicsChartData()" [options]="demographicsChartOptions" type="doughnut"></canvas>
@@ -194,19 +194,19 @@
           }
         </div>
 
-        <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
-          <div class="px-6 py-4 border-b border-navy-700">
-            <h2 class="font-serif text-lg text-cream-200">Breakdown</h2>
+        <div class="bg-surface border border-rim rounded-xl overflow-hidden">
+          <div class="px-6 py-4 border-b border-rim">
+            <h2 class="font-serif text-lg text-ink">Breakdown</h2>
           </div>
           @if (demographicsData().length === 0) {
-            <div class="p-8 text-center text-cream-300/40 text-sm">No data available.</div>
+            <div class="p-8 text-center text-ink-2/40 text-sm">No data available.</div>
           } @else {
-            <div class="divide-y divide-navy-700/50">
+            <div class="divide-y divide-rim/50">
               @for (item of demographicsData(); track item.label) {
                 <div class="px-6 py-4 flex items-center justify-between">
-                  <span class="text-cream-200 text-sm">{{ item.label }}</span>
+                  <span class="text-ink text-sm">{{ item.label }}</span>
                   <div class="flex items-center gap-4">
-                    <span class="text-cream-300/60 text-sm">{{ item.value }}</span>
+                    <span class="text-ink-2/60 text-sm">{{ item.value }}</span>
                     <span class="text-gold-400 text-sm font-medium w-12 text-right">{{ item.percentage }}%</span>
                   </div>
                 </div>

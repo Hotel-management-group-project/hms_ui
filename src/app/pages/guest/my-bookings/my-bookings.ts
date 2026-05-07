@@ -171,8 +171,8 @@ export class MyBookingsComponent implements OnInit {
       Confirmed:  'text-green-400 bg-green-400/10 border-green-400/25',
       Pending:    'text-amber-400 bg-amber-400/10 border-amber-400/25',
       CheckedIn:  'text-blue-400 bg-blue-400/10 border-blue-400/25',
-      CheckedOut: 'text-cream-300 bg-navy-700 border-navy-600',
+      CheckedOut: 'text-ink-2 bg-raised border-rim-2',
       Cancelled:  'text-red-400 bg-red-400/10 border-red-400/25',
-    }[status] ?? 'text-cream-300 bg-navy-700 border-navy-600';
+    }[status] ?? 'text-ink-2 bg-raised border-rim-2';
   }
 }

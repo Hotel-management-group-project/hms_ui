@@ -2,7 +2,7 @@
 <div class="fixed bottom-6 right-5 z-[200] flex flex-col gap-2.5 items-end pointer-events-none">
   @for (toast of toastService.toasts(); track toast.id) {
     <div class="flex items-center gap-3 pl-4 pr-3 py-3.5 rounded-lg pointer-events-auto animate-slide-up
-                bg-navy-900/95 backdrop-blur-md border border-navy-700/60 border-l-2
+                bg-deep/95 backdrop-blur-md border border-rim/60 border-l-2
                 shadow-[0_8px_40px_rgba(0,0,0,0.45)] min-w-[240px] max-w-[320px]"
          [class]="accentClass(toast.type)">
 
@@ -13,11 +13,11 @@
       </svg>
 
       <!-- Message -->
-      <p class="text-sm text-cream-200 flex-1 leading-snug">{{ toast.message }}</p>
+      <p class="text-sm text-ink flex-1 leading-snug">{{ toast.message }}</p>
 
       <!-- Dismiss -->
       <button (click)="toastService.dismiss(toast.id)"
-              class="shrink-0 ml-1 text-cream-300/25 hover:text-cream-300/70 transition-colors cursor-pointer">
+              class="shrink-0 ml-1 text-ink-2/25 hover:text-ink-2/70 transition-colors cursor-pointer">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
         </svg>

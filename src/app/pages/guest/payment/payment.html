@@ -4,28 +4,28 @@
     <div class="flex items-center justify-center min-h-[50vh]">
       <div class="animate-pulse flex flex-col items-center">
         <div class="w-12 h-12 border-t-2 border-gold-400 rounded-full animate-spin"></div>
-        <p class="text-cream-300 mt-4 font-serif">Loading secure payment...</p>
+        <p class="text-ink-2 mt-4 font-serif">Loading secure payment...</p>
       </div>
     </div>
   } @else if (booking(); as b) {
     <div class="max-w-4xl mx-auto animate-fade-in">
       <div class="text-center mb-12 space-y-4">
-        <h1 class="font-serif text-3xl md:text-4xl text-cream-200">Secure Checkout</h1>
-        <p class="text-cream-300/60 uppercase tracking-widest text-sm">Booking Ref: <span class="text-gold-400">{{ b.referenceNumber }}</span></p>
+        <h1 class="font-serif text-3xl md:text-4xl text-ink">Secure Checkout</h1>
+        <p class="text-ink-2/60 uppercase tracking-widest text-sm">Booking Ref: <span class="text-gold-400">{{ b.referenceNumber }}</span></p>
       </div>
 
       <div class="flex flex-col lg:flex-row gap-8">
         <!-- Payment Form -->
         <div class="flex-1">
-          <form [formGroup]="form" (ngSubmit)="processPayment()" class="card bg-navy-800 border-navy-700 p-8 shadow-2xl relative overflow-hidden">
+          <form [formGroup]="form" (ngSubmit)="processPayment()" class="card bg-surface border-rim p-8 shadow-2xl relative overflow-hidden">
             
             <div class="mb-8">
-              <h2 class="font-serif text-xl text-cream-200 mb-2">Payment Details</h2>
-              <p class="text-sm text-cream-300/60">All transactions are secure and encrypted.</p>
+              <h2 class="font-serif text-xl text-ink mb-2">Payment Details</h2>
+              <p class="text-sm text-ink-2/60">All transactions are secure and encrypted.</p>
             </div>
 
             <!-- Mock Card Visual -->
-            <div class="w-full max-w-sm mx-auto h-48 bg-gradient-to-br from-navy-600 to-navy-900 rounded-xl p-6 shadow-xl mb-8 relative border border-navy-500 overflow-hidden group">
+            <div class="w-full max-w-sm mx-auto h-48 bg-gradient-to-br from-navy-600 to-navy-900 rounded-xl p-6 shadow-xl mb-8 relative border border-rim-2 overflow-hidden group">
               <div class="absolute inset-0 bg-gold-400/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <div class="flex justify-between items-center mb-8 relative z-10">
                 <svg class="w-10 h-10 text-gold-400/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -36,10 +36,10 @@
                   <div class="w-6 h-6 rounded-full bg-yellow-500/80 mix-blend-screen -ml-3"></div>
                 </div>
               </div>
-              <div class="font-mono text-xl tracking-widest text-cream-200 mb-4 relative z-10">
+              <div class="font-mono text-xl tracking-widest text-ink mb-4 relative z-10">
                 {{ form.value.cardNumber || '•••• •••• •••• ••••' }}
               </div>
-              <div class="flex justify-between text-sm uppercase tracking-wider text-cream-300/80 relative z-10">
+              <div class="flex justify-between text-sm uppercase tracking-wider text-ink-2/80 relative z-10">
                 <span>{{ form.value.cardName || 'YOUR NAME' }}</span>
                 <span>{{ form.value.expiry || 'MM/YY' }}</span>
               </div>
@@ -48,13 +48,13 @@
             <!-- Fields -->
             <div class="space-y-6">
               <div>
-                <label class="label text-cream-300">Name on Card</label>
+                <label class="label text-ink-2">Name on Card</label>
                 <input type="text" formControlName="cardName" class="input font-mono" placeholder="JOHN DOE"
                        [class.border-red-500]="form.controls.cardName.touched && form.controls.cardName.invalid">
               </div>
               
               <div>
-                <label class="label text-cream-300">Card Number</label>
+                <label class="label text-ink-2">Card Number</label>
                 <input type="text" formControlName="cardNumber" class="input font-mono" placeholder="0000 0000 0000 0000" maxlength="19"
                        (input)="formatCardNumber($event)"
                        [class.border-red-500]="form.controls.cardNumber.touched && form.controls.cardNumber.invalid">
@@ -62,13 +62,13 @@
 
               <div class="grid grid-cols-2 gap-6">
                 <div>
-                  <label class="label text-cream-300">Expiry</label>
+                  <label class="label text-ink-2">Expiry</label>
                   <input type="text" formControlName="expiry" class="input font-mono" placeholder="MM/YY" maxlength="5"
                          (input)="formatExpiry($event)"
                          [class.border-red-500]="form.controls.expiry.touched && form.controls.expiry.invalid">
                 </div>
                 <div>
-                  <label class="label text-cream-300">CVV</label>
+                  <label class="label text-ink-2">CVV</label>
                   <input type="password" formControlName="cvv" class="input font-mono" placeholder="•••" maxlength="4"
                          [class.border-red-500]="form.controls.cvv.touched && form.controls.cvv.invalid">
                 </div>
@@ -98,13 +98,13 @@
 
         <!-- Summary -->
         <div class="w-full lg:w-72 shrink-0">
-          <div class="card p-6 bg-navy-800 border-navy-700">
-            <h3 class="font-serif text-xl text-cream-200 mb-4 pb-4 border-b border-navy-700">Total Due</h3>
+          <div class="card p-6 bg-surface border-rim">
+            <h3 class="font-serif text-xl text-ink mb-4 pb-4 border-b border-rim">Total Due</h3>
             <div class="flex justify-between items-end mb-2">
-              <span class="text-cream-300/80">Total</span>
+              <span class="text-ink-2/80">Total</span>
               <span class="text-3xl font-serif text-gold-400">£{{ b.totalPrice }}</span>
             </div>
-            <p class="text-xs text-cream-300/40 text-right">Includes all taxes & fees</p>
+            <p class="text-xs text-ink-2/40 text-right">Includes all taxes & fees</p>
           </div>
         </div>
 

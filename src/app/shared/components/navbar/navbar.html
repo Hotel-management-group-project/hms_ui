@@ -1,5 +1,5 @@
 <!-- Navbar: glass morphism, role-aware, dark mode toggle -->
-<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-navy-900/80 border-b border-white/10 transition-all duration-300">
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-deep/80 border-b border-white/10 transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
 
@@ -10,7 +10,7 @@
         </div>
         <div>
           <span class="font-serif text-lg text-gold-400 tracking-wider leading-none block">HMS</span>
-          <span class="text-cream-300/40 text-[9px] tracking-[0.2em] uppercase leading-none block">Hotels</span>
+          <span class="text-ink-2/40 text-[9px] tracking-[0.2em] uppercase leading-none block">Hotels</span>
         </div>
       </a>
 
@@ -18,7 +18,7 @@
       <div class="hidden md:flex items-center gap-1">
         @for (link of navLinks(); track link.path) {
           <a [routerLink]="link.path" routerLinkActive="text-gold-400"
-             class="nav-link px-3 py-2 text-sm text-cream-300/70 hover:text-cream-100 rounded-md hover:bg-white/5 transition-all duration-200 cursor-pointer">
+             class="nav-link px-3 py-2 text-sm text-ink-2/70 hover:text-ink rounded-md hover:bg-white/5 transition-all duration-200 cursor-pointer">
             {{ link.label }}
           </a>
         }
@@ -30,19 +30,19 @@
         @if (auth.isAuthenticated()) {
           <!-- User name + role badge -->
           <div class="flex items-center gap-2">
-            <span class="text-cream-200 text-sm font-medium">{{ userDisplayName() }}</span>
+            <span class="text-ink text-sm font-medium">{{ userDisplayName() }}</span>
             <span class="text-xs px-1.5 py-0.5 rounded border" [class]="roleBadgeClass()">
               {{ roleLabel() }}
             </span>
           </div>
 
           <!-- Divider -->
-          <div class="h-4 w-px bg-navy-600"></div>
+          <div class="h-4 w-px bg-raised"></div>
         }
 
         <!-- Dark mode toggle -->
         <button (click)="theme.toggle()" aria-label="Toggle dark mode"
-                class="w-8 h-8 flex items-center justify-center rounded-md text-cream-300/60 hover:text-gold-400 hover:bg-white/5 transition-all duration-200 cursor-pointer">
+                class="w-8 h-8 flex items-center justify-center rounded-md text-ink-2/60 hover:text-gold-400 hover:bg-white/5 transition-all duration-200 cursor-pointer">
           @if (theme.isDark()) {
             <!-- Sun icon -->
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@
         @if (auth.isAuthenticated()) {
           <!-- Logout -->
           <button (click)="logout()"
-                  class="flex items-center gap-1.5 px-3 py-1.5 text-xs text-cream-300/60 hover:text-red-400 border border-navy-600 hover:border-red-400/30 rounded-md transition-all duration-200 cursor-pointer">
+                  class="flex items-center gap-1.5 px-3 py-1.5 text-xs text-ink-2/60 hover:text-red-400 border border-rim-2 hover:border-red-400/30 rounded-md transition-all duration-200 cursor-pointer">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
             </svg>
@@ -68,7 +68,7 @@
         } @else {
           <!-- Auth buttons for public users -->
           <a routerLink="/auth/login"
-             class="px-3 py-1.5 text-xs text-cream-300/70 hover:text-cream-100 border border-navy-600 hover:border-navy-500 rounded-md transition-all duration-200 cursor-pointer">
+             class="px-3 py-1.5 text-xs text-ink-2/70 hover:text-ink border border-rim-2 hover:border-rim-2 rounded-md transition-all duration-200 cursor-pointer">
             Sign In
           </a>
           <a routerLink="/auth/register"
@@ -81,7 +81,7 @@
       <!-- Mobile: theme toggle + hamburger -->
       <div class="md:hidden flex items-center gap-2">
         <button (click)="theme.toggle()" aria-label="Toggle dark mode"
-                class="w-8 h-8 flex items-center justify-center rounded-md text-cream-300/60 hover:text-gold-400 transition-colors cursor-pointer">
+                class="w-8 h-8 flex items-center justify-center rounded-md text-ink-2/60 hover:text-gold-400 transition-colors cursor-pointer">
           @if (theme.isDark()) {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -94,7 +94,7 @@
         </button>
 
         <button (click)="toggleMenu()" aria-label="Toggle menu"
-                class="w-9 h-9 flex items-center justify-center rounded-md text-cream-300/70 hover:text-cream-100 hover:bg-white/5 transition-all cursor-pointer">
+                class="w-9 h-9 flex items-center justify-center rounded-md text-ink-2/70 hover:text-ink hover:bg-white/5 transition-all cursor-pointer">
           @if (menuOpen()) {
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -111,29 +111,29 @@
 
   <!-- Mobile drawer -->
   @if (menuOpen()) {
-    <div class="md:hidden border-t border-white/10 bg-navy-900/95 backdrop-blur-md animate-fade-in">
+    <div class="md:hidden border-t border-white/10 bg-deep/95 backdrop-blur-md animate-fade-in">
       <div class="max-w-7xl mx-auto px-4 py-4 space-y-1">
 
         @for (link of navLinks(); track link.path) {
           <a [routerLink]="link.path" routerLinkActive="text-gold-400 bg-gold-400/5"
              (click)="closeMenu()"
-             class="flex items-center px-3 py-2.5 text-sm text-cream-300/70 hover:text-cream-100 hover:bg-white/5 rounded-md transition-all cursor-pointer">
+             class="flex items-center px-3 py-2.5 text-sm text-ink-2/70 hover:text-ink hover:bg-white/5 rounded-md transition-all cursor-pointer">
             {{ link.label }}
           </a>
         }
 
-        <div class="pt-3 border-t border-navy-700 mt-3 space-y-2">
+        <div class="pt-3 border-t border-rim mt-3 space-y-2">
           @if (auth.isAuthenticated()) {
             <!-- User info -->
             <div class="flex items-center gap-2 px-3 py-2">
-              <div class="w-7 h-7 rounded-full bg-navy-700 border border-navy-600 flex items-center justify-center">
-                <span class="text-xs font-medium text-cream-300/70">
+              <div class="w-7 h-7 rounded-full bg-raised border border-rim-2 flex items-center justify-center">
+                <span class="text-xs font-medium text-ink-2/70">
                   {{ auth.currentUser()?.firstName?.[0] }}{{ auth.currentUser()?.lastName?.[0] }}
                 </span>
               </div>
               <div>
-                <p class="text-cream-200 text-sm font-medium leading-tight">{{ userDisplayName() }}</p>
-                <p class="text-cream-300/40 text-xs">{{ roleLabel() }}</p>
+                <p class="text-ink text-sm font-medium leading-tight">{{ userDisplayName() }}</p>
+                <p class="text-ink-2/40 text-xs">{{ roleLabel() }}</p>
               </div>
             </div>
             <!-- Logout -->
@@ -146,7 +146,7 @@
             </button>
           } @else {
             <a routerLink="/auth/login" (click)="closeMenu()"
-               class="flex items-center justify-center px-4 py-2.5 text-sm border border-navy-600 text-cream-300/70 rounded-md hover:border-navy-500 transition-colors cursor-pointer">
+               class="flex items-center justify-center px-4 py-2.5 text-sm border border-rim-2 text-ink-2/70 rounded-md hover:border-rim-2 transition-colors cursor-pointer">
               Sign In
             </a>
             <a routerLink="/auth/register" (click)="closeMenu()"

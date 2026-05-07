@@ -185,6 +185,6 @@ export class CheckInComponent implements OnInit {
       CheckedIn:  'text-green-400 border-green-400/20 bg-green-400/10',
       Pending:    'text-amber-400 border-amber-400/20 bg-amber-400/10',
       Cancelled:  'text-red-400 border-red-400/20 bg-red-400/10',
-    }[status] ?? 'text-cream-300 border-navy-600 bg-navy-700';
+    }[status] ?? 'text-ink-2 border-rim-2 bg-raised';
   }
 }

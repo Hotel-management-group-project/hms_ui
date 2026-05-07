@@ -2,7 +2,7 @@
 <div class="min-h-screen flex">
 
   <!-- Left panel — branding -->
-  <div class="hidden lg:flex lg:w-[45%] xl:w-1/2 flex-col items-center justify-center relative overflow-hidden bg-gradient-luxury px-12">
+  <div class="hidden lg:flex lg:w-[45%] xl:w-1/2 flex-col items-center justify-center relative overflow-hidden bg-luxury px-12">
     <!-- Decorative background rings -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-gold-400/10"></div>
@@ -16,19 +16,19 @@
         <span class="font-serif text-6xl xl:text-7xl tracking-[0.15em] text-gradient-gold">HMS</span>
       </a>
       <div class="w-24 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
-      <p class="font-serif text-xl text-cream-300/80 italic tracking-wide leading-relaxed max-w-xs">
+      <p class="font-serif text-xl text-ink-2/80 italic tracking-wide leading-relaxed max-w-xs">
         Where every arrival<br>feels like coming home.
       </p>
     </div>
 
     <!-- Bottom quote -->
-    <p class="absolute bottom-10 text-center text-cream-300/30 text-xs tracking-[0.2em] uppercase gsap-reveal">
+    <p class="absolute bottom-10 text-center text-ink-2/30 text-xs tracking-[0.2em] uppercase gsap-reveal">
       Advanced Software Development · UWE Bristol
     </p>
   </div>
 
   <!-- Right panel — form -->
-  <div class="flex-1 flex flex-col items-center justify-center px-6 sm:px-12 py-16 bg-navy-800">
+  <div class="flex-1 flex flex-col items-center justify-center px-6 sm:px-12 py-16 bg-surface">
 
     <!-- Mobile logo -->
     <div class="lg:hidden mb-8 text-center gsap-reveal">
@@ -42,7 +42,7 @@
       <!-- Heading -->
       <div class="space-y-2 gsap-reveal">
         <p class="text-gold-400 text-xs tracking-[0.3em] uppercase font-semibold">Welcome Back</p>
-        <h1 class="font-serif text-4xl text-cream-100">Sign In</h1>
+        <h1 class="font-serif text-4xl text-ink">Sign In</h1>
         <div class="w-10 h-px bg-gradient-to-r from-gold-400 to-transparent mt-3"></div>
       </div>
 
@@ -55,7 +55,7 @@
       >
         <!-- Email -->
         <div class="gsap-reveal">
-          <label for="login-email" class="label text-cream-300">Email address</label>
+          <label for="login-email" class="label text-ink-2">Email address</label>
           <input
             id="login-email"
             type="email"
@@ -75,7 +75,7 @@
 
         <!-- Password -->
         <div class="gsap-reveal">
-          <label for="login-password" class="label text-cream-300">Password</label>
+          <label for="login-password" class="label text-ink-2">Password</label>
           <div class="relative">
             <input
               id="login-password"
@@ -89,7 +89,7 @@
             <button
               type="button"
               (click)="togglePassword()"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-cream-300/40 hover:text-cream-300/70 transition-colors"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-2/40 hover:text-ink-2/70 transition-colors"
               [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
             >
               @if (showPassword()) {
@@ -136,7 +136,7 @@
         </div>
 
         <!-- Register link -->
-        <p class="text-center text-cream-300/50 text-sm gsap-reveal">
+        <p class="text-center text-ink-2/50 text-sm gsap-reveal">
           No account?
           <a routerLink="/auth/register" class="text-gold-400 hover:text-gold-300 transition-colors ml-1">Register here</a>
         </p>

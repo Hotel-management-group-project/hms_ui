@@ -5,7 +5,7 @@
     @if (loading()) {
       <div class="flex flex-col items-center justify-center py-32 gap-4">
         <div class="w-10 h-10 border-t-2 border-gold-400 rounded-full animate-spin"></div>
-        <p class="text-cream-300/40 text-sm">Loading your confirmation…</p>
+        <p class="text-ink-2/40 text-sm">Loading your confirmation…</p>
       </div>
     } @else if (booking(); as b) {
       <div class="space-y-6 animate-fade-in">
@@ -17,21 +17,21 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           </div>
-          <h1 class="font-serif text-4xl text-cream-200">Booking Confirmed</h1>
-          <p class="text-cream-300/50 text-sm">A confirmation email with your QR code has been sent to you.</p>
+          <h1 class="font-serif text-4xl text-ink">Booking Confirmed</h1>
+          <p class="text-ink-2/50 text-sm">A confirmation email with your QR code has been sent to you.</p>
         </div>
 
         <!-- Receipt Card -->
-        <div class="bg-navy-800 border border-navy-700 rounded-2xl overflow-hidden shadow-2xl">
+        <div class="bg-surface border border-rim rounded-2xl overflow-hidden shadow-2xl">
 
           <!-- Gold top stripe -->
           <div class="h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent"></div>
 
           <!-- Reference + Hotel -->
-          <div class="px-8 py-7 border-b border-navy-700 space-y-4">
+          <div class="px-8 py-7 border-b border-rim space-y-4">
             <div class="flex items-start justify-between gap-4 flex-wrap">
               <div>
-                <p class="text-xs uppercase tracking-widest text-cream-300/40 mb-1">Booking Reference</p>
+                <p class="text-xs uppercase tracking-widest text-ink-2/40 mb-1">Booking Reference</p>
                 <p class="font-mono text-2xl md:text-3xl tracking-widest text-gold-400">{{ b.referenceNumber }}</p>
               </div>
               <span class="text-xs px-3 py-1 rounded-full border text-green-400 border-green-400/30 bg-green-400/10 font-medium self-start mt-1">
@@ -47,49 +47,49 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="text-cream-200 font-medium">{{ h.name }}</p>
-                  <p class="text-cream-300/40 text-sm">{{ h.address }}</p>
+                  <p class="text-ink font-medium">{{ h.name }}</p>
+                  <p class="text-ink-2/40 text-sm">{{ h.address }}</p>
                 </div>
               </div>
             }
           </div>
 
           <!-- Dates -->
-          <div class="grid grid-cols-3 divide-x divide-navy-700 border-b border-navy-700">
+          <div class="grid grid-cols-3 divide-x divide-rim border-b border-rim">
             <div class="px-6 py-5 text-center">
-              <p class="text-xs uppercase tracking-widest text-cream-300/40 mb-2">Check-in</p>
-              <p class="text-cream-200 font-medium">{{ b.checkInDate | date:'EEE, d MMM yyyy' }}</p>
-              <p class="text-cream-300/30 text-xs mt-0.5">From 3:00 PM</p>
+              <p class="text-xs uppercase tracking-widest text-ink-2/40 mb-2">Check-in</p>
+              <p class="text-ink font-medium">{{ b.checkInDate | date:'EEE, d MMM yyyy' }}</p>
+              <p class="text-ink-2/30 text-xs mt-0.5">From 3:00 PM</p>
             </div>
             <div class="px-6 py-5 text-center">
-              <p class="text-xs uppercase tracking-widest text-cream-300/40 mb-2">Duration</p>
-              <p class="text-cream-200 font-medium">{{ nights }} night{{ nights !== 1 ? 's' : '' }}</p>
+              <p class="text-xs uppercase tracking-widest text-ink-2/40 mb-2">Duration</p>
+              <p class="text-ink font-medium">{{ nights }} night{{ nights !== 1 ? 's' : '' }}</p>
             </div>
             <div class="px-6 py-5 text-center">
-              <p class="text-xs uppercase tracking-widest text-cream-300/40 mb-2">Check-out</p>
-              <p class="text-cream-200 font-medium">{{ b.checkOutDate | date:'EEE, d MMM yyyy' }}</p>
-              <p class="text-cream-300/30 text-xs mt-0.5">By 11:00 AM</p>
+              <p class="text-xs uppercase tracking-widest text-ink-2/40 mb-2">Check-out</p>
+              <p class="text-ink font-medium">{{ b.checkOutDate | date:'EEE, d MMM yyyy' }}</p>
+              <p class="text-ink-2/30 text-xs mt-0.5">By 11:00 AM</p>
             </div>
           </div>
 
           <!-- Rooms -->
           @if (b.rooms && b.rooms.length > 0) {
-            <div class="px-8 py-5 border-b border-navy-700">
-              <p class="text-xs uppercase tracking-widest text-cream-300/40 mb-4">
+            <div class="px-8 py-5 border-b border-rim">
+              <p class="text-xs uppercase tracking-widest text-ink-2/40 mb-4">
                 Room{{ b.rooms.length > 1 ? 's' : '' }}
               </p>
               <div class="space-y-3">
                 @for (room of b.rooms; track room.id) {
                   <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-lg bg-navy-700 flex items-center justify-center shrink-0">
-                        <svg class="w-3.5 h-3.5 text-cream-300/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div class="w-8 h-8 rounded-lg bg-raised flex items-center justify-center shrink-0">
+                        <svg class="w-3.5 h-3.5 text-ink-2/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
                       </div>
                       <div>
-                        <p class="text-cream-200 text-sm font-medium">Room {{ room.roomNumber }} — {{ room.type }}</p>
-                        <p class="text-cream-300/40 text-xs">Floor {{ room.floor }} · Up to {{ room.capacity }} guests</p>
+                        <p class="text-ink text-sm font-medium">Room {{ room.roomNumber }} — {{ room.type }}</p>
+                        <p class="text-ink-2/40 text-xs">Floor {{ room.floor }} · Up to {{ room.capacity }} guests</p>
                       </div>
                     </div>
                   </div>
@@ -100,21 +100,21 @@
 
           <!-- Ancillary Services -->
           @if (b.ancillaryServices && b.ancillaryServices.length > 0) {
-            <div class="px-8 py-5 border-b border-navy-700">
-              <p class="text-xs uppercase tracking-widest text-cream-300/40 mb-4">Add-on Services</p>
+            <div class="px-8 py-5 border-b border-rim">
+              <p class="text-xs uppercase tracking-widest text-ink-2/40 mb-4">Add-on Services</p>
               <div class="space-y-2.5">
                 @for (svc of b.ancillaryServices; track svc.id) {
                   <div class="flex items-center justify-between text-sm">
-                    <div class="flex items-center gap-2 text-cream-300/70">
+                    <div class="flex items-center gap-2 text-ink-2/70">
                       <svg class="w-3.5 h-3.5 text-gold-400/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                       </svg>
                       <span>{{ svc.service?.name ?? 'Service' }}</span>
                       @if (svc.quantity > 1) {
-                        <span class="text-cream-300/30">× {{ svc.quantity }}</span>
+                        <span class="text-ink-2/30">× {{ svc.quantity }}</span>
                       }
                     </div>
-                    <span class="text-cream-200 font-medium">{{ svc.totalPrice | currency:'GBP':'symbol':'1.2-2' }}</span>
+                    <span class="text-ink font-medium">{{ svc.totalPrice | currency:'GBP':'symbol':'1.2-2' }}</span>
                   </div>
                 }
               </div>
@@ -122,19 +122,19 @@
           }
 
           <!-- Total Paid -->
-          <div class="px-8 py-5 border-b border-navy-700 flex items-center justify-between">
-            <p class="text-cream-200 font-semibold">Total Paid</p>
+          <div class="px-8 py-5 border-b border-rim flex items-center justify-between">
+            <p class="text-ink font-semibold">Total Paid</p>
             <p class="font-serif text-2xl text-gold-400">{{ b.totalPrice | currency:'GBP':'symbol':'1.2-2' }}</p>
           </div>
 
           <!-- QR Code -->
           @if (qrCodeUrl()) {
-            <div class="px-8 py-7 flex flex-col items-center gap-4 border-b border-navy-700">
-              <p class="text-xs uppercase tracking-widest text-cream-300/40">Check-in QR Code</p>
+            <div class="px-8 py-7 flex flex-col items-center gap-4 border-b border-rim">
+              <p class="text-xs uppercase tracking-widest text-ink-2/40">Check-in QR Code</p>
               <div class="bg-white p-4 rounded-xl shadow-lg">
                 <img [src]="qrCodeUrl()" alt="Check-in QR Code" class="w-44 h-44 object-contain">
               </div>
-              <p class="text-cream-300/30 text-xs text-center max-w-xs">
+              <p class="text-ink-2/30 text-xs text-center max-w-xs">
                 Present this code at the front desk for express check-in
               </p>
             </div>
@@ -144,7 +144,7 @@
           <div class="px-8 py-6 flex flex-col sm:flex-row gap-3">
             <button (click)="downloadInvoice()"
                     [disabled]="downloading()"
-                    class="flex-1 flex items-center justify-center gap-2 py-3 border border-navy-600 text-cream-300/70 hover:text-gold-400 hover:border-gold-400/30 rounded-xl text-sm font-medium transition-colors cursor-pointer disabled:opacity-40">
+                    class="flex-1 flex items-center justify-center gap-2 py-3 border border-rim-2 text-ink-2/70 hover:text-gold-400 hover:border-gold-400/30 rounded-xl text-sm font-medium transition-colors cursor-pointer disabled:opacity-40">
               @if (downloading()) {
                 <div class="w-4 h-4 border-t border-current rounded-full animate-spin"></div>
                 Preparing…
@@ -168,14 +168,14 @@
 
         <!-- Back to search -->
         <div class="text-center">
-          <a routerLink="/guest/search" class="text-cream-300/40 hover:text-cream-200 text-sm transition-colors cursor-pointer">
+          <a routerLink="/guest/search" class="text-ink-2/40 hover:text-ink text-sm transition-colors cursor-pointer">
             ← Back to room search
           </a>
         </div>
 
       </div>
     } @else {
-      <div class="text-center py-32 text-cream-300/40">Booking not found.</div>
+      <div class="text-center py-32 text-ink-2/40">Booking not found.</div>
     }
 
   </div>

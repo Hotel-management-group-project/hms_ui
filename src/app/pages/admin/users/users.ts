@@ -207,7 +207,7 @@ export class AdminUsersComponent implements OnInit {
       Admin:     'text-red-400 border-red-400/20 bg-red-400/10',
       Manager:   'text-gold-400 border-gold-400/20 bg-gold-400/10',
       FrontDesk: 'text-blue-400 border-blue-400/20 bg-blue-400/10',
-      Guest:     'text-cream-300/60 border-navy-600 bg-navy-700/50',
+      Guest:     'text-ink-2/60 border-rim-2 bg-raised/50',
     };
     return map[role] ?? map['Guest'];
   }

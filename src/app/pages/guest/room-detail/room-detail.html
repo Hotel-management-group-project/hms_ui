@@ -6,7 +6,7 @@
     <div class="flex items-center justify-center min-h-screen">
       <div class="flex flex-col items-center gap-4">
         <div class="w-10 h-10 border-t-2 border-gold-400 rounded-full animate-spin"></div>
-        <p class="font-serif text-cream-300/60 text-sm tracking-wider">Loading your sanctuary…</p>
+        <p class="font-serif text-ink-2/60 text-sm tracking-wider">Loading your sanctuary…</p>
       </div>
     </div>
   }
@@ -23,14 +23,14 @@
 
       <!-- Overlay content -->
       <div class="absolute inset-0 flex flex-col justify-end px-6 sm:px-10 lg:px-16 pb-10">
-        <a routerLink="/guest/search" class="inline-flex items-center gap-2 text-cream-300/70 hover:text-gold-400 text-sm transition-colors mb-6 w-fit cursor-pointer">
+        <a routerLink="/guest/search" class="inline-flex items-center gap-2 text-ink-2/70 hover:text-gold-400 text-sm transition-colors mb-6 w-fit cursor-pointer">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
           Back to Search
         </a>
         <div class="flex items-center gap-3 mb-3">
-          <span class="bg-navy-900/80 backdrop-blur-sm text-cream-200 text-xs px-3 py-1 rounded-full border border-navy-700/50 tracking-widest uppercase">
+          <span class="bg-deep/80 backdrop-blur-sm text-ink text-xs px-3 py-1 rounded-full border border-rim/50 tracking-widest uppercase">
             Room {{ r.roomNumber }}
           </span>
           <span class="bg-gold-500/90 text-navy-900 text-xs px-3 py-1 rounded-full font-semibold tracking-wider uppercase">
@@ -42,7 +42,7 @@
             </span>
           }
         </div>
-        <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl text-cream-100">{{ r.type }}</h1>
+        <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl text-ink">{{ r.type }}</h1>
       </div>
     </div>
 
@@ -73,53 +73,53 @@
 
           <!-- Room info -->
           <section class="gsap-reveal">
-            <h2 class="font-serif text-2xl text-cream-100 mb-5">About this Room</h2>
-            <p class="text-cream-300/75 leading-relaxed text-sm sm:text-base">{{ r.description }}</p>
+            <h2 class="font-serif text-2xl text-ink mb-5">About this Room</h2>
+            <p class="text-ink-2/75 leading-relaxed text-sm sm:text-base">{{ r.description }}</p>
 
             <!-- Feature chips -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
-              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-xl border border-navy-700">
+              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 <div class="text-sm">
-                  <span class="block text-cream-200 font-medium">Capacity</span>
-                  <span class="text-cream-300/55">Up to {{ r.capacity }}</span>
+                  <span class="block text-ink font-medium">Capacity</span>
+                  <span class="text-ink-2/55">Up to {{ r.capacity }}</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-xl border border-navy-700">
+              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
                 <div class="text-sm">
-                  <span class="block text-cream-200 font-medium">Floor</span>
-                  <span class="text-cream-300/55">Level {{ r.floor }}</span>
+                  <span class="block text-ink font-medium">Floor</span>
+                  <span class="text-ink-2/55">Level {{ r.floor }}</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-xl border border-navy-700">
+              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                 </svg>
                 <div class="text-sm">
-                  <span class="block text-cream-200 font-medium">WiFi</span>
-                  <span class="text-cream-300/55">High Speed</span>
+                  <span class="block text-ink font-medium">WiFi</span>
+                  <span class="text-ink-2/55">High Speed</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-xl border border-navy-700">
+              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
                 </svg>
                 <div class="text-sm">
-                  <span class="block text-cream-200 font-medium">Service</span>
-                  <span class="text-cream-300/55">24 / 7</span>
+                  <span class="block text-ink font-medium">Service</span>
+                  <span class="text-ink-2/55">24 / 7</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-navy-800 p-4 rounded-xl border border-navy-700 col-span-2 sm:col-span-1">
+              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim col-span-2 sm:col-span-1">
                 <div class="flex flex-col text-sm w-full">
-                  <span class="block text-cream-200 font-medium mb-2">Pricing</span>
+                  <span class="block text-ink font-medium mb-2">Pricing</span>
                   <div class="flex justify-between text-xs">
-                    <span class="text-cream-300/55">Off-peak</span>
-                    <span class="text-cream-200">£{{ r.priceOffPeak }}/night</span>
+                    <span class="text-ink-2/55">Off-peak</span>
+                    <span class="text-ink">£{{ r.priceOffPeak }}/night</span>
                   </div>
                   <div class="flex justify-between text-xs mt-1">
                     <span class="text-gold-400">Peak season</span>
@@ -133,22 +133,22 @@
           <!-- Ancillary services -->
           @if (services().length > 0) {
             <section class="gsap-reveal">
-              <h2 class="font-serif text-2xl text-cream-100 mb-2">Enhance Your Stay</h2>
-              <p class="text-cream-300/55 text-sm mb-6">Optional extras added to your booking total.</p>
+              <h2 class="font-serif text-2xl text-ink mb-2">Enhance Your Stay</h2>
+              <p class="text-ink-2/55 text-sm mb-6">Optional extras added to your booking total.</p>
               <div class="space-y-3">
                 @for (svc of services(); track svc.id) {
                   <div
                     (click)="toggleService(svc.id)"
                     class="flex items-start justify-between p-4 rounded-xl border transition-all duration-300 cursor-pointer select-none"
                     [class]="svc.selected
-                      ? 'bg-navy-700/80 border-gold-500/40 shadow-[0_0_12px_rgba(201,168,76,0.08)]'
-                      : 'bg-navy-800/60 border-navy-700 hover:border-navy-600'"
+                      ? 'bg-raised/80 border-gold-500/40 shadow-[0_0_12px_rgba(201,168,76,0.08)]'
+                      : 'bg-surface/60 border-rim hover:border-rim-2'"
                   >
                     <div class="flex items-start gap-4">
                       <!-- Custom checkbox -->
                       <div
                         class="mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 shrink-0"
-                        [class]="svc.selected ? 'bg-gold-500 border-gold-500' : 'border-navy-500 bg-navy-900'"
+                        [class]="svc.selected ? 'bg-gold-500 border-gold-500' : 'border-rim-2 bg-deep'"
                       >
                         @if (svc.selected) {
                           <svg class="w-3 h-3 text-navy-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -157,8 +157,8 @@
                         }
                       </div>
                       <div>
-                        <p class="text-cream-200 font-medium text-sm">{{ svc.name }}</p>
-                        <p class="text-cream-300/50 text-xs mt-0.5 leading-relaxed">{{ svc.description }}</p>
+                        <p class="text-ink font-medium text-sm">{{ svc.name }}</p>
+                        <p class="text-ink-2/50 text-xs mt-0.5 leading-relaxed">{{ svc.description }}</p>
                         <p class="text-gold-400 text-sm font-medium mt-1.5">£{{ svc.price }}</p>
                       </div>
                     </div>
@@ -166,19 +166,19 @@
                     <!-- Quantity -->
                     @if (svc.selected) {
                       <div
-                        class="flex items-center gap-2 bg-navy-900 border border-navy-700 rounded-lg p-1 shrink-0 ml-4"
+                        class="flex items-center gap-2 bg-deep border border-rim rounded-lg p-1 shrink-0 ml-4"
                         (click)="$event.stopPropagation()"
                       >
                         <button
                           (click)="updateQty(svc.id, -1)"
-                          class="w-7 h-7 rounded flex items-center justify-center text-cream-300 hover:bg-navy-700 hover:text-cream-100 transition-colors cursor-pointer"
+                          class="w-7 h-7 rounded flex items-center justify-center text-ink-2 hover:bg-raised hover:text-ink transition-colors cursor-pointer"
                         >
                           <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/></svg>
                         </button>
-                        <span class="w-5 text-center text-cream-200 text-sm tabular-nums">{{ svc.quantity }}</span>
+                        <span class="w-5 text-center text-ink text-sm tabular-nums">{{ svc.quantity }}</span>
                         <button
                           (click)="updateQty(svc.id, 1)"
-                          class="w-7 h-7 rounded flex items-center justify-center text-cream-300 hover:bg-navy-700 hover:text-cream-100 transition-colors cursor-pointer"
+                          class="w-7 h-7 rounded flex items-center justify-center text-ink-2 hover:bg-raised hover:text-ink transition-colors cursor-pointer"
                         >
                           <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                         </button>
@@ -191,9 +191,9 @@
           }
 
           <!-- Cancellation policy -->
-          <section class="gsap-reveal border-t border-navy-700 pt-8">
-            <h3 class="font-serif text-lg text-cream-200 mb-3">Cancellation Policy</h3>
-            <div class="space-y-2 text-sm text-cream-300/65">
+          <section class="gsap-reveal border-t border-rim pt-8">
+            <h3 class="font-serif text-lg text-ink mb-3">Cancellation Policy</h3>
+            <div class="space-y-2 text-sm text-ink-2/65">
               <div class="flex items-start gap-2">
                 <svg class="w-4 h-4 text-green-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 <span>Free cancellation — more than 14 days before check-in</span>
@@ -213,17 +213,17 @@
 
         <!-- Right: booking sidebar -->
         <div class="w-full lg:w-[340px] xl:w-[360px] shrink-0 gsap-reveal">
-          <div class="bg-navy-800/95 border border-navy-700 rounded-2xl p-6 lg:sticky lg:top-24 shadow-luxury-lg space-y-6">
+          <div class="bg-surface/95 border border-rim rounded-2xl p-6 lg:sticky lg:top-24 shadow-luxury-lg space-y-6">
 
             <!-- Price display -->
             <div class="flex items-end justify-between">
               <div>
-                <p class="text-xs uppercase tracking-wider text-cream-300/50 mb-1">
+                <p class="text-xs uppercase tracking-wider text-ink-2/50 mb-1">
                   {{ isPeakSeason() ? 'Peak Season Rate' : 'Off-Peak Rate' }}
                 </p>
                 <div class="flex items-baseline gap-1.5">
                   <span class="font-serif text-4xl text-gold-400">£{{ displayPrice() }}</span>
-                  <span class="text-cream-300/40 text-sm">/ night</span>
+                  <span class="text-ink-2/40 text-sm">/ night</span>
                 </div>
               </div>
               @if (isPeakSeason()) {
@@ -236,25 +236,25 @@
             <!-- Date pickers -->
             <div class="space-y-4">
               <div>
-                <label for="rd-checkin" class="block text-xs uppercase tracking-wider text-cream-300/50 mb-2">Check-in</label>
+                <label for="rd-checkin" class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Check-in</label>
                 <input
                   id="rd-checkin"
                   type="date"
                   [min]="today()"
                   [value]="checkIn()"
                   (change)="setCheckIn($any($event.target).value)"
-                  class="input bg-navy-900/60 [color-scheme:dark] cursor-pointer w-full"
+                  class="input bg-deep/60 [color-scheme:dark] cursor-pointer w-full"
                 >
               </div>
               <div>
-                <label for="rd-checkout" class="block text-xs uppercase tracking-wider text-cream-300/50 mb-2">Check-out</label>
+                <label for="rd-checkout" class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Check-out</label>
                 <input
                   id="rd-checkout"
                   type="date"
                   [min]="checkIn() || today()"
                   [value]="checkOut()"
                   (change)="setCheckOut($any($event.target).value)"
-                  class="input bg-navy-900/60 [color-scheme:dark] cursor-pointer w-full"
+                  class="input bg-deep/60 [color-scheme:dark] cursor-pointer w-full"
                 >
               </div>
             </div>
@@ -262,30 +262,30 @@
             <!-- Price breakdown (only when dates selected) -->
             @if (datesValid()) {
               <div class="space-y-2 text-sm">
-                <div class="flex justify-between text-cream-300/65">
+                <div class="flex justify-between text-ink-2/65">
                   <span>£{{ displayPrice() }} × {{ nights() }} {{ nights() === 1 ? 'night' : 'nights' }}</span>
-                  <span class="text-cream-200">£{{ roomSubtotal() }}</span>
+                  <span class="text-ink">£{{ roomSubtotal() }}</span>
                 </div>
                 @for (svc of services(); track svc.id) {
                   @if (svc.selected) {
-                    <div class="flex justify-between text-cream-300/65">
+                    <div class="flex justify-between text-ink-2/65">
                       <span>{{ svc.name }} × {{ svc.quantity }}</span>
-                      <span class="text-cream-200">£{{ svc.price * svc.quantity }}</span>
+                      <span class="text-ink">£{{ svc.price * svc.quantity }}</span>
                     </div>
                   }
                 }
-                <div class="flex justify-between items-end pt-3 border-t border-navy-700 mt-3">
-                  <span class="text-cream-200 uppercase tracking-wider text-xs">Total</span>
+                <div class="flex justify-between items-end pt-3 border-t border-rim mt-3">
+                  <span class="text-ink uppercase tracking-wider text-xs">Total</span>
                   <span class="font-serif text-3xl text-gold-400">£{{ grandTotal() }}</span>
                 </div>
-                <p class="text-cream-300/35 text-xs text-right">Inclusive of all taxes and fees</p>
+                <p class="text-ink-2/35 text-xs text-right">Inclusive of all taxes and fees</p>
               </div>
             } @else {
-              <div class="bg-navy-900/60 border border-navy-700 rounded-lg p-4 text-center">
-                <svg class="w-8 h-8 text-cream-300/20 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div class="bg-deep/60 border border-rim rounded-lg p-4 text-center">
+                <svg class="w-8 h-8 text-ink-2/20 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <p class="text-cream-300/40 text-xs">Select dates to see total price</p>
+                <p class="text-ink-2/40 text-xs">Select dates to see total price</p>
               </div>
             }
 
@@ -306,7 +306,7 @@
               }
             </button>
 
-            <p class="text-center text-cream-300/35 text-xs leading-relaxed">
+            <p class="text-center text-ink-2/35 text-xs leading-relaxed">
               No charge today — payment collected on the next step.
             </p>
           </div>
@@ -318,8 +318,8 @@
 
   @if (!loading() && !room()) {
     <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-      <h2 class="font-serif text-3xl text-cream-200 mb-2">Room Not Found</h2>
-      <p class="text-cream-300/55 mb-6 text-sm">This room does not exist or is unavailable.</p>
+      <h2 class="font-serif text-3xl text-ink mb-2">Room Not Found</h2>
+      <p class="text-ink-2/55 mb-6 text-sm">This room does not exist or is unavailable.</p>
       <a routerLink="/guest/search" class="btn-secondary px-8 py-3">Return to Search</a>
     </div>
   }

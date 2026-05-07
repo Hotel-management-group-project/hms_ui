@@ -117,6 +117,6 @@ export class AdminDashboardComponent implements OnInit {
     if (action.includes('CheckIn') || action.includes('CheckOut')) return 'text-green-400 border-green-400/20 bg-green-400/10';
     if (action.includes('Payment')) return 'text-purple-400 border-purple-400/20 bg-purple-400/10';
     if (action.includes('Password') || action.includes('User')) return 'text-amber-400 border-amber-400/20 bg-amber-400/10';
-    return 'text-cream-300/60 border-navy-600 bg-navy-700';
+    return 'text-ink-2/60 border-rim-2 bg-raised';
   }
 }
