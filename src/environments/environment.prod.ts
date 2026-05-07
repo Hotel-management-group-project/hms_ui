@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://hms-api.up.railway.app',
-  signalRUrl: 'https://hms-api.up.railway.app/hubs',
+  apiUrl: 'https://hms-api-xf66.onrender.com',
+  signalRUrl: 'https://hms-api-xf66.onrender.com/hubs',
 };
