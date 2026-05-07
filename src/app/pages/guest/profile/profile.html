@@ -1,42 +1,116 @@
-<!-- Profile Page -->
+<!-- Profile — HMS Hotels -->
 <div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-3xl mx-auto animate-fade-in">
-    
-    <div class="mb-10 text-center">
-      <h1 class="font-serif text-3xl md:text-4xl text-cream-200 mb-2">My Profile</h1>
-      <p class="text-cream-300/60">Manage your personal information.</p>
+  <div class="max-w-2xl mx-auto space-y-8">
+
+    <!-- Page header -->
+    <div class="gsap-reveal">
+      <p class="text-gold-400 text-xs tracking-[0.3em] uppercase font-semibold mb-2">Your Account</p>
+      <h1 class="font-serif text-3xl md:text-4xl text-cream-100">My Profile</h1>
+      <div class="w-10 h-px bg-gradient-to-r from-gold-400 to-transparent mt-3"></div>
     </div>
 
-    <div class="card bg-navy-800 border-navy-700 p-8 shadow-2xl">
-      <h2 class="font-serif text-2xl text-cream-200 mb-6 pb-4 border-b border-navy-700">Personal Details</h2>
-      
-      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="space-y-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <!-- Avatar + name card -->
+    <div class="gsap-reveal bg-navy-800/80 border border-navy-700 rounded-2xl p-6 flex items-center gap-5">
+      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-gold-600 to-gold-400 flex items-center justify-center shrink-0">
+        <span class="font-serif text-2xl text-navy-900 font-bold select-none">{{ initials }}</span>
+      </div>
+      <div>
+        <p class="font-serif text-xl text-cream-100">
+          {{ profileForm.get('firstName')?.value }} {{ profileForm.get('lastName')?.value }}
+        </p>
+        <p class="text-cream-300/50 text-sm mt-0.5">{{ profileForm.get('email')?.value }}</p>
+        <span class="inline-flex items-center gap-1.5 mt-2 text-xs text-gold-400 bg-gold-400/10 border border-gold-400/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          Guest
+        </span>
+      </div>
+    </div>
+
+    <!-- Personal details form -->
+    <div class="gsap-reveal bg-navy-800/80 border border-navy-700 rounded-2xl p-6 sm:p-8 space-y-6">
+      <div class="pb-4 border-b border-navy-700">
+        <h2 class="font-serif text-xl text-cream-100">Personal Details</h2>
+        <p class="text-cream-300/45 text-xs mt-1">Update your name and contact information.</p>
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="space-y-5">
+        <!-- Name -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label class="label text-cream-300">First Name</label>
-            <input type="text" formControlName="firstName" class="input">
+            <label for="p-first" class="label text-cream-300">First Name</label>
+            <input
+              id="p-first"
+              type="text"
+              formControlName="firstName"
+              class="input"
+              placeholder="John"
+              autocomplete="given-name"
+              [class.border-red-500]="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.invalid"
+            >
+            @if (profileForm.get('firstName')?.touched && profileForm.get('firstName')?.hasError('required')) {
+              <p class="text-red-400 text-xs mt-1.5">First name is required.</p>
+            }
           </div>
           <div>
-            <label class="label text-cream-300">Last Name</label>
-            <input type="text" formControlName="lastName" class="input">
+            <label for="p-last" class="label text-cream-300">Last Name</label>
+            <input
+              id="p-last"
+              type="text"
+              formControlName="lastName"
+              class="input"
+              placeholder="Smith"
+              autocomplete="family-name"
+              [class.border-red-500]="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.invalid"
+            >
+            @if (profileForm.get('lastName')?.touched && profileForm.get('lastName')?.hasError('required')) {
+              <p class="text-red-400 text-xs mt-1.5">Last name is required.</p>
+            }
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label class="label text-cream-300">Email Address (Read-only)</label>
-            <input type="email" formControlName="email" class="input opacity-50 cursor-not-allowed">
-          </div>
-          <div>
-            <label class="label text-cream-300">Phone Number</label>
-            <input type="tel" formControlName="phoneNumber" class="input" placeholder="+44 7000 000000">
-          </div>
+        <!-- Email (read-only) -->
+        <div>
+          <label for="p-email" class="label text-cream-300">
+            Email Address
+            <span class="text-cream-300/35 font-normal ml-2 text-xs">(read-only)</span>
+          </label>
+          <input
+            id="p-email"
+            type="email"
+            formControlName="email"
+            class="input opacity-45 cursor-not-allowed"
+            autocomplete="email"
+          >
         </div>
 
-        <div class="pt-6 border-t border-navy-700 flex justify-end">
-          <button type="submit" class="btn-primary px-8 py-3" [disabled]="updatingProfile()">
+        <!-- Phone -->
+        <div>
+          <label for="p-phone" class="label text-cream-300">
+            Phone Number
+            <span class="text-cream-300/35 font-normal ml-2 text-xs">(optional)</span>
+          </label>
+          <input
+            id="p-phone"
+            type="tel"
+            formControlName="phoneNumber"
+            class="input"
+            placeholder="+44 7000 000000"
+            autocomplete="tel"
+          >
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button
+            type="submit"
+            class="btn-primary px-8 py-3 cursor-pointer"
+            [disabled]="updatingProfile()"
+          >
             @if (updatingProfile()) {
-              Saving...
+              <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Saving…
             } @else {
               Save Changes
             }
@@ -45,35 +119,115 @@
       </form>
     </div>
 
-    <!-- Password Change Section -->
-    <div class="card bg-navy-800 border-navy-700 p-8 shadow-2xl mt-8">
-      <h2 class="font-serif text-2xl text-cream-200 mb-6 pb-4 border-b border-navy-700">Change Password</h2>
-      
-      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="space-y-6">
+    <!-- Change password form -->
+    <div class="gsap-reveal bg-navy-800/80 border border-navy-700 rounded-2xl p-6 sm:p-8 space-y-6">
+      <div class="pb-4 border-b border-navy-700">
+        <h2 class="font-serif text-xl text-cream-100">Change Password</h2>
+        <p class="text-cream-300/45 text-xs mt-1">Choose a strong password with uppercase, lowercase, number and special character.</p>
+      </div>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="space-y-5">
+        <!-- Current password -->
         <div>
-          <label class="label text-cream-300">Current Password</label>
-          <input type="password" formControlName="currentPassword" class="input">
+          <label for="pw-current" class="label text-cream-300">Current Password</label>
+          <div class="relative">
+            <input
+              id="pw-current"
+              [type]="showCurrentPw() ? 'text' : 'password'"
+              formControlName="currentPassword"
+              class="input pr-11"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              [class.border-red-500]="passwordForm.get('currentPassword')?.touched && passwordForm.get('currentPassword')?.invalid"
+            >
+            <button type="button" (click)="showCurrentPw.update(v => !v)"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-cream-300/35 hover:text-cream-300/70 transition-colors cursor-pointer"
+              [attr.aria-label]="showCurrentPw() ? 'Hide password' : 'Show password'">
+              @if (showCurrentPw()) {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.98 8.223A10.477 10.477 0 001.934 12c1.292 4.338 5.31 7.5 10.066 7.5.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/></svg>
+              } @else {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              }
+            </button>
+          </div>
+          @if (passwordForm.get('currentPassword')?.touched && passwordForm.get('currentPassword')?.hasError('required')) {
+            <p class="text-red-400 text-xs mt-1.5">Current password is required.</p>
+          }
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- New + confirm -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label class="label text-cream-300">New Password</label>
-            <input type="password" formControlName="newPassword" class="input">
+            <label for="pw-new" class="label text-cream-300">New Password</label>
+            <div class="relative">
+              <input
+                id="pw-new"
+                [type]="showNewPw() ? 'text' : 'password'"
+                formControlName="newPassword"
+                class="input pr-11"
+                placeholder="Min. 8 characters"
+                autocomplete="new-password"
+                [class.border-red-500]="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.invalid"
+              >
+              <button type="button" (click)="showNewPw.update(v => !v)"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-cream-300/35 hover:text-cream-300/70 transition-colors cursor-pointer"
+                [attr.aria-label]="showNewPw() ? 'Hide' : 'Show'">
+                @if (showNewPw()) {
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.98 8.223A10.477 10.477 0 001.934 12c1.292 4.338 5.31 7.5 10.066 7.5.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/></svg>
+                } @else {
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                }
+              </button>
+            </div>
+            @if (passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.hasError('minlength')) {
+              <p class="text-red-400 text-xs mt-1.5">At least 8 characters.</p>
+            }
           </div>
+
           <div>
-            <label class="label text-cream-300">Confirm New Password</label>
-            <input type="password" formControlName="confirmPassword" class="input">
+            <label for="pw-confirm" class="label text-cream-300">Confirm New Password</label>
+            <div class="relative">
+              <input
+                id="pw-confirm"
+                [type]="showConfirmPw() ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                class="input pr-11"
+                placeholder="••••••••"
+                autocomplete="new-password"
+                [class.border-red-500]="passwordForm.get('confirmPassword')?.touched && passwordForm.errors?.['mismatch']"
+              >
+              <button type="button" (click)="showConfirmPw.update(v => !v)"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-cream-300/35 hover:text-cream-300/70 transition-colors cursor-pointer"
+                [attr.aria-label]="showConfirmPw() ? 'Hide' : 'Show'">
+                @if (showConfirmPw()) {
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.98 8.223A10.477 10.477 0 001.934 12c1.292 4.338 5.31 7.5 10.066 7.5.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/></svg>
+                } @else {
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                }
+              </button>
+            </div>
           </div>
         </div>
 
         @if (passwordForm.errors?.['mismatch'] && (passwordForm.touched || passwordForm.dirty)) {
-          <p class="text-red-400 text-sm">Passwords do not match.</p>
+          <p class="text-red-400 text-sm flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Passwords do not match.
+          </p>
         }
 
-        <div class="pt-6 border-t border-navy-700 flex justify-end">
-          <button type="submit" class="btn-secondary px-8 py-3" [disabled]="updatingPassword() || passwordForm.invalid">
+        <div class="flex justify-end pt-2">
+          <button
+            type="submit"
+            class="btn-secondary px-8 py-3 cursor-pointer disabled:opacity-40"
+            [disabled]="updatingPassword() || passwordForm.invalid"
+          >
             @if (updatingPassword()) {
-              Updating...
+              <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Updating…
             } @else {
               Update Password
             }

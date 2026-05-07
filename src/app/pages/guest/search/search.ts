@@ -1,5 +1,5 @@
-// Student ID: WP1234567
-// Student Name: Mohamed Iyaadh Ahmed
+// Student ID: S2401885
+// Student Name: Aiman Ahmed
 // Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
@@ -9,6 +9,7 @@ import { RoomService } from '../../../core/services/room.service';
 import { HotelService } from '../../../core/services/hotel.service';
 import { Room, Hotel } from '../../../core/models';
 import { WaitlistModalComponent } from '../../../shared/components/waitlist-modal/waitlist-modal';
+import gsap from 'gsap';
 
 @Component({
   selector: 'app-search',
@@ -26,57 +27,64 @@ export class SearchComponent implements OnInit {
   readonly searched = signal(false);
   readonly showWaitlistModal = signal(false);
 
+  readonly skeletons = [1, 2, 3];
+
   readonly form = this.fb.group({
     hotelId: [''],
     checkIn: [''],
     checkOut: [''],
     type: [''],
-    capacity: ['']
+    capacity: [''],
   });
 
   readonly isPeakSeason = computed(() => {
     const checkIn = this.form.value.checkIn;
     if (!checkIn) return false;
-    const date = new Date(checkIn);
-    const month = date.getMonth() + 1; // 1-12
+    const month = new Date(checkIn).getMonth() + 1;
     return [6, 7, 8, 12].includes(month);
   });
 
   ngOnInit() {
     this.hotelService.getHotels().subscribe({
       next: (data) => this.hotels.set(data),
-      error: (err: unknown) => console.error('Failed to load hotels', err)
+      error: (err: unknown) => console.error('Failed to load hotels', err),
     });
   }
 
   onSearch() {
     this.loading.set(true);
     this.searched.set(true);
-    
-    // Clean up empty values
+
     const query = Object.fromEntries(
-      Object.entries(this.form.value).filter(([_, v]) => v !== null && v !== '')
+      Object.entries(this.form.value).filter(([, v]) => v !== null && v !== '')
     );
 
     this.roomService.search(query).subscribe({
       next: (results) => {
         this.rooms.set(results);
         this.loading.set(false);
+        this.animateCards();
       },
       error: (err: unknown) => {
         console.error('Search failed', err);
         this.loading.set(false);
-      }
+      },
     });
   }
 
-  openWaitlist() {
-    this.showWaitlistModal.set(true);
+  private animateCards() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setTimeout(() => {
+      gsap.fromTo(
+        '.room-card',
+        { opacity: 0, y: 36 },
+        { opacity: 1, y: 0, duration: 0.55, stagger: 0.09, ease: 'power3.out', clearProps: 'opacity,transform' }
+      );
+    }, 40);
   }
 
-  closeWaitlist() {
-    this.showWaitlistModal.set(false);
-  }
+  openWaitlist() { this.showWaitlistModal.set(true); }
+  closeWaitlist() { this.showWaitlistModal.set(false); }
 
   getDisplayPrice(room: Room): number {
     return this.isPeakSeason() ? room.pricePeak : room.priceOffPeak;

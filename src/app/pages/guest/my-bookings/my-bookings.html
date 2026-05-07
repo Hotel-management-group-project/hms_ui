@@ -1,160 +1,274 @@
-<!-- My Bookings Page -->
+<!-- My Bookings — HMS Hotels -->
 <div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-5xl mx-auto animate-fade-in">
-    
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+  <div class="max-w-4xl mx-auto animate-fade-in">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
       <div>
-        <h1 class="font-serif text-3xl md:text-4xl text-cream-200 mb-2">My Bookings</h1>
-        <p class="text-cream-300/60">Manage your upcoming stays and review past visits.</p>
+        <p class="text-gold-400 text-xs tracking-[0.3em] uppercase font-semibold mb-2">Your Account</p>
+        <h1 class="font-serif text-3xl md:text-4xl text-cream-100">My Bookings</h1>
+        <div class="w-10 h-px bg-gradient-to-r from-gold-400 to-transparent mt-3"></div>
       </div>
 
-      <!-- Tabs -->
-      <div class="flex bg-navy-800/80 p-1 rounded-lg border border-navy-700 w-fit">
-        <button 
+      <!-- Tab switcher -->
+      <div class="flex bg-navy-800/80 p-1 rounded-xl border border-navy-700 w-fit gap-1">
+        <button
           (click)="setTab('upcoming')"
-          class="px-6 py-2 text-sm rounded-md transition-colors"
-          [class]="currentTab() === 'upcoming' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
-          Upcoming Stays
+          class="px-5 py-2 text-sm rounded-lg transition-all duration-200 cursor-pointer"
+          [class]="currentTab() === 'upcoming'
+            ? 'bg-gold-500 text-navy-900 font-semibold shadow'
+            : 'text-cream-300/70 hover:text-cream-100'"
+        >
+          Upcoming
+          @if (upcomingBookings().length > 0) {
+            <span class="ml-1.5 text-xs">({{ upcomingBookings().length }})</span>
+          }
         </button>
-        <button 
+        <button
           (click)="setTab('past')"
-          class="px-6 py-2 text-sm rounded-md transition-colors"
-          [class]="currentTab() === 'past' ? 'bg-gold-500 text-navy-900 shadow-md font-medium' : 'text-cream-300 hover:text-cream-100'">
+          class="px-5 py-2 text-sm rounded-lg transition-all duration-200 cursor-pointer"
+          [class]="currentTab() === 'past'
+            ? 'bg-gold-500 text-navy-900 font-semibold shadow'
+            : 'text-cream-300/70 hover:text-cream-100'"
+        >
           Past Stays
         </button>
       </div>
     </div>
 
+    <!-- Loading -->
     @if (loading()) {
-      <div class="flex items-center justify-center py-20">
-        <div class="w-10 h-10 border-t-2 border-gold-400 rounded-full animate-spin"></div>
+      <div class="flex items-center justify-center py-24">
+        <div class="flex flex-col items-center gap-3">
+          <div class="w-9 h-9 border-t-2 border-gold-400 rounded-full animate-spin"></div>
+          <p class="text-cream-300/45 text-sm">Loading your stays…</p>
+        </div>
       </div>
-    } @else {
-      
-      <!-- Upcoming Stays -->
+    }
+
+    @if (!loading()) {
+
+      <!-- UPCOMING TAB -->
       @if (currentTab() === 'upcoming') {
-        <div class="space-y-6 animate-fade-up">
+        <div class="space-y-4 animate-fade-up">
           @if (upcomingBookings().length === 0) {
-            <div class="text-center py-16 bg-navy-800/50 rounded-xl border border-navy-700 border-dashed">
-              <p class="text-cream-300/60 mb-4">You have no upcoming stays.</p>
-              <a routerLink="/guest/search" class="btn-primary px-6 py-2 text-sm">Find a Room</a>
+            <div class="text-center py-20 bg-navy-800/40 border border-navy-700 border-dashed rounded-2xl space-y-4">
+              <svg class="w-12 h-12 text-cream-300/20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <p class="text-cream-300/55 text-sm">No upcoming stays found.</p>
+              <a routerLink="/guest/search" class="btn-primary px-6 py-2.5 text-sm inline-block">Find a Room</a>
             </div>
-          } @else {
-            @for (b of upcomingBookings(); track b.id) {
-              <div class="card bg-navy-800 border-navy-700 p-6 flex flex-col md:flex-row gap-6 items-start md:items-center">
-                <div class="flex-1 space-y-2 text-sm">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-xs uppercase tracking-widest text-gold-400 border border-gold-400/20 bg-gold-400/10 px-2 py-0.5 rounded">
-                      Ref: {{ b.referenceNumber }}
-                    </span>
-                    <span class="text-xs uppercase tracking-widest px-2 py-0.5 rounded border"
-                          [class]="b.status === 'Confirmed' ? 'text-green-400 border-green-400/20 bg-green-400/10' : 'text-amber-400 border-amber-400/20 bg-amber-400/10'">
-                      {{ b.status }}
-                    </span>
-                  </div>
-                  <div class="flex flex-col sm:flex-row sm:items-center gap-4 text-cream-200">
-                    <div>
-                      <span class="text-cream-300/50 block text-xs uppercase mb-0.5">Check-in</span>
-                      {{ b.checkInDate }}
-                    </div>
-                    <div class="hidden sm:block w-px h-6 bg-navy-600"></div>
-                    <div>
-                      <span class="text-cream-300/50 block text-xs uppercase mb-0.5">Check-out</span>
-                      {{ b.checkOutDate }}
-                    </div>
-                  </div>
-                  <p class="text-cream-300/80 pt-2 border-t border-navy-700/50 mt-4">Total: <span class="text-cream-200">£{{ b.totalPrice }}</span></p>
+          }
+
+          @for (b of upcomingBookings(); track b.id) {
+            <div class="bg-navy-800 border border-navy-700 rounded-2xl p-5 sm:p-6 hover:border-navy-600 transition-colors duration-200">
+
+              <!-- Top row: ref + status -->
+              <div class="flex flex-wrap items-center gap-2.5 mb-4">
+                <span class="text-xs uppercase tracking-widest text-gold-400 border border-gold-400/25 bg-gold-400/8 px-2.5 py-1 rounded-full font-mono">
+                  {{ b.referenceNumber }}
+                </span>
+                <span class="text-xs uppercase tracking-wider px-2.5 py-1 rounded-full border font-medium" [class]="statusClass(b.status)">
+                  {{ b.status }}
+                </span>
+              </div>
+
+              <!-- Dates row -->
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 mb-4 text-sm">
+                <div>
+                  <p class="text-cream-300/40 text-xs uppercase tracking-widest mb-0.5">Check-in</p>
+                  <p class="text-cream-200 font-medium">{{ formatDate(b.checkInDate) }}</p>
                 </div>
-                
-                <div class="flex w-full md:w-auto flex-row md:flex-col gap-3 shrink-0">
-                  <a [routerLink]="['/guest/confirmation', b.id]" class="btn-secondary flex-1 py-2 text-sm text-center">View QR</a>
-                  @if (b.status !== 'Cancelled') {
-                    <button (click)="confirmCancellation(b)" class="btn-secondary flex-1 py-2 text-sm !border-red-500/30 !text-red-400 hover:!bg-red-500 hover:!text-white">Cancel Booking</button>
-                  }
+                <svg class="hidden sm:block w-4 h-4 text-navy-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+                <div>
+                  <p class="text-cream-300/40 text-xs uppercase tracking-widest mb-0.5">Check-out</p>
+                  <p class="text-cream-200 font-medium">{{ formatDate(b.checkOutDate) }}</p>
+                </div>
+                <div class="sm:ml-auto">
+                  <p class="text-cream-300/40 text-xs uppercase tracking-widest mb-0.5">Total</p>
+                  <p class="font-serif text-xl text-gold-400">£{{ b.totalPrice }}</p>
                 </div>
               </div>
-            }
+
+              <!-- Actions -->
+              <div class="flex flex-wrap gap-2.5 pt-4 border-t border-navy-700/60">
+                @if (b.status === 'Confirmed' || b.status === 'CheckedIn') {
+                  <button
+                    (click)="viewQr(b)"
+                    class="btn-secondary py-2 px-4 text-sm flex items-center gap-2 cursor-pointer"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                    </svg>
+                    View QR Code
+                  </button>
+                }
+                @if (b.status !== 'Cancelled' && b.status !== 'CheckedOut') {
+                  <button
+                    (click)="confirmCancellation(b)"
+                    class="py-2 px-4 text-sm rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-200 cursor-pointer"
+                  >
+                    Cancel Booking
+                  </button>
+                }
+              </div>
+            </div>
           }
         </div>
       }
 
-      <!-- Past Stays -->
+      <!-- PAST STAYS TAB -->
       @if (currentTab() === 'past') {
-        <div class="space-y-6 animate-fade-up">
+        <div class="space-y-4 animate-fade-up">
           @if (pastBookings().length === 0) {
-            <div class="text-center py-16 bg-navy-800/50 rounded-xl border border-navy-700 border-dashed">
-              <p class="text-cream-300/60">You have no past stays on record.</p>
+            <div class="text-center py-20 bg-navy-800/40 border border-navy-700 border-dashed rounded-2xl">
+              <p class="text-cream-300/55 text-sm">No past stays on record.</p>
             </div>
-          } @else {
-            @for (b of pastBookings(); track b.id) {
-              <div class="card bg-navy-800 border-navy-700 p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between opacity-80 hover:opacity-100 transition-opacity">
-                <div class="space-y-2 text-sm">
-                  <div class="flex items-center gap-3">
-                    <span class="text-cream-200">{{ b.checkInDate }} to {{ b.checkOutDate }}</span>
-                    <span class="text-xs uppercase tracking-widest px-2 py-0.5 rounded border"
-                          [class]="b.status === 'Cancelled' ? 'text-red-400 border-red-400/20 bg-red-400/10' : 'text-cream-400 border-cream-400/20 bg-cream-400/10'">
-                      {{ b.status }}
-                    </span>
+          }
+
+          @for (b of pastBookings(); track b.id) {
+            <div class="bg-navy-800/70 border border-navy-700 rounded-2xl p-5 sm:p-6 opacity-80 hover:opacity-100 transition-opacity duration-200">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="space-y-2">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs text-gold-400/70 border border-gold-400/15 px-2 py-0.5 rounded">{{ b.referenceNumber }}</span>
+                    <span class="text-xs px-2.5 py-0.5 rounded-full border" [class]="statusClass(b.status)">{{ b.status }}</span>
                   </div>
-                  <p class="text-cream-300/50">Ref: {{ b.referenceNumber }} • Total: £{{ b.totalPrice }}</p>
+                  <p class="text-cream-200 text-sm">{{ formatDate(b.checkInDate) }} → {{ formatDate(b.checkOutDate) }}</p>
+                  <p class="text-cream-300/45 text-xs">Total paid: <span class="text-cream-300/70">£{{ b.totalPrice }}</span></p>
                 </div>
-                
+
                 @if (b.status !== 'Cancelled') {
-                  <button (click)="downloadInvoice(b.id)" class="btn-secondary py-2 px-4 text-sm whitespace-nowrap flex items-center gap-2">
+                  <button
+                    (click)="downloadInvoice(b.id)"
+                    class="btn-secondary py-2 px-4 text-sm flex items-center gap-2 shrink-0 cursor-pointer"
+                  >
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
                     Invoice
                   </button>
                 }
               </div>
-            }
+            </div>
           }
         </div>
       }
+
     }
   </div>
 </div>
 
-<!-- Cancellation Modal -->
-@if (bookingToCancel(); as b) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/80 backdrop-blur-sm animate-fade-in">
-    <div class="card bg-navy-800 border-navy-700 w-full max-w-md p-6 space-y-6 shadow-2xl animate-slide-up relative">
-      
-      <div>
-        <h2 class="font-serif text-2xl text-cream-200">Cancel Booking</h2>
-        <p class="text-cream-300/70 text-sm mt-1">Reference: <span class="text-gold-400">{{ b.referenceNumber }}</span></p>
+<!-- ── QR Code Modal ──────────────────────────────────────── -->
+@if (qrModalBooking(); as b) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/85 backdrop-blur-sm animate-fade-in"
+    (click)="closeQrModal()"
+  >
+    <div
+      class="bg-navy-800 border border-navy-700 rounded-2xl p-8 w-full max-w-sm text-center space-y-6 shadow-2xl animate-slide-up"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Close -->
+      <button
+        (click)="closeQrModal()"
+        class="absolute top-4 right-4 text-cream-300/40 hover:text-cream-300/80 transition-colors cursor-pointer"
+        aria-label="Close QR modal"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="space-y-1">
+        <p class="text-gold-400 text-xs tracking-[0.25em] uppercase">Check-in Code</p>
+        <h3 class="font-serif text-2xl text-cream-100">{{ b.referenceNumber }}</h3>
+        <p class="text-cream-300/45 text-xs">
+          {{ formatDate(b.checkInDate) }} → {{ formatDate(b.checkOutDate) }}
+        </p>
       </div>
 
-      <div class="bg-red-900/20 border border-red-500/20 rounded-lg p-4 space-y-2">
-        <p class="text-red-400 font-medium text-sm">Cancellation Policy Warning</p>
-        <p class="text-cream-300/80 text-sm">{{ calculateCancellationFee(b).message }}</p>
-        <div class="flex justify-between items-end pt-2 mt-2 border-t border-red-500/20">
-          <span class="text-sm text-cream-300">Cancellation Fee:</span>
-          <span class="text-xl font-serif text-red-400">£{{ calculateCancellationFee(b).fee }}</span>
+      <!-- QR display area -->
+      <div class="bg-white rounded-xl p-4 mx-auto w-56 h-56 flex items-center justify-center">
+        @if (loadingQr()) {
+          <div class="w-8 h-8 border-t-2 border-navy-900 rounded-full animate-spin"></div>
+        } @else if (qrCodeUrl()) {
+          <img [src]="qrCodeUrl()" alt="Check-in QR code" class="w-full h-full object-contain">
+        } @else {
+          <div class="text-center space-y-2">
+            <svg class="w-12 h-12 text-navy-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+            <p class="text-navy-500 text-xs">QR not available yet</p>
+          </div>
+        }
+      </div>
+
+      <p class="text-cream-300/40 text-xs leading-relaxed">
+        Present this code at reception on arrival. Your booking is confirmed.
+      </p>
+
+      <button (click)="closeQrModal()" class="btn-secondary w-full py-3 text-sm cursor-pointer">
+        Close
+      </button>
+    </div>
+  </div>
+}
+
+<!-- ── Cancellation Confirmation Modal ─────────────────────── -->
+@if (bookingToCancel(); as b) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/85 backdrop-blur-sm animate-fade-in">
+    <div class="bg-navy-800 border border-navy-700 rounded-2xl p-6 w-full max-w-md space-y-6 shadow-2xl animate-slide-up">
+
+      <div>
+        <h2 class="font-serif text-2xl text-cream-100">Cancel Booking</h2>
+        <p class="text-cream-300/55 text-sm mt-1">
+          Reference: <span class="text-gold-400 font-mono">{{ b.referenceNumber }}</span>
+        </p>
+      </div>
+
+      <!-- Fee warning -->
+      @let fee = calculateCancellationFee(b);
+      <div class="rounded-xl p-4 space-y-3 border"
+           [class]="fee.severity === 'green' ? 'bg-green-900/20 border-green-500/25' :
+                    fee.severity === 'amber' ? 'bg-amber-900/20 border-amber-500/25' :
+                    'bg-red-900/20 border-red-500/25'">
+        <p class="text-sm font-medium"
+           [class]="fee.severity === 'green' ? 'text-green-400' :
+                    fee.severity === 'amber' ? 'text-amber-400' : 'text-red-400'">
+          {{ fee.label }}
+        </p>
+        <div class="flex justify-between items-end pt-2 border-t"
+             [class]="fee.severity === 'green' ? 'border-green-500/20' :
+                      fee.severity === 'amber' ? 'border-amber-500/20' : 'border-red-500/20'">
+          <span class="text-cream-300/60 text-sm">Cancellation fee</span>
+          <span class="font-serif text-2xl"
+                [class]="fee.severity === 'green' ? 'text-green-400' :
+                         fee.severity === 'amber' ? 'text-amber-400' : 'text-red-400'">
+            £{{ fee.fee }}
+          </span>
         </div>
       </div>
 
-      <p class="text-sm text-cream-300/60">Are you sure you want to proceed? This action cannot be undone, and the fee (if any) will be automatically deducted from your refund.</p>
+      <p class="text-cream-300/50 text-sm">
+        This action cannot be undone. Any applicable fee will be deducted from your refund automatically.
+      </p>
 
-      <div class="flex gap-3">
-        <button 
+      <div class="flex gap-3 pt-2">
+        <button
           (click)="closeCancelModal()"
-          class="btn-secondary flex-1 py-3"
           [disabled]="isCancelling()"
-        >
-          Keep Booking
-        </button>
-        <button 
+          class="btn-secondary flex-1 py-3 cursor-pointer"
+        >Keep Booking</button>
+        <button
           (click)="proceedWithCancellation()"
-          class="bg-red-500 hover:bg-red-600 text-white flex-1 py-3 rounded text-sm uppercase tracking-widest transition-colors font-medium"
           [disabled]="isCancelling()"
+          class="flex-1 py-3 rounded-xl text-sm uppercase tracking-widest font-medium bg-red-500 hover:bg-red-600 text-white transition-colors disabled:opacity-50 cursor-pointer"
         >
-          @if (isCancelling()) {
-            Cancelling...
-          } @else {
-            Confirm Cancel
-          }
+          @if (isCancelling()) { Cancelling… } @else { Confirm Cancel }
         </button>
       </div>
     </div>
