@@ -10,7 +10,7 @@
         <p class="text-cream-300/50 text-sm mt-1">Manage FrontDesk & Manager accounts</p>
       </div>
       <button (click)="openModal()"
-              class="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors">
+              class="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors cursor-pointer">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
@@ -22,6 +22,7 @@
     <div class="flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
       @for (f of [['all','All'],['FrontDesk','Front Desk'],['Manager','Manager']]; track f[0]) {
         <button (click)="filterRole.set($any(f[0]))"
+                class="cursor-pointer"
                 [class]="filterRole() === f[0]
                   ? 'px-4 py-1.5 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
                   : 'px-4 py-1.5 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
@@ -90,6 +91,7 @@
                 <!-- Toggle active -->
                 <button (click)="toggleActive(user)"
                         [disabled]="togglingId() === user.id"
+                        class="cursor-pointer"
                         [class]="user.isActive
                           ? 'shrink-0 text-xs border border-red-400/30 text-red-400 hover:bg-red-400 hover:text-navy-900 px-3 py-1.5 rounded transition-colors disabled:opacity-40'
                           : 'shrink-0 text-xs border border-green-400/30 text-green-400 hover:bg-green-400 hover:text-navy-900 px-3 py-1.5 rounded transition-colors disabled:opacity-40'">
@@ -113,7 +115,7 @@
       <!-- Modal header -->
       <div class="px-6 py-5 border-b border-navy-700 flex items-center justify-between">
         <h2 class="font-serif text-xl text-cream-200">New Staff Account</h2>
-        <button (click)="closeModal()" class="text-cream-300/40 hover:text-cream-200 transition-colors">
+        <button (click)="closeModal()" class="text-cream-300/40 hover:text-cream-200 transition-colors cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
@@ -182,11 +184,11 @@
 
         <div class="flex gap-3 pt-2">
           <button type="submit" [disabled]="creating()"
-                  class="flex-1 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors disabled:opacity-50">
+                  class="flex-1 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors disabled:opacity-50 cursor-pointer">
             {{ creating() ? 'Creating...' : 'Create Account' }}
           </button>
           <button type="button" (click)="closeModal()" [disabled]="creating()"
-                  class="px-5 py-2.5 border border-navy-600 text-cream-300/60 hover:text-cream-200 text-sm rounded-lg transition-colors disabled:opacity-50">
+                  class="px-5 py-2.5 border border-navy-600 text-cream-300/60 hover:text-cream-200 text-sm rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
             Cancel
           </button>
         </div>

@@ -50,14 +50,14 @@
       <div class="flex items-center gap-3 mt-4 pt-4 border-t border-navy-700">
         <span class="text-cream-300/50 text-xs uppercase tracking-widest mr-1">Export</span>
         <button (click)="exportReport('pdf')" [disabled]="exporting()"
-                class="flex items-center gap-2 px-4 py-2 text-xs border border-red-400/30 text-red-400 hover:bg-red-400 hover:text-navy-900 rounded transition-colors disabled:opacity-40">
+                class="flex items-center gap-2 px-4 py-2 text-xs border border-red-400/30 text-red-400 hover:bg-red-400 hover:text-navy-900 rounded transition-colors disabled:opacity-40 cursor-pointer">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
           PDF
         </button>
         <button (click)="exportReport('excel')" [disabled]="exporting()"
-                class="flex items-center gap-2 px-4 py-2 text-xs border border-green-400/30 text-green-400 hover:bg-green-400 hover:text-navy-900 rounded transition-colors disabled:opacity-40">
+                class="flex items-center gap-2 px-4 py-2 text-xs border border-green-400/30 text-green-400 hover:bg-green-400 hover:text-navy-900 rounded transition-colors disabled:opacity-40 cursor-pointer">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
@@ -73,6 +73,7 @@
     <div class="flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
       @for (tab of [['occupancy','Occupancy'],['revenue','Revenue'],['demographics','Demographics']]; track tab[0]) {
         <button (click)="setTab($any(tab[0]))"
+                class="cursor-pointer"
                 [class]="activeTab() === tab[0]
                   ? 'px-5 py-2 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
                   : 'px-5 py-2 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">

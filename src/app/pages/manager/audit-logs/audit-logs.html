@@ -47,7 +47,7 @@
       @if (filterAction || filterUser || filterFrom || filterTo) {
         <div class="mt-3 pt-3 border-t border-navy-700">
           <button (click)="clearFilters()"
-                  class="text-xs text-cream-300/40 hover:text-cream-300/70 transition-colors flex items-center gap-1.5">
+                  class="text-xs text-cream-300/40 hover:text-cream-300/70 transition-colors flex items-center gap-1.5 cursor-pointer">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
@@ -146,7 +146,7 @@
       @if (!loading() && total() > limit) {
         <div class="px-6 py-4 border-t border-navy-700 flex items-center justify-between">
           <button (click)="prevPage()" [disabled]="page() <= 1"
-                  class="flex items-center gap-2 text-sm text-cream-300/60 hover:text-cream-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                  class="flex items-center gap-2 text-sm text-cream-300/60 hover:text-cream-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
@@ -154,7 +154,7 @@
           </button>
           <span class="text-cream-300/40 text-xs">Page {{ page() }} of {{ totalPages }}</span>
           <button (click)="nextPage()" [disabled]="page() >= totalPages"
-                  class="flex items-center gap-2 text-sm text-cream-300/60 hover:text-cream-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                  class="flex items-center gap-2 text-sm text-cream-300/60 hover:text-cream-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer">
             Next
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

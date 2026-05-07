@@ -1,8 +1,368 @@
-<div class="min-h-screen bg-navy-800 flex items-center justify-center">
-  <div class="text-center space-y-4 px-4">
-    <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase">Manager</p>
-    <h1 class="font-serif text-5xl text-cream-200">Settings</h1>
-    <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
-    <p class="text-cream-300/60 text-sm">Room rates & hotel settings coming soon.</p>
+<!-- Manager Settings -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto space-y-8">
+
+    <!-- Header -->
+    <div class="gsap-section">
+      <p class="text-gold-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1">Manager</p>
+      <h1 class="font-serif text-4xl text-cream-200">Settings</h1>
+      <p class="text-cream-300/50 text-sm mt-1">Room rates and staff account management</p>
+      <div class="w-10 h-px bg-gradient-to-r from-gold-400 to-transparent mt-3"></div>
+    </div>
+
+    <!-- Tab Switcher -->
+    <div class="gsap-section flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
+      <button (click)="setTab('rates')" class="cursor-pointer"
+              [class]="activeTab() === 'rates'
+                ? 'px-6 py-2 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
+                : 'px-6 py-2 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Room Rates
+        </span>
+      </button>
+      <button (click)="setTab('staff')" class="cursor-pointer"
+              [class]="activeTab() === 'staff'
+                ? 'px-6 py-2 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
+                : 'px-6 py-2 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          Staff Accounts
+        </span>
+      </button>
+    </div>
+
+    <!-- ══ ROOM RATES TAB ══════════════════════════════════════════ -->
+    @if (activeTab() === 'rates') {
+      <div class="space-y-6">
+
+        <!-- Hotel selector -->
+        <div class="gsap-section flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-serif text-xl text-cream-200">Pricing by Room Type</h2>
+            <p class="text-cream-300/40 text-xs mt-0.5">Edit peak & off-peak pricing per hotel</p>
+          </div>
+          <div class="w-full sm:w-64">
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-2">Hotel</label>
+            <select [(ngModel)]="selectedHotelId" (ngModelChange)="loadRates()"
+                    class="w-full bg-navy-800 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
+              @for (hotel of hotels(); track hotel.id) {
+                <option [value]="hotel.id">{{ hotel.name }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Error -->
+        @if (ratesError()) {
+          <div class="bg-red-400/10 border border-red-400/30 rounded-lg px-4 py-3 text-red-400 text-sm">{{ ratesError() }}</div>
+        }
+
+        <!-- Loading skeletons -->
+        @if (loadingRates()) {
+          <div class="space-y-3">
+            @for (i of [1,2,3,4]; track i) {
+              <div class="h-20 bg-navy-800 border border-navy-700 rounded-xl animate-pulse"></div>
+            }
+          </div>
+        }
+
+        <!-- Peak season notice -->
+        @if (!loadingRates() && rows().length > 0) {
+          <div class="bg-amber-400/5 border border-amber-400/20 rounded-lg px-4 py-3 flex items-start gap-3">
+            <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-amber-400/80 text-xs leading-relaxed">
+              <span class="font-semibold">Peak season:</span> June, July, August &amp; December.
+              Saving a rate updates every room of that type in <span class="text-amber-400">{{ selectedHotelName }}</span>.
+            </p>
+          </div>
+        }
+
+        <!-- Rates Table -->
+        @if (!loadingRates() && rows().length > 0) {
+          <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
+            <div class="divide-y divide-navy-700/50">
+              @for (row of rows(); track row.type) {
+                <div class="px-6 py-5">
+                  <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <!-- Type info -->
+                    <div class="flex-1 min-w-0">
+                      <p class="text-cream-200 font-medium">{{ row.type }}</p>
+                      <p class="text-cream-300/40 text-xs mt-0.5">
+                        {{ row.rooms.length }} room{{ row.rooms.length !== 1 ? 's' : '' }} ·
+                        {{ row.rooms.map(r => r.roomNumber).join(', ') }}
+                      </p>
+                    </div>
+
+                    @if (!row.editing) {
+                      <!-- View mode -->
+                      <div class="flex items-center gap-6">
+                        <div class="text-center">
+                          <p class="text-xs text-cream-300/40 uppercase tracking-wider mb-1">Off-Peak</p>
+                          <p class="text-cream-200 font-medium">{{ formatCurrency(row.priceOffPeak) }}</p>
+                        </div>
+                        <div class="w-px h-8 bg-navy-700"></div>
+                        <div class="text-center">
+                          <p class="text-xs text-amber-400/60 uppercase tracking-wider mb-1">Peak</p>
+                          <p class="text-amber-400 font-medium">{{ formatCurrency(row.pricePeak) }}</p>
+                        </div>
+                        <button (click)="startEdit(row)"
+                                class="ml-2 px-4 py-2 text-xs border border-gold-400/30 text-gold-400 hover:bg-gold-400 hover:text-navy-900 rounded transition-colors cursor-pointer">
+                          Edit
+                        </button>
+                      </div>
+                    } @else {
+                      <!-- Edit mode -->
+                      <div class="flex items-center gap-3 flex-wrap">
+                        <div>
+                          <label class="block text-xs text-cream-300/50 uppercase tracking-wider mb-1">Off-Peak (£)</label>
+                          <input type="number" min="0" step="5" [(ngModel)]="row.priceOffPeak"
+                                 class="w-28 bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
+                        </div>
+                        <div>
+                          <label class="block text-xs text-amber-400/60 uppercase tracking-wider mb-1">Peak (£)</label>
+                          <input type="number" min="0" step="5" [(ngModel)]="row.pricePeak"
+                                 class="w-28 bg-navy-900 border border-amber-400/20 text-cream-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400/60">
+                        </div>
+                        <div class="flex items-end gap-2 pb-0.5">
+                          <button (click)="saveRow(row)" [disabled]="row.saving"
+                                  class="px-4 py-2 text-xs bg-gold-400 text-navy-900 font-semibold rounded hover:bg-gold-300 transition-colors disabled:opacity-50 cursor-pointer">
+                            {{ row.saving ? 'Saving...' : 'Save' }}
+                          </button>
+                          <button (click)="cancelEdit(row)" [disabled]="row.saving"
+                                  class="px-4 py-2 text-xs border border-navy-600 text-cream-300/60 hover:text-cream-200 rounded transition-colors disabled:opacity-50 cursor-pointer">
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Empty state -->
+        @if (!loadingRates() && rows().length === 0 && !ratesError()) {
+          <div class="bg-navy-800 border border-navy-700 rounded-xl p-12 text-center">
+            <p class="text-cream-300/40 text-sm">No rooms found for this hotel.</p>
+          </div>
+        }
+
+        <!-- Reference rates -->
+        <div class="bg-navy-800/50 border border-navy-700/50 rounded-xl p-5">
+          <p class="text-cream-300/40 text-xs uppercase tracking-widest mb-3">Reference — Default Rates</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            @for (entry of [['Standard Double', 120, 180],['Deluxe King', 180, 250],['Family Suite', 240, 320],['Penthouse', 500, 750]]; track entry[0]) {
+              <div class="text-xs space-y-1">
+                <p class="text-cream-300/60 font-medium">{{ entry[0] }}</p>
+                <p class="text-cream-300/30">Off-Peak: £{{ entry[1] }}</p>
+                <p class="text-amber-400/40">Peak: £{{ entry[2] }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- ══ STAFF ACCOUNTS TAB ══════════════════════════════════════ -->
+    @if (activeTab() === 'staff') {
+      <div class="space-y-6">
+
+        <!-- Staff header -->
+        <div class="gsap-section flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h2 class="font-serif text-xl text-cream-200">Staff Accounts</h2>
+            <p class="text-cream-300/40 text-xs mt-0.5">Manage FrontDesk &amp; Manager accounts</p>
+          </div>
+          <button (click)="openModal()"
+                  class="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            New Staff Account
+          </button>
+        </div>
+
+        <!-- Role filter -->
+        <div class="flex gap-1 bg-navy-800 border border-navy-700 rounded-xl p-1 w-fit">
+          @for (f of [['all','All'],['FrontDesk','Front Desk'],['Manager','Manager']]; track f[0]) {
+            <button (click)="filterRole.set($any(f[0]))" class="cursor-pointer"
+                    [class]="filterRole() === f[0]
+                      ? 'px-4 py-1.5 rounded-lg text-sm font-medium bg-gold-400 text-navy-900 transition-all'
+                      : 'px-4 py-1.5 rounded-lg text-sm text-cream-300/60 hover:text-cream-200 transition-all'">
+              {{ f[1] }}
+            </button>
+          }
+        </div>
+
+        <!-- Error -->
+        @if (staffError()) {
+          <div class="bg-red-400/10 border border-red-400/30 rounded-lg px-4 py-3 text-red-400 text-sm">{{ staffError() }}</div>
+        }
+
+        <!-- Loading skeletons -->
+        @if (loadingStaff()) {
+          <div class="space-y-3">
+            @for (i of [1,2,3]; track i) {
+              <div class="h-20 bg-navy-800 border border-navy-700 rounded-xl animate-pulse"></div>
+            }
+          </div>
+        }
+
+        <!-- Staff list -->
+        @if (!loadingStaff()) {
+          <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-navy-700 flex items-center justify-between">
+              <h3 class="font-serif text-lg text-cream-200">Staff Members</h3>
+              <span class="text-xs text-cream-300/40">
+                {{ filteredStaff.length }} account{{ filteredStaff.length !== 1 ? 's' : '' }}
+              </span>
+            </div>
+
+            @if (filteredStaff.length === 0) {
+              <div class="p-12 text-center text-cream-300/40 text-sm">No staff accounts found.</div>
+            } @else {
+              <div class="divide-y divide-navy-700/50">
+                @for (user of filteredStaff; track user.id) {
+                  <div class="px-6 py-4 flex items-center gap-4">
+                    <!-- Avatar -->
+                    <div class="w-10 h-10 rounded-full bg-navy-700 flex items-center justify-center shrink-0">
+                      <span class="text-cream-300/70 text-sm font-medium">
+                        {{ user.firstName[0] }}{{ user.lastName[0] }}
+                      </span>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 flex-wrap">
+                        <p class="text-cream-200 font-medium text-sm">{{ user.firstName }} {{ user.lastName }}</p>
+                        <span class="text-xs px-1.5 py-0.5 rounded border" [class]="roleClass(user.role)">{{ user.role }}</span>
+                        @if (!user.isActive) {
+                          <span class="text-xs px-1.5 py-0.5 rounded border text-red-400 border-red-400/20 bg-red-400/10">Inactive</span>
+                        }
+                      </div>
+                      <p class="text-cream-300/40 text-xs mt-0.5">{{ user.email }}</p>
+                    </div>
+
+                    <!-- Joined date -->
+                    <div class="hidden sm:block text-right shrink-0">
+                      <p class="text-cream-300/30 text-xs">Joined</p>
+                      <p class="text-cream-300/50 text-xs">{{ user.createdAt | date:'dd MMM yyyy' }}</p>
+                    </div>
+
+                    <!-- Toggle active -->
+                    <button (click)="toggleActive(user)"
+                            [disabled]="togglingId() === user.id"
+                            class="shrink-0 text-xs border px-3 py-1.5 rounded transition-colors disabled:opacity-40 cursor-pointer"
+                            [class]="user.isActive
+                              ? 'border-red-400/30 text-red-400 hover:bg-red-400 hover:text-navy-900'
+                              : 'border-green-400/30 text-green-400 hover:bg-green-400 hover:text-navy-900'">
+                      {{ togglingId() === user.id ? '...' : user.isActive ? 'Deactivate' : 'Activate' }}
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
   </div>
 </div>
+
+<!-- ── Create Staff Modal ──────────────────────────── -->
+@if (showModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/80 backdrop-blur-sm animate-fade-in">
+    <div class="bg-navy-800 border border-navy-700 rounded-2xl w-full max-w-md shadow-2xl">
+
+      <div class="px-6 py-5 border-b border-navy-700 flex items-center justify-between">
+        <h2 class="font-serif text-xl text-cream-200">New Staff Account</h2>
+        <button (click)="closeModal()" class="text-cream-300/40 hover:text-cream-200 transition-colors cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="staffForm" (ngSubmit)="createStaff()" class="px-6 py-5 space-y-4">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">First Name</label>
+            <input formControlName="firstName" type="text"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   [class.border-red-400]="fieldError('firstName','required') || fieldError('firstName','minlength')">
+            @if (fieldError('firstName','required') || fieldError('firstName','minlength')) {
+              <p class="text-red-400 text-xs mt-1">Required (min 2 chars)</p>
+            }
+          </div>
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Last Name</label>
+            <input formControlName="lastName" type="text"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                   [class.border-red-400]="fieldError('lastName','required') || fieldError('lastName','minlength')">
+            @if (fieldError('lastName','required') || fieldError('lastName','minlength')) {
+              <p class="text-red-400 text-xs mt-1">Required (min 2 chars)</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Email</label>
+          <input formControlName="email" type="email"
+                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 [class.border-red-400]="fieldError('email','required') || fieldError('email','email')">
+          @if (fieldError('email','required') || fieldError('email','email')) {
+            <p class="text-red-400 text-xs mt-1">Valid email required</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Password</label>
+          <input formControlName="password" type="password"
+                 class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60"
+                 [class.border-red-400]="fieldError('password','required') || fieldError('password','minlength')">
+          @if (fieldError('password','required') || fieldError('password','minlength')) {
+            <p class="text-red-400 text-xs mt-1">Minimum 8 characters</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Role</label>
+            <select formControlName="role"
+                    class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60 cursor-pointer">
+              <option value="FrontDesk">Front Desk</option>
+              <option value="Manager">Manager</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-cream-300/60 text-xs uppercase tracking-widest mb-1.5">Phone (optional)</label>
+            <input formControlName="phoneNumber" type="tel"
+                   class="w-full bg-navy-900 border border-navy-600 text-cream-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gold-400/60">
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="submit" [disabled]="creating()"
+                  class="flex-1 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm rounded-lg hover:bg-gold-300 transition-colors disabled:opacity-50 cursor-pointer">
+            {{ creating() ? 'Creating...' : 'Create Account' }}
+          </button>
+          <button type="button" (click)="closeModal()" [disabled]="creating()"
+                  class="px-5 py-2.5 border border-navy-600 text-cream-300/60 hover:text-cream-200 text-sm rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

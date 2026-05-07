@@ -1,6 +1,6 @@
 <!-- Manager Dashboard -->
 <div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto space-y-8 animate-fade-in">
+  <div class="max-w-7xl mx-auto space-y-8">
 
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -23,79 +23,151 @@
       </div>
     </div>
 
-    <!-- Summary Cards -->
+    <!-- KPI Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
-      <!-- Occupancy Rate -->
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+      <!-- Total Revenue (this month) -->
+      <div class="gsap-kpi-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
         <div class="absolute inset-0 bg-gradient-to-br from-gold-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Occupancy Rate</p>
-        <div>
-          <p class="font-serif text-4xl text-gold-400">{{ occupancy.stats().occupancyRate }}%</p>
-          <p class="text-xs text-cream-300/40 mt-1">{{ occupancy.stats().occupied }} / {{ occupancy.stats().totalRooms }} rooms</p>
+        <div class="flex items-start justify-between mb-3">
+          <p class="text-xs uppercase tracking-widest text-cream-300/50">Revenue This Month</p>
+          <div class="w-8 h-8 bg-gold-400/10 rounded-lg flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
         </div>
-        <div class="mt-4 h-1.5 bg-navy-700 rounded-full overflow-hidden">
-          <div class="h-full bg-gold-400 rounded-full transition-all duration-700"
+        @if (loadingCharts()) {
+          <div class="h-9 w-32 bg-navy-700 animate-pulse rounded mb-1"></div>
+        } @else {
+          <p class="font-serif text-4xl text-gold-400">{{ formatCurrency(monthlyRevenue()) }}</p>
+        }
+        <p class="text-xs text-gold-400/50 mt-1">from {{ revenueData().length }} period{{ revenueData().length !== 1 ? 's' : '' }}</p>
+      </div>
+
+      <!-- Occupancy Rate -->
+      <div class="gsap-kpi-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="flex items-start justify-between mb-3">
+          <p class="text-xs uppercase tracking-widest text-cream-300/50">Occupancy Rate</p>
+          <div class="w-8 h-8 bg-blue-400/10 rounded-lg flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+        </div>
+        <p class="font-serif text-4xl text-blue-400">{{ occupancy.stats().occupancyRate }}%</p>
+        <div class="mt-3 h-1.5 bg-navy-700 rounded-full overflow-hidden">
+          <div class="h-full bg-blue-400 rounded-full transition-all duration-700"
                [style.width.%]="occupancy.stats().occupancyRate"></div>
         </div>
       </div>
 
-      <!-- Revenue Today -->
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+      <!-- Total Bookings -->
+      <div class="gsap-kpi-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
         <div class="absolute inset-0 bg-gradient-to-br from-green-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Revenue Today</p>
-        @if (loadingRevenue()) {
-          <div class="h-9 w-28 bg-navy-700 animate-pulse rounded"></div>
-        } @else if (summary()) {
-          <p class="font-serif text-4xl text-green-400">{{ formatCurrency(summary()!.revenueToday) }}</p>
-          <p class="text-xs text-green-400/50 mt-1">from confirmed bookings</p>
+        <div class="flex items-start justify-between mb-3">
+          <p class="text-xs uppercase tracking-widest text-cream-300/50">Total Bookings</p>
+          <div class="w-8 h-8 bg-green-400/10 rounded-lg flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          </div>
+        </div>
+        @if (loadingCharts()) {
+          <div class="h-9 w-20 bg-navy-700 animate-pulse rounded mb-1"></div>
         } @else {
-          <p class="font-serif text-4xl text-cream-300/30">—</p>
-          <p class="text-xs text-cream-300/30 mt-1">unavailable</p>
+          <p class="font-serif text-4xl text-green-400">{{ totalBookings() }}</p>
         }
+        <p class="text-xs text-green-400/50 mt-1">bookings recorded</p>
       </div>
 
-      <!-- Arrivals Today -->
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Arrivals Today</p>
-        <p class="font-serif text-4xl text-blue-400">{{ occupancy.arrivalsCount() }}</p>
-        <p class="text-xs text-blue-400/50 mt-1">expected check-ins</p>
-      </div>
-
-      <!-- Departures Today -->
-      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-br from-amber-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <p class="text-xs uppercase tracking-widest text-cream-300/50 mb-3">Departures Today</p>
-        <p class="font-serif text-4xl text-amber-400">{{ occupancy.departuresCount() }}</p>
-        <p class="text-xs text-amber-400/50 mt-1">expected check-outs</p>
+      <!-- Avg Booking Value -->
+      <div class="gsap-kpi-card bg-navy-800 border border-navy-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="flex items-start justify-between mb-3">
+          <p class="text-xs uppercase tracking-widest text-cream-300/50">Avg Booking Value</p>
+          <div class="w-8 h-8 bg-purple-400/10 rounded-lg flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+        </div>
+        @if (loadingCharts()) {
+          <div class="h-9 w-24 bg-navy-700 animate-pulse rounded mb-1"></div>
+        } @else {
+          <p class="font-serif text-4xl text-purple-400">{{ formatCurrency(avgBookingValue()) }}</p>
+        }
+        <p class="text-xs text-purple-400/50 mt-1">per booking</p>
       </div>
     </div>
 
-    <!-- Room Status Row -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Revenue Line Chart -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-serif text-lg text-cream-200">Revenue Trend</h2>
+          <a routerLink="/manager/reports" class="text-xs text-gold-400/60 hover:text-gold-400 transition-colors">
+            Full Report →
+          </a>
+        </div>
+        @if (loadingCharts()) {
+          <div class="h-52 bg-navy-700/40 animate-pulse rounded-lg"></div>
+        } @else if (revenueData().length === 0) {
+          <div class="h-52 flex items-center justify-center text-cream-300/30 text-sm">No revenue data available</div>
+        } @else {
+          <div class="h-52">
+            <canvas baseChart [data]="revenueChartData()" [options]="revenueChartOptions" type="line"></canvas>
+          </div>
+        }
+      </div>
+
+      <!-- Occupancy Bar Chart -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-serif text-lg text-cream-200">Occupancy by Period</h2>
+          <a routerLink="/manager/reports" class="text-xs text-gold-400/60 hover:text-gold-400 transition-colors">
+            Full Report →
+          </a>
+        </div>
+        @if (loadingCharts()) {
+          <div class="h-52 bg-navy-700/40 animate-pulse rounded-lg"></div>
+        } @else if (occupancyData().length === 0) {
+          <div class="h-52 flex items-center justify-center text-cream-300/30 text-sm">No occupancy data available</div>
+        } @else {
+          <div class="h-52">
+            <canvas baseChart [data]="occupancyChartData()" [options]="occupancyChartOptions" type="bar"></canvas>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Room Status Strip -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-3">
         <span class="w-2.5 h-2.5 rounded-full bg-green-400 shrink-0"></span>
         <div>
           <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().available }}</p>
           <p class="text-cream-300/40 text-xs">Available</p>
         </div>
       </div>
-      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-3">
         <span class="w-2.5 h-2.5 rounded-full bg-blue-400 shrink-0"></span>
         <div>
           <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().occupied }}</p>
           <p class="text-cream-300/40 text-xs">Occupied</p>
         </div>
       </div>
-      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-3">
         <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
         <div>
           <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().cleaning }}</p>
           <p class="text-cream-300/40 text-xs">Cleaning</p>
         </div>
       </div>
-      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-4">
+      <div class="bg-navy-800/60 border border-navy-700/60 rounded-lg px-5 py-4 flex items-center gap-3">
         <span class="w-2.5 h-2.5 rounded-full bg-red-400 shrink-0"></span>
         <div>
           <p class="text-cream-200 font-medium text-lg">{{ occupancy.stats().outOfService }}</p>
@@ -104,17 +176,85 @@
       </div>
     </div>
 
+    <!-- Today's Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Today's Arrivals -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-navy-700 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-green-400"></span>
+            <h2 class="font-serif text-lg text-cream-200">Today's Arrivals</h2>
+          </div>
+          <span class="text-xs text-gold-400 bg-gold-400/10 border border-gold-400/20 px-2.5 py-1 rounded-full">
+            {{ occupancy.arrivalsCount() }} expected
+          </span>
+        </div>
+        <div class="divide-y divide-navy-700/50 max-h-64 overflow-y-auto">
+          @if (occupancy.todayArrivals().length === 0) {
+            <div class="py-10 text-center text-cream-300/40 text-sm">
+              {{ occupancy.connected() ? 'No arrivals today.' : 'Connecting...' }}
+            </div>
+          }
+          @for (a of occupancy.todayArrivals(); track a.bookingId) {
+            <div class="px-6 py-3 flex items-center justify-between gap-4 hover:bg-navy-700/30 transition-colors">
+              <div class="min-w-0">
+                <p class="text-cream-200 text-sm font-medium truncate">{{ a.guestName }}</p>
+                <p class="text-cream-300/40 text-xs font-mono">{{ a.referenceNumber }} · {{ a.roomType }}</p>
+              </div>
+              <span class="shrink-0 text-xs px-2 py-0.5 rounded border"
+                    [class]="a.status === 'CheckedIn' ? 'text-green-400 border-green-400/20 bg-green-400/10' : 'text-blue-400 border-blue-400/20 bg-blue-400/10'">
+                {{ a.status }}
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Today's Departures -->
+      <div class="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-navy-700 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <h2 class="font-serif text-lg text-cream-200">Today's Departures</h2>
+          </div>
+          <span class="text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">
+            {{ occupancy.departuresCount() }} expected
+          </span>
+        </div>
+        <div class="divide-y divide-navy-700/50 max-h-64 overflow-y-auto">
+          @if (occupancy.todayDepartures().length === 0) {
+            <div class="py-10 text-center text-cream-300/40 text-sm">
+              {{ occupancy.connected() ? 'No departures today.' : 'Connecting...' }}
+            </div>
+          }
+          @for (d of occupancy.todayDepartures(); track d.bookingId) {
+            <div class="px-6 py-3 flex items-center justify-between gap-4 hover:bg-navy-700/30 transition-colors">
+              <div class="min-w-0">
+                <p class="text-cream-200 text-sm font-medium truncate">{{ d.guestName }}</p>
+                <p class="text-cream-300/40 text-xs font-mono">{{ d.referenceNumber }} · {{ d.roomType }}</p>
+              </div>
+              <span class="shrink-0 text-xs px-2 py-0.5 rounded border"
+                    [class]="d.status === 'CheckedOut' ? 'text-cream-300/60 border-navy-600 bg-navy-700' : 'text-green-400 border-green-400/20 bg-green-400/10'">
+                {{ d.status }}
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
     <!-- Navigation Cards -->
     <div>
-      <h2 class="font-serif text-xl text-cream-200 mb-4">Management</h2>
+      <h2 class="font-serif text-xl text-cream-200 mb-4">Management Tools</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         @for (link of navLinks; track link.path) {
           <a [routerLink]="link.path"
-             class="bg-navy-800 border border-navy-700 rounded-xl p-6 hover:border-gold-400/40 hover:bg-navy-750 transition-all group block">
+             class="gsap-nav-card bg-navy-800 border border-navy-700 rounded-xl p-6 hover:border-gold-400/40 transition-all duration-200 group block cursor-pointer">
             <svg class="w-6 h-6 text-gold-400/70 group-hover:text-gold-400 transition-colors mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" [attr.d]="link.icon"/>
             </svg>
-            <p class="text-cream-200 font-medium mb-1">{{ link.label }}</p>
+            <p class="text-cream-200 font-medium mb-1 group-hover:text-gold-400 transition-colors">{{ link.label }}</p>
             <p class="text-cream-300/40 text-xs leading-relaxed">{{ link.desc }}</p>
           </a>
         }

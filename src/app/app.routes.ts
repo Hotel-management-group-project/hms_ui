@@ -117,8 +117,10 @@ export const routes: Routes = [
         path: 'audit-logs',
         loadComponent: () => import('./pages/manager/audit-logs/audit-logs').then(m => m.AuditLogsComponent),
       },
-      // keep old settings path alive to avoid broken links
-      { path: 'settings', redirectTo: 'room-rates', pathMatch: 'full' },
+      {
+        path: 'settings',
+        loadComponent: () => import('./pages/manager/settings/settings').then(m => m.ManagerSettingsComponent),
+      },
     ],
   },
 
