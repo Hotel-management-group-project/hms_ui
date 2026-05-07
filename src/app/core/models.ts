@@ -15,8 +15,9 @@ export interface Hotel {
   location: string;
   address: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string | null;
   isActive: boolean;
+  roomCount?: number;
   createdAt: string;
 }
 
