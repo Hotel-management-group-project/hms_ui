@@ -1,4 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+// Student ID: S2401885
+// Student Name: Aiman Ahmed
+// Module: Advanced Software Development (UFCF8S-30-2)
+
+import { Component, inject, signal, afterNextRender, ElementRef } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import {
   ReactiveFormsModule,
@@ -10,11 +14,8 @@ import {
 import { AuthService } from '../../../core/services/auth.service';
 import { InactivityService } from '../../../core/services/inactivity.service';
 import { ToastService } from '../../../shared/components/toast/toast';
+import gsap from 'gsap';
 
-/**
- * Custom validator: password must contain uppercase, lowercase, digit,
- * and special character (HMS security policy — CLAUDE.md).
- */
 function passwordStrength(control: AbstractControl): ValidationErrors | null {
   const v: string = control.value || '';
   const errors: ValidationErrors = {};
@@ -23,6 +24,12 @@ function passwordStrength(control: AbstractControl): ValidationErrors | null {
   if (!/\d/.test(v))    errors['noDigit'] = true;
   if (!/[^A-Za-z0-9]/.test(v)) errors['noSpecial'] = true;
   return Object.keys(errors).length ? errors : null;
+}
+
+function passwordsMatch(group: AbstractControl): ValidationErrors | null {
+  const pw = group.get('password')?.value;
+  const confirm = group.get('confirmPassword')?.value;
+  return pw && confirm && pw !== confirm ? { passwordMismatch: true } : null;
 }
 
 @Component({
@@ -36,21 +43,41 @@ export class RegisterComponent {
   private inactivity = inject(InactivityService);
   private toast = inject(ToastService);
   private router = inject(Router);
+  private el = inject(ElementRef);
 
   readonly loading = signal(false);
   readonly showPassword = signal(false);
+  readonly showConfirm = signal(false);
 
-  readonly form = this.fb.nonNullable.group({
-    firstName: ['', [Validators.required, Validators.minLength(2)]],
-    lastName:  ['', [Validators.required, Validators.minLength(2)]],
-    email:     ['', [Validators.required, Validators.email]],
-    password:  ['', [Validators.required, Validators.minLength(8), passwordStrength]],
-  });
+  readonly form = this.fb.nonNullable.group(
+    {
+      firstName:       ['', [Validators.required, Validators.minLength(2)]],
+      lastName:        ['', [Validators.required, Validators.minLength(2)]],
+      email:           ['', [Validators.required, Validators.email]],
+      phoneNumber:     [''],
+      password:        ['', [Validators.required, Validators.minLength(8), passwordStrength]],
+      confirmPassword: ['', Validators.required],
+    },
+    { validators: passwordsMatch }
+  );
 
-  /** Password strength indicator (0–4 bars). */
+  constructor() {
+    afterNextRender(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const root = this.el.nativeElement as HTMLElement;
+      gsap.from(root.querySelectorAll('.gsap-reveal'), {
+        opacity: 0,
+        y: 28,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power3.out',
+        clearProps: 'all',
+      });
+    });
+  }
+
   get strengthBars(): boolean[] {
-    const ctrl = this.form.controls.password;
-    const v = ctrl.value || '';
+    const v = this.form.controls.password.value || '';
     if (v.length === 0) return [false, false, false, false];
     return [
       /[a-z]/.test(v),
@@ -75,8 +102,9 @@ export class RegisterComponent {
     }
 
     this.loading.set(true);
+    const { firstName, lastName, email, password, phoneNumber } = this.form.getRawValue();
 
-    this.auth.register(this.form.getRawValue()).subscribe({
+    this.auth.register({ firstName, lastName, email, password, phoneNumber }).subscribe({
       next: () => {
         this.loading.set(false);
         this.inactivity.start();
@@ -92,5 +120,9 @@ export class RegisterComponent {
 
   togglePassword(): void {
     this.showPassword.update(v => !v);
+  }
+
+  toggleConfirm(): void {
+    this.showConfirm.update(v => !v);
   }
 }

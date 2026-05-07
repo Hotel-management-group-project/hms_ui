@@ -57,7 +57,7 @@ export class CheckOutComponent implements OnInit {
   readonly ancillarySubtotal = computed(() => {
     const b = this.booking();
     if (!b?.ancillaryServices) return 0;
-    return b.ancillaryServices.reduce((sum, s) => sum + s.totalPrice, 0);
+    return b.ancillaryServices.reduce((sum: number, s) => sum + s.totalPrice, 0);
   });
 
   ngOnInit(): void {

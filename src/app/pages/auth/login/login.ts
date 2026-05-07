@@ -1,9 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
+// Student ID: S2401885
+// Student Name: Aiman Ahmed
+// Module: Advanced Software Development (UFCF8S-30-2)
+
+import { Component, inject, signal, afterNextRender, ElementRef } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { InactivityService } from '../../../core/services/inactivity.service';
 import { ToastService } from '../../../shared/components/toast/toast';
+import gsap from 'gsap';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +21,7 @@ export class LoginComponent {
   private inactivity = inject(InactivityService);
   private toast = inject(ToastService);
   private router = inject(Router);
+  private el = inject(ElementRef);
 
   readonly loading = signal(false);
   readonly showPassword = signal(false);
@@ -25,7 +31,21 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  /** Extract error message from backend response. */
+  constructor() {
+    afterNextRender(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const root = this.el.nativeElement as HTMLElement;
+      gsap.from(root.querySelectorAll('.gsap-reveal'), {
+        opacity: 0,
+        y: 28,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power3.out',
+        clearProps: 'all',
+      });
+    });
+  }
+
   private extractError(err: unknown): string {
     const e = err as { error?: { message?: string }; status?: number };
     if (e?.error?.message) return e.error.message;

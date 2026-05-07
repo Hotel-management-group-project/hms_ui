@@ -1,5 +1,5 @@
-// Student ID: WP1234567
-// Student Name: Mohamed Iyaadh Ahmed
+// Student ID: S2401885
+// Student Name: Aiman Ahmed
 // Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Component, inject, OnInit, signal } from '@angular/core';
@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
     phoneNumber: ['']
   });
 
-  readonly passwordForm = this.fb.group({
+  readonly passwordForm = this.fb.nonNullable.group({
     currentPassword: ['', Validators.required],
     newPassword: ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', Validators.required]
@@ -94,7 +94,7 @@ export class ProfileComponent implements OnInit {
     }
 
     this.updatingPassword.set(true);
-    const { currentPassword, newPassword } = this.passwordForm.value;
+    const { currentPassword, newPassword } = this.passwordForm.getRawValue();
 
     this.userService.changePassword({ currentPassword, newPassword }).subscribe({
       next: () => {
