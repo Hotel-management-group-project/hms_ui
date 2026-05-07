@@ -37,26 +37,27 @@
   <!-- Hero content — classes targeted by GSAP entrance animation -->
   <div class="hero-content relative z-10 text-center px-4 max-w-4xl mx-auto pt-20">
 
-    <p class="text-[#c9a96e] text-[0.65rem] font-medium tracking-[0.45em] uppercase font-sans mb-4">
+    <p class="text-[#c9a96e] text-[0.65rem] font-medium tracking-[0.45em] uppercase font-sans mb-4"
+       style="opacity:0">
       Welcome to
     </p>
 
     <h1 class="font-serif font-semibold mb-5"
-        style="color: #f5f0e8; font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1.02; letter-spacing: -0.015em;">
+        style="opacity:0; color: #f5f0e8; font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1.02; letter-spacing: -0.015em;">
       HMS Hotels
     </h1>
 
     <!-- Gold rule -->
-    <div class="mx-auto mb-6" style="width: 6rem; height: 1px;
+    <div class="mx-auto mb-6" style="opacity:0; width: 6rem; height: 1px;
          background: linear-gradient(90deg, transparent, #c9a96e 30%, #c9a96e 70%, transparent);"></div>
 
     <p class="font-sans font-light leading-relaxed max-w-xl mx-auto mb-10"
-       style="color: rgba(245,240,232,0.65); font-size: clamp(1rem, 2.2vw, 1.2rem);">
+       style="opacity:0; color: rgba(245,240,232,0.65); font-size: clamp(1rem, 2.2vw, 1.2rem);">
       Discover rooms crafted for comfort, elegance, and an unforgettable stay in the heart of Bristol.
     </p>
 
     <!-- CTA buttons — skill: cursor-pointer, hover feedback, focus states -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+    <div class="flex flex-col sm:flex-row gap-4 justify-center" style="opacity:0">
       <a
         routerLink="/guest/search"
         class="cursor-pointer inline-flex items-center justify-center gap-2.5

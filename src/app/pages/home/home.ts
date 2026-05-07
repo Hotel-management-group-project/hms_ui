@@ -56,21 +56,30 @@ export class HomeComponent implements OnDestroy {
   }
 
   private initAnimations() {
-    // Skill rule: respect prefers-reduced-motion
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero entrance — staggered, ease-out for entering elements (skill rule)
-    gsap.from('.hero-content > *', {
-      y: 32,
-      opacity: 0,
-      duration: 1.1,
-      stagger: 0.18,
-      ease: 'power3.out',
-      delay: 0.2,
-      clearProps: 'all',
-    });
+    // Skill rule: respect prefers-reduced-motion.
+    // Elements start at opacity:0 via HTML inline style — reveal them immediately.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set('.hero-content > *', { opacity: 1, y: 0 });
+      return;
+    }
+
+    // Hero entrance — fromTo so GSAP owns both start AND end state.
+    // Elements already have opacity:0 in HTML so there is no FOUC before this runs.
+    // No clearProps: GSAP keeps opacity:1 / y:0 inline after animation ends.
+    gsap.fromTo(
+      '.hero-content > *',
+      { y: 32, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1.1,
+        stagger: 0.18,
+        ease: 'power3.out',
+        delay: 0.2,
+      }
+    );
 
     // Scroll-triggered reveal for every .scroll-reveal element
     // skill rule: use transform/opacity, not width/height
