@@ -107,9 +107,11 @@ export class AuthService {
     if (!this.currentUser()) return false;
     const token = this.getToken();
     if (!token) return false;
-    // Token must not be expired
     const payload = this.decodeToken(token);
-    return payload !== null && payload.exp * 1000 > Date.now();
+    if (payload === null) return false;
+    // If exp is missing, trust the token — the server will reject it if expired
+    if (!payload.exp) return true;
+    return payload.exp * 1000 > Date.now();
   }
 
   hasRole(...roles: UserRole[]): boolean {
@@ -142,8 +144,12 @@ export class AuthService {
   /** Decode a JWT without a library (base64url → JSON). */
   decodeToken(token: string): JwtPayload | null {
     try {
-      const payload = token.split('.')[1];
-      const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+      const parts = token.split('.');
+      if (parts.length !== 3) return null;
+      // Convert base64url → base64 and restore padding
+      const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
+      const decoded = atob(padded);
       return JSON.parse(decoded) as JwtPayload;
     } catch {
       return null;
