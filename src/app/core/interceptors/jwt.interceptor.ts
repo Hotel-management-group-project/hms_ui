@@ -9,11 +9,11 @@ let isRefreshing = false;
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
 
-  // Never attach token to the refresh-token endpoint itself (prevents loop)
-  const isRefreshRequest = req.url.includes('/auth/refresh-token');
+  // Never attach token or attempt refresh on any auth endpoint
+  const isAuthRequest = req.url.includes('/api/auth/');
 
   const token = auth.getToken();
-  if (token && !isRefreshRequest) {
+  if (token && !isAuthRequest) {
     req = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` },
     });
@@ -21,8 +21,8 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      // Only attempt silent refresh on 401 and NOT during a refresh request
-      if (err.status === 401 && !isRefreshRequest && !isRefreshing) {
+      // Only attempt silent refresh on 401 for non-auth endpoints
+      if (err.status === 401 && !isAuthRequest && !isRefreshing) {
         isRefreshing = true;
         return auth.refreshToken().pipe(
           switchMap(res => {

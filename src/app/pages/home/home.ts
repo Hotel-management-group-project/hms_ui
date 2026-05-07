@@ -2,12 +2,10 @@ import { Component, OnDestroy, afterNextRender } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { NavbarComponent } from '../../shared/components/navbar/navbar';
-import { FooterComponent } from '../../shared/components/footer/footer';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, NavbarComponent, FooterComponent],
+  imports: [RouterLink],
   templateUrl: './home.html',
 })
 export class HomeComponent implements OnDestroy {
