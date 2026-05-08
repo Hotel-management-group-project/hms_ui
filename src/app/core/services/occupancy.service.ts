@@ -66,7 +66,7 @@ export class OccupancyService implements OnDestroy {
       .configureLogging(signalR.LogLevel.Warning)
       .build();
 
-    this.hub.on('OccupancyUpdate', (data: OccupancyStats) => {
+    this.hub.on('ReceiveOccupancyUpdate', (data: OccupancyStats) => {
       this.stats.set(data);
     });
 
@@ -90,7 +90,7 @@ export class OccupancyService implements OnDestroy {
       await this.hub.start();
       this.connected.set(true);
       // Request initial data push from hub
-      await this.hub.invoke('RequestOccupancySnapshot').catch(() => {});
+      await this.hub.invoke('RequestOccupancyUpdate').catch(() => {});
     } catch (err) {
       console.error('SignalR connection failed:', err);
     } finally {

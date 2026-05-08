@@ -29,7 +29,7 @@ export class PaymentService {
   }
 
   /** Get payment status for a booking */
-  getPaymentStatus(bookingId: string): Observable<Payment[]> {
-    return this.http.get<Payment[]>(`${this.api}/${bookingId}`);
+  getPaymentStatus(bookingId: string): Observable<Payment> {
+    return this.http.get<Payment>(`${this.api}/${bookingId}`);
   }
 }
