@@ -32,6 +32,12 @@ export const routes: Routes = [
     canActivate: [noAuthGuard],
     loadComponent: () => import('./pages/auth/register/register').then(m => m.RegisterComponent),
   },
+  {
+    path: 'auth/change-password',
+    title: 'HMS — Update Password',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/auth/change-password/change-password').then(m => m.ChangePasswordComponent),
+  },
 
   // Guest routes
   {
