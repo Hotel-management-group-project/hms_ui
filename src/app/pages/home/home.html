@@ -98,52 +98,37 @@
 
 
 <!-- ═══════════════════════════════════════
-     OUR PROPERTIES — Filtered hotel slider
-     Left sidebar tabs filter by tier; cards
-     scroll horizontally like a luxury portal
+     OUR PROPERTIES — Sun Siyam-style layout
+     Tab columns on left, portrait cards right
      ═══════════════════════════════════════ -->
-<section class="bg-surface overflow-hidden" aria-label="Our properties">
+<section class="bg-luxury overflow-hidden" aria-label="Our properties">
 
-  <!-- Section header -->
-  <div class="container-luxury pt-24 pb-10">
-    <div class="text-center scroll-reveal">
-      <p class="text-gold text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans mb-3">
-        Our Portfolio
-      </p>
-      <h2 class="font-serif text-ink mb-4" style="font-size: clamp(2rem, 4vw, 3rem);">
-        Our Properties
-      </h2>
-      <div style="width: 4rem; height: 1px; margin: 0 auto;
-           background: linear-gradient(90deg, transparent, var(--color-gold), transparent);"></div>
-      <p class="font-sans text-sm mt-4 text-ink-2/55 max-w-md mx-auto leading-relaxed">
-        Handpicked hotels across multiple locations — each one a world unto itself.
-      </p>
-    </div>
-  </div>
+  <!-- Main layout: tab columns + card slider, fills viewport height -->
+  <div class="flex" style="height: 85vh; min-height: 560px; max-height: 860px;">
 
-  <!-- Sidebar + slider layout -->
-  <div class="flex" style="height: 72vh; min-height: 500px; max-height: 720px;">
-
-    <!-- ── Left sidebar tabs ── -->
-    <div class="flex flex-col w-[68px] sm:w-[88px] shrink-0 border-r border-rim bg-surface">
+    <!-- ── Tab columns — each is a full-height vertical strip ── -->
+    <div class="flex shrink-0">
       @for (tab of tabs; track tab.id; let last = $last) {
         <button
           type="button"
           (click)="setTab(tab.id)"
-          class="relative flex flex-1 items-center justify-center cursor-pointer transition-colors duration-200"
-          [class.bg-raised]="activeTab() === tab.id"
-          [class.border-b]="!last"
-          [class.border-rim]="!last"
+          class="relative flex items-center justify-center cursor-pointer transition-all duration-300 group"
+          [class.border-r]="!last"
+          [class.border-rim]="true"
+          style="width: clamp(72px, 9vw, 116px);"
         >
-          <!-- Active indicator bar -->
+          <!-- Active: gold left-edge rule -->
           @if (activeTab() === tab.id) {
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-10 bg-gold rounded-l-full"></div>
+            <div class="absolute left-0 inset-y-0 w-[2px] bg-gold"></div>
           }
+
           <span
-            class="font-sans text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-semibold transition-colors duration-200 select-none px-1"
-            style="writing-mode: vertical-lr; transform: rotate(180deg);"
+            class="font-serif select-none transition-all duration-300 leading-none"
+            style="writing-mode: vertical-rl; transform: rotate(180deg); font-size: clamp(1.1rem, 1.6vw, 1.65rem);"
             [class.text-ink]="activeTab() === tab.id"
-            [class.text-ink-2]="activeTab() !== tab.id"
+            [class.font-semibold]="activeTab() === tab.id"
+            [class.text-ink-2/30]="activeTab() !== tab.id"
+            [class.group-hover:text-ink-2]="activeTab() !== tab.id"
           >
             {{ tab.label }}
           </span>
@@ -151,111 +136,97 @@
       }
     </div>
 
-    <!-- ── Slider area ── -->
-    <div class="relative flex-1 overflow-hidden bg-deep">
+    <!-- ── Card slider ── -->
+    <div class="relative flex-1 overflow-hidden">
 
-      <!-- Loading skeletons -->
+      <!-- Loading -->
       @if (hotelsLoading()) {
-        <div class="flex h-full gap-0.5">
-          @for (n of [1,2,3]; track n) {
-            <div class="h-full w-[420px] shrink-0 bg-raised animate-pulse"></div>
+        <div class="flex h-full items-center gap-6 px-10">
+          @for (n of [1, 2]; track n) {
+            <div class="shrink-0 bg-raised animate-pulse rounded-sm"
+                 style="width: 380px; height: 85%;"></div>
           }
         </div>
       }
 
-      <!-- Hotel cards -->
+      <!-- Cards -->
       @if (!hotelsLoading() && filteredHotels().length > 0) {
         <div
           #hotelSlider
-          class="flex h-full no-scrollbar"
+          class="flex h-full items-center gap-6 px-10 no-scrollbar"
           style="overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;"
         >
           @for (hotel of filteredHotels(); track hotel.id) {
             <div
-              class="relative shrink-0 h-full border-r border-rim group overflow-hidden"
-              style="width: 420px; scroll-snap-align: start;"
+              class="relative shrink-0 overflow-hidden group"
+              style="width: clamp(300px, 32vw, 460px); height: 88%; scroll-snap-align: start; border-radius: 2px;"
             >
               <!-- Background -->
-              <div class="absolute inset-0">
-                @if (hotel.imageUrl) {
-                  <!-- Real image: photo + dark cinematic overlay -->
-                  <img
-                    [src]="hotel.imageUrl"
-                    [alt]="hotel.name"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  >
-                  <div class="absolute inset-0" style="background: linear-gradient(
-                    to bottom,
-                    rgba(10,22,40,0.55) 0%,
-                    rgba(10,22,40,0.10) 35%,
-                    rgba(10,22,40,0.10) 55%,
-                    rgba(10,22,40,0.88) 100%
-                  );"></div>
-                } @else {
-                  <!-- Fallback: theme-aware surface with subtle HMS watermark -->
-                  <div class="w-full h-full bg-surface flex items-center justify-center">
-                    <span class="font-serif font-bold select-none pointer-events-none text-ink/[0.04]"
-                          style="font-size: 10rem;">HMS</span>
-                  </div>
-                }
-              </div>
+              @if (hotel.imageUrl) {
+                <img
+                  [src]="hotel.imageUrl"
+                  [alt]="hotel.name"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                >
+                <!-- Dark cinematic overlay — only on real images -->
+                <div class="absolute inset-0" style="background: linear-gradient(
+                  to bottom,
+                  rgba(5,13,26,0.38) 0%,
+                  rgba(5,13,26,0.05) 30%,
+                  rgba(5,13,26,0.05) 55%,
+                  rgba(5,13,26,0.72) 100%
+                );"></div>
+              } @else {
+                <!-- Fallback: theme-aware, subtle watermark -->
+                <div class="absolute inset-0 bg-surface/70 flex items-center justify-center">
+                  <span class="font-serif font-bold select-none pointer-events-none text-ink/[0.04]"
+                        style="font-size: clamp(6rem, 12vw, 11rem);">HMS</span>
+                </div>
+              }
 
-              <!-- Card content — text adapts: white on photos, ink on fallback -->
-              <div class="absolute inset-0 flex flex-col justify-between p-8">
+              <!-- Card content -->
+              <div class="absolute inset-0 flex flex-col justify-between py-10 px-8">
 
-                <!-- Top: brand label + tier badge -->
-                <div class="flex items-start justify-between">
-                  <p class="font-sans text-[10px] tracking-[0.38em] uppercase"
-                     [class.text-white]="hotel.imageUrl"
-                     [class.text-ink-2]="!hotel.imageUrl">
+                <!-- Brand + tier -->
+                <div class="text-center">
+                  <p class="font-sans text-[10px] tracking-[0.42em] uppercase mb-0.5"
+                     [class.text-white/65]="hotel.imageUrl"
+                     [class.text-ink-2/55]="!hotel.imageUrl">
                     HMS Hotels
                   </p>
-                  <span class="font-sans text-[9px] tracking-[0.22em] uppercase px-2.5 py-1 border"
-                        [class.border-gold]="hotel.tier === 'luxury'"
-                        [class.text-gold]="hotel.tier === 'luxury'"
-                        [class.border-rim]="hotel.tier !== 'luxury' && !hotel.imageUrl"
-                        [class.text-ink-2]="hotel.tier !== 'luxury' && !hotel.imageUrl"
-                        [class.border-white/30]="hotel.tier !== 'luxury' && hotel.imageUrl"
-                        [class.text-white]="hotel.tier !== 'luxury' && hotel.imageUrl">
-                    {{ hotel.tier === 'luxury' ? 'Luxury' : 'Lifestyle' }}
-                  </span>
                 </div>
 
-                <!-- Centre: hotel name + location -->
-                <div class="text-center space-y-3">
-                  <h3 class="font-serif font-bold leading-none"
+                <!-- Hotel name + arrow + tagline -->
+                <div class="text-center space-y-4">
+                  <h3 class="font-serif font-bold leading-[0.92]"
                       [class.text-white]="hotel.imageUrl"
                       [class.text-ink]="!hotel.imageUrl"
-                      style="font-size: clamp(2.2rem, 3.5vw, 3.2rem); letter-spacing: -0.01em;">
+                      style="font-size: clamp(2.8rem, 5vw, 4.4rem); letter-spacing: -0.015em;">
                     {{ hotel.name }}
                   </h3>
-                  <svg class="w-4 h-4 text-gold mx-auto opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/>
+
+                  <!-- Upward triangle -->
+                  <svg class="w-3 h-3 mx-auto text-gold opacity-85" viewBox="0 0 12 10" fill="currentColor">
+                    <path d="M6 0 L12 10 L0 10 Z"/>
                   </svg>
-                  <p class="font-sans text-[11px] tracking-[0.32em] uppercase"
-                     [class.text-white]="hotel.imageUrl"
-                     [class.text-ink-2]="!hotel.imageUrl">
+
+                  <p class="font-sans text-[11px] tracking-[0.35em] uppercase leading-relaxed"
+                     [class.text-white/75]="hotel.imageUrl"
+                     [class.text-ink-2/70]="!hotel.imageUrl">
                     {{ hotel.location }}
                   </p>
-                  @if (hotel.description) {
-                    <p class="font-sans text-xs max-w-[280px] mx-auto leading-relaxed line-clamp-2 mt-1"
-                       [class.text-white]="hotel.imageUrl"
-                       [class.text-ink-2]="!hotel.imageUrl">
-                      {{ hotel.description }}
-                    </p>
-                  }
                 </div>
 
-                <!-- Bottom: CTA buttons -->
-                <div class="flex gap-3">
+                <!-- Pill buttons -->
+                <div class="flex gap-4 justify-center">
                   <a
                     routerLink="/guest/search"
                     [queryParams]="{ hotelId: hotel.id }"
-                    class="flex-1 py-3.5 text-center font-sans text-[10px] tracking-[0.22em] uppercase transition-colors duration-200 cursor-pointer"
-                    [class.border]="true"
-                    [class.border-white/35]="hotel.imageUrl"
+                    class="px-7 py-2.5 rounded-full text-[10px] tracking-[0.22em] uppercase font-sans
+                           transition-colors duration-200 cursor-pointer border"
+                    [class.border-white/45]="hotel.imageUrl"
                     [class.text-white]="hotel.imageUrl"
-                    [class.hover:bg-white/10]="hotel.imageUrl"
+                    [class.hover:bg-white/12]="hotel.imageUrl"
                     [class.border-rim]="!hotel.imageUrl"
                     [class.text-ink]="!hotel.imageUrl"
                     [class.hover:bg-raised]="!hotel.imageUrl"
@@ -265,9 +236,14 @@
                   <a
                     routerLink="/guest/search"
                     [queryParams]="{ hotelId: hotel.id }"
-                    class="flex-1 py-3.5 text-center font-sans text-[10px] tracking-[0.22em] uppercase font-semibold
-                           bg-gold text-navy-900
-                           hover:bg-gold-300 transition-colors duration-200 cursor-pointer"
+                    class="px-7 py-2.5 rounded-full text-[10px] tracking-[0.22em] uppercase font-sans
+                           transition-colors duration-200 cursor-pointer border"
+                    [class.border-white/45]="hotel.imageUrl"
+                    [class.text-white]="hotel.imageUrl"
+                    [class.hover:bg-white/12]="hotel.imageUrl"
+                    [class.border-gold/60]="!hotel.imageUrl"
+                    [class.text-gold]="!hotel.imageUrl"
+                    [class.hover:bg-gold/10]="!hotel.imageUrl"
                   >
                     Book Now
                   </a>
@@ -277,46 +253,33 @@
           }
         </div>
 
-        <!-- Prev arrow -->
-        <button
-          type="button"
-          (click)="scrollPrev()"
-          aria-label="Previous property"
-          class="absolute left-4 top-1/2 -translate-y-1/2 z-10
-                 w-11 h-11 rounded-full
-                 bg-surface/80 backdrop-blur-sm border border-rim
-                 flex items-center justify-center text-ink
-                 hover:bg-raised hover:border-gold/40
-                 transition-all duration-200 cursor-pointer"
-        >
+        <!-- Prev / Next arrows -->
+        <button type="button" (click)="scrollPrev()" aria-label="Previous"
+          class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full
+                 bg-surface/75 backdrop-blur-sm border border-rim text-ink
+                 flex items-center justify-center
+                 hover:bg-raised hover:border-gold/40 transition-all duration-200 cursor-pointer">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
         </button>
-
-        <!-- Next arrow -->
-        <button
-          type="button"
-          (click)="scrollNext()"
-          aria-label="Next property"
-          class="absolute right-4 top-1/2 -translate-y-1/2 z-10
-                 w-11 h-11 rounded-full
-                 bg-surface/80 backdrop-blur-sm border border-rim
-                 flex items-center justify-center text-ink
-                 hover:bg-raised hover:border-gold/40
-                 transition-all duration-200 cursor-pointer"
-        >
+        <button type="button" (click)="scrollNext()" aria-label="Next"
+          class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full
+                 bg-surface/75 backdrop-blur-sm border border-rim text-ink
+                 flex items-center justify-center
+                 hover:bg-raised hover:border-gold/40 transition-all duration-200 cursor-pointer">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
         </button>
       }
 
-      <!-- Empty state (no hotels match the active filter) -->
+      <!-- Empty state -->
       @if (!hotelsLoading() && filteredHotels().length === 0) {
-        <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-ink-2/40">
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-ink-2/35">
           <svg class="w-10 h-10 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                  d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
           </svg>
           <p class="font-sans text-xs tracking-[0.3em] uppercase">No properties in this collection</p>
         </div>
@@ -324,14 +287,12 @@
     </div>
   </div>
 
-  <!-- View all link -->
-  <div class="text-center py-10 scroll-reveal">
-    <a
-      routerLink="/guest/search"
-      class="cursor-pointer inline-flex items-center gap-2 font-sans text-sm text-gold
-             tracking-[0.15em] uppercase transition-colors duration-200
-             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
-    >
+  <!-- Explore link -->
+  <div class="text-center py-8 scroll-reveal border-t border-rim">
+    <a routerLink="/guest/search"
+       class="cursor-pointer inline-flex items-center gap-2 font-sans text-sm text-gold
+              tracking-[0.15em] uppercase transition-colors duration-200
+              focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2">
       Explore All Properties
       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
