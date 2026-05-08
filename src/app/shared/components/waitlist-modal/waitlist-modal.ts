@@ -49,8 +49,8 @@ export class WaitlistModalComponent {
     this.loading.set(true);
 
     this.waitlistService.joinWaitlist({
-      hotelId: this.hotelId,
-      roomType: this.roomType,
+      hotelId: parseInt(this.hotelId, 10),
+      roomType: this.roomType.replace(/ /g, ''),
       checkInDate: this.checkInDate,
       checkOutDate: this.checkOutDate
     }).subscribe({

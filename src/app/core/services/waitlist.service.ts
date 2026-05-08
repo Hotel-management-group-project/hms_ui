@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { Waitlist } from '../models';
 
 export interface WaitlistRequest {
-  hotelId: string;
+  hotelId: number;
   roomType: string;
   checkInDate: string;
   checkOutDate: string;
