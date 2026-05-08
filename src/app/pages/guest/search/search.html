@@ -306,7 +306,9 @@
         @if (!loading() && rooms().length > 0) {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (room of rooms(); track room.id) {
-              <div class="room-card group bg-surface border border-rim rounded-2xl overflow-hidden hover:border-gold-500/40 transition-all duration-500 hover:shadow-[0_8px_40px_rgba(201,168,76,0.12)] flex flex-col cursor-pointer">
+              <a [routerLink]="['/guest/rooms', room.id]"
+                 [queryParams]="{ checkIn: form.value.checkIn, checkOut: form.value.checkOut }"
+                 class="room-card group bg-surface border border-rim rounded-2xl overflow-hidden hover:border-gold-500/40 transition-all duration-500 hover:shadow-[0_8px_40px_rgba(201,168,76,0.12)] flex flex-col cursor-pointer no-underline">
 
                 <!-- Image -->
                 <div class="aspect-[4/3] overflow-hidden relative">
@@ -358,15 +360,11 @@
                     {{ room.description }}
                   </p>
 
-                  <a
-                    [routerLink]="['/guest/rooms', room.id]"
-                    [queryParams]="{ checkIn: form.value.checkIn, checkOut: form.value.checkOut }"
-                    class="btn-secondary w-full py-2.5 text-center text-sm group-hover:border-gold-500/60 group-hover:text-gold-400 transition-colors duration-300"
-                  >
+                  <span class="btn-secondary w-full py-2.5 text-center text-sm group-hover:border-gold-500/60 group-hover:text-gold-400 transition-colors duration-300">
                     View Details &amp; Book
-                  </a>
+                  </span>
                 </div>
-              </div>
+              </a>
             }
           </div>
         }

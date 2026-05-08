@@ -18,9 +18,12 @@ export class RoomService {
     let params = new HttpParams();
     if (query.hotelId) params = params.set('hotelId', query.hotelId);
     if (query.type) params = params.set('type', query.type);
-    if (query.checkIn) params = params.set('checkIn', query.checkIn);
-    if (query.checkOut) params = params.set('checkOut', query.checkOut);
     if (query.capacity) params = params.set('capacity', query.capacity.toString());
+
+    if (query.checkIn && query.checkOut) {
+      params = params.set('checkIn', query.checkIn).set('checkOut', query.checkOut);
+      return this.http.get<Room[]>(`${this.api}/availability`, { params });
+    }
 
     return this.http.get<Room[]>(this.api, { params });
   }
