@@ -54,7 +54,7 @@ export class UserService {
   }
 
   setActive(id: string, isActive: boolean): Observable<User> {
-    return this.http.patch<User>(`${this.api}/${id}/active`, { isActive });
+    return this.http.patch<User>(`${this.api}/${id}/status`, { isActive });
   }
 
   delete(id: string): Observable<void> {
