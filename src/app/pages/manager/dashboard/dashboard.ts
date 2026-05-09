@@ -10,7 +10,7 @@ import type { ChartData, ChartOptions } from 'chart.js';
 import gsap from 'gsap';
 import { OccupancyService } from '../../../core/services/occupancy.service';
 import {
-  ReportService, DashboardSummary, RevenueDataPoint, OccupancyDataPoint,
+  ReportService, RevenueDataPoint, OccupancyDataPoint,
 } from '../../../core/services/report.service';
 
 Chart.register(...registerables);
@@ -24,10 +24,8 @@ export class ManagerDashboardComponent implements OnInit, OnDestroy {
   readonly occupancy = inject(OccupancyService);
   private reportService = inject(ReportService);
 
-  readonly summary = signal<DashboardSummary | null>(null);
   readonly revenueData = signal<RevenueDataPoint[]>([]);
   readonly occupancyData = signal<OccupancyDataPoint[]>([]);
-  readonly loadingKpi = signal(true);
   readonly loadingCharts = signal(true);
 
   // KPI computed values from monthly revenue data
@@ -129,11 +127,6 @@ export class ManagerDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.occupancy.connect();
-
-    this.reportService.getSummary().subscribe({
-      next: s => { this.summary.set(s); this.loadingKpi.set(false); },
-      error: () => this.loadingKpi.set(false),
-    });
 
     this.reportService.getRevenue('monthly').subscribe({
       next: d => { this.revenueData.set(d); this.loadingCharts.set(false); },

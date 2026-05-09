@@ -91,8 +91,11 @@ export class AdminDashboardComponent implements OnInit {
       next: hotels => this.totalHotels.set(hotels.length),
     });
 
-    this.reportService.getSummary().subscribe({
-      next: s => this.activeCheckIns.set(s.occupiedRooms),
+    this.reportService.getOccupancy('daily').subscribe({
+      next: data => {
+        const latest = data[data.length - 1];
+        this.activeCheckIns.set(latest?.occupied ?? 0);
+      },
     });
 
     this.reportService.getRevenue('monthly').subscribe({
