@@ -235,7 +235,10 @@ export class SearchComponent implements OnInit {
   }
 
   private toISO(d: Date): string {
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}T00:00:00`;
   }
 
   formatDate(d: Date | null): string {
@@ -292,7 +295,7 @@ export class SearchComponent implements OnInit {
         { opacity: 0, y: 36 },
         { opacity: 1, y: 0, duration: 0.55, stagger: 0.09, ease: 'power3.out', clearProps: 'opacity,transform' }
       );
-    }, 40);
+    }, 100);
   }
 
   openWaitlist() { this.showWaitlistModal.set(true); }

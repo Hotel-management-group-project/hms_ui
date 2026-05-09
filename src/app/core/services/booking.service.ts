@@ -12,8 +12,8 @@ export interface CreateBookingDto {
   hotelId: string;
   checkInDate: string;
   checkOutDate: string;
-  roomIds: string[];
-  ancillaryServices?: { serviceId: string; quantity: number }[];
+  roomIds: number[];
+  ancillaryServices: { serviceId: number; quantity: number }[];
 }
 
 @Injectable({ providedIn: 'root' })

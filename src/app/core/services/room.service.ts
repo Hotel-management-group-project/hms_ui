@@ -36,10 +36,11 @@ export class RoomService {
 
   /** Check availability for a specific hotel and date range */
   checkAvailability(hotelId: string, checkIn: string, checkOut: string): Observable<Room[]> {
+    const iso = (d: string) => d.includes('T') ? d : `${d}T00:00:00`;
     let params = new HttpParams()
       .set('hotelId', hotelId)
-      .set('checkIn', checkIn)
-      .set('checkOut', checkOut);
+      .set('checkIn', iso(checkIn))
+      .set('checkOut', iso(checkOut));
     return this.http.get<Room[]>(`${this.api}/availability`, { params });
   }
 

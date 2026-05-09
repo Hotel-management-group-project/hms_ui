@@ -167,16 +167,16 @@ export class BookingComponent implements OnInit {
 
     this.submitting.set(true);
 
-    const selectedAncillaries = this.ancillaryServices()
-      .filter(s => s.selected)
-      .map(s => ({ serviceId: s.id, quantity: s.quantity }));
+    const iso = (s: string) => s.includes('T') ? s : `${s}T00:00:00`;
 
     this.bookingService.createBooking({
       hotelId: r.hotelId,
-      checkInDate: this.checkIn(),
-      checkOutDate: this.checkOut(),
-      roomIds: [r.id],
-      ancillaryServices: selectedAncillaries
+      checkInDate: iso(this.checkIn()),
+      checkOutDate: iso(this.checkOut()),
+      roomIds: [Number(r.id)],
+      ancillaryServices: this.ancillaryServices()
+        .filter(s => s.selected)
+        .map(s => ({ serviceId: Number(s.id), quantity: s.quantity })),
     }).subscribe({
       next: (booking) => {
         this.submitting.set(false);
