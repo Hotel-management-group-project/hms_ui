@@ -21,9 +21,9 @@ export interface AuditLog {
 
 export interface PagedResult<T> {
   items: T[];
-  total: number;
+  totalCount: number;
   page: number;
-  limit: number;
+  pageSize: number;
 }
 
 @Injectable({ providedIn: 'root' })

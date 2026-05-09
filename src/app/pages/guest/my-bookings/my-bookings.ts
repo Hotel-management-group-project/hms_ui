@@ -96,10 +96,7 @@ export class MyBookingsComponent implements OnInit {
   // ── Cancel Modal ──────────────────────────────────────────
   private getFirstNightPrice(booking: Booking): number {
     const room = booking.rooms?.[0];
-    if (room) {
-      const month = new Date(booking.checkInDate).getMonth() + 1;
-      return [6, 7, 8, 12].includes(month) ? room.pricePeak : room.priceOffPeak;
-    }
+    if (room) return room.pricePerNight;
     const nights = Math.max(1, Math.ceil(
       (new Date(booking.checkOutDate).getTime() - new Date(booking.checkInDate).getTime()) / 86400000
     ));

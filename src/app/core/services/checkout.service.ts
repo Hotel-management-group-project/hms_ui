@@ -5,7 +5,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Booking } from '../models';
 
 export interface CheckOutResponse {
@@ -25,12 +25,14 @@ export class CheckOutService {
     return this.http.post<CheckOutResponse>(`${this.api}/${bookingId}`, {});
   }
 
-  /** Look up a checked-in booking by reference number */
+  /** Look up a checked-in booking by reference number — filters client-side; backend ignores referenceNumber param */
   findCheckedIn(referenceNumber: string): Observable<Booking[]> {
-    const params = new HttpParams()
-      .set('referenceNumber', referenceNumber)
-      .set('status', 'CheckedIn');
-    return this.http.get<Booking[]>(this.bookingsApi, { params });
+    const params = new HttpParams().set('status', 'CheckedIn');
+    return this.http.get<Booking[]>(this.bookingsApi, { params }).pipe(
+      map(bookings => bookings.filter(b =>
+        b.referenceNumber.toLowerCase().includes(referenceNumber.toLowerCase())
+      ))
+    );
   }
 
   /** Download invoice for a booking */

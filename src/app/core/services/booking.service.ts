@@ -37,8 +37,8 @@ export class BookingService {
   }
 
   /** Cancel a booking (returns cancellation fee logic from backend if applicable) */
-  cancelBooking(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.api}/${id}`);
+  cancelBooking(id: string): Observable<Booking> {
+    return this.http.delete<Booking>(`${this.api}/${id}`);
   }
 
   /** Get the QR code URL for check-in */

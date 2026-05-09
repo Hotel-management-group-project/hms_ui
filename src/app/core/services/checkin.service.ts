@@ -3,13 +3,13 @@
 // Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Booking } from '../models';
 
 export interface QrScanRequest {
-  qrData: string;
+  referenceNumber: string;
 }
 
 export interface CheckInResponse {
@@ -24,8 +24,8 @@ export class CheckInService {
   private bookingsApi = `${environment.apiUrl}/api/bookings`;
 
   /** Scan a QR code and get the associated booking */
-  scanQr(qrData: string): Observable<Booking> {
-    return this.http.post<Booking>(`${this.api}/scan`, { qrData });
+  scanQr(referenceNumber: string): Observable<Booking> {
+    return this.http.post<Booking>(`${this.api}/scan`, { referenceNumber });
   }
 
   /** Confirm check-in for a booking */
@@ -33,9 +33,12 @@ export class CheckInService {
     return this.http.post<CheckInResponse>(`${this.api}/${bookingId}`, {});
   }
 
-  /** Look up a booking by reference number (staff search) */
+  /** Look up a booking by reference number — filters client-side; backend GetAll ignores referenceNumber param */
   findByReference(referenceNumber: string): Observable<Booking[]> {
-    const params = new HttpParams().set('referenceNumber', referenceNumber);
-    return this.http.get<Booking[]>(this.bookingsApi, { params });
+    return this.http.get<Booking[]>(this.bookingsApi).pipe(
+      map(bookings => bookings.filter(b =>
+        b.referenceNumber.toLowerCase().includes(referenceNumber.toLowerCase())
+      ))
+    );
   }
 }

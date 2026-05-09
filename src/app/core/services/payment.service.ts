@@ -18,14 +18,21 @@ export interface PaymentRequest {
   cvv?: string;
 }
 
+export interface PaymentResponseDto {
+  success: boolean;
+  message: string;
+  payment: Payment;
+  bookingStatus: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
   private http = inject(HttpClient);
   protected api = `${environment.apiUrl}/api/payments`;
 
   /** Process a payment (Mock gateway) */
-  processPayment(data: PaymentRequest): Observable<Payment> {
-    return this.http.post<Payment>(`${this.api}/process`, data);
+  processPayment(data: PaymentRequest): Observable<PaymentResponseDto> {
+    return this.http.post<PaymentResponseDto>(`${this.api}/process`, data);
   }
 
   /** Get payment status for a booking */

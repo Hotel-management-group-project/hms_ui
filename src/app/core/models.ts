@@ -47,6 +47,14 @@ export interface Room {
   createdAt: string;
 }
 
+export interface BookingRoomDto {
+  roomId: string;
+  roomNumber: string;
+  roomType: RoomType;
+  floor: number;
+  pricePerNight: number;
+}
+
 export interface BookingAncillaryService {
   id: string;
   serviceId: string;
@@ -66,7 +74,7 @@ export interface Booking {
   status: BookingStatus;
   cancellationFee?: number;
   qrCodeUrl?: string;
-  rooms: Room[];
+  rooms?: BookingRoomDto[];
   ancillaryServices?: BookingAncillaryService[];
   createdAt: string;
   updatedAt: string;

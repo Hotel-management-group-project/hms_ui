@@ -162,10 +162,10 @@
             <div class="mb-6">
               <p class="text-xs uppercase tracking-widest text-ink-2/50 mb-3">Assigned Rooms</p>
               <div class="flex flex-wrap gap-2">
-                @for (room of b.rooms; track room.id) {
+                @for (room of b.rooms; track room.roomId) {
                   <div class="bg-deep border border-rim-2 rounded-lg px-4 py-2 text-sm">
                     <span class="text-gold-400 font-mono">Room {{ room.roomNumber }}</span>
-                    <span class="text-ink-2/50 ml-2">{{ room.type }} · Floor {{ room.floor }}</span>
+                    <span class="text-ink-2/50 ml-2">{{ room.roomType }} · Floor {{ room.floor }}</span>
                   </div>
                 }
               </div>

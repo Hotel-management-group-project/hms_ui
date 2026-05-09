@@ -59,7 +59,7 @@ export class OccupancyService implements OnDestroy {
 
   constructor() {
     this.hub = new signalR.HubConnectionBuilder()
-      .withUrl(`${environment.signalRUrl}/occupancy`, {
+      .withUrl(`${environment.signalRUrl}/hubs/occupancy`, {
         accessTokenFactory: () => localStorage.getItem('access_token') ?? '',
       })
       .withAutomaticReconnect()
@@ -83,14 +83,14 @@ export class OccupancyService implements OnDestroy {
     this.hub.onclose(() => this.connected.set(false));
   }
 
-  async connect(): Promise<void> {
+  async connect(hotelId = 1): Promise<void> {
     if (this.hub.state !== signalR.HubConnectionState.Disconnected) return;
     this.connecting.set(true);
     try {
       await this.hub.start();
       this.connected.set(true);
       // Request initial data push from hub
-      await this.hub.invoke('RequestOccupancyUpdate').catch(() => {});
+      await this.hub.invoke('RequestOccupancyUpdate', hotelId).catch(() => {});
     } catch (err) {
       console.error('SignalR connection failed:', err);
     } finally {

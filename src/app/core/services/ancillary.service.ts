@@ -11,7 +11,7 @@ import { AncillaryService } from '../models';
 @Injectable({ providedIn: 'root' })
 export class AncillaryServiceService {
   private http = inject(HttpClient);
-  protected api = `${environment.apiUrl}/api/ancillaryservices`;
+  protected api = `${environment.apiUrl}/api/ancillary-services`;
 
   /** Get all available ancillary services (e.g. Airport Transfer, Spa Access) */
   getAncillaryServices(): Observable<AncillaryService[]> {

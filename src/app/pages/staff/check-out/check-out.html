@@ -103,17 +103,16 @@
 
               <!-- Room charges -->
               @if (b.rooms && b.rooms.length > 0) {
-                @for (room of b.rooms; track room.id) {
+                @for (room of b.rooms; track room.roomId) {
                   <div class="flex justify-between items-start text-sm">
                     <div>
-                      <p class="text-ink">{{ room.type }} — Room {{ room.roomNumber }}</p>
+                      <p class="text-ink">{{ room.roomType }} — Room {{ room.roomNumber }}</p>
                       <p class="text-ink-2/50 text-xs mt-0.5">
-                        £{{ isPeak() ? room.pricePeak : room.priceOffPeak }} × {{ nights() }} nights
-                        <span class="ml-1 text-gold-400/60">{{ isPeak() ? '(peak)' : '(off-peak)' }}</span>
+                        £{{ room.pricePerNight }} × {{ nights() }} nights
                       </p>
                     </div>
                     <span class="text-ink font-medium">
-                      £{{ (isPeak() ? room.pricePeak : room.priceOffPeak) * nights() }}
+                      £{{ room.pricePerNight * nights() }}
                     </span>
                   </div>
                 }

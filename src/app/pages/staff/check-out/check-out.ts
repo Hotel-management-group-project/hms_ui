@@ -49,7 +49,7 @@ export class CheckOutComponent implements OnInit {
     const b = this.booking();
     if (!b || !b.rooms || b.rooms.length === 0) return 0;
     return b.rooms.reduce((sum, r) => {
-      const rate = this.isPeak() ? r.pricePeak : r.priceOffPeak;
+      const rate = r.pricePerNight;
       return sum + rate * this.nights();
     }, 0);
   });

@@ -79,7 +79,7 @@
                 Room{{ b.rooms.length > 1 ? 's' : '' }}
               </p>
               <div class="space-y-3">
-                @for (room of b.rooms; track room.id) {
+                @for (room of b.rooms; track room.roomId) {
                   <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
                       <div class="w-8 h-8 rounded-lg bg-raised flex items-center justify-center shrink-0">
@@ -88,8 +88,8 @@
                         </svg>
                       </div>
                       <div>
-                        <p class="text-ink text-sm font-medium">Room {{ room.roomNumber }} — {{ room.type }}</p>
-                        <p class="text-ink-2/40 text-xs">Floor {{ room.floor }} · Up to {{ room.capacity }} guests</p>
+                        <p class="text-ink text-sm font-medium">Room {{ room.roomNumber }} — {{ room.roomType }}</p>
+                        <p class="text-ink-2/40 text-xs">Floor {{ room.floor }}</p>
                       </div>
                     </div>
                   </div>
