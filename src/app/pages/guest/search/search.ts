@@ -259,6 +259,10 @@ export class SearchComponent implements OnInit {
   // ── Search ─────────────────────────────────────────────
 
   onSearch() {
+    if (this.checkInDate() && !this.checkOutDate()) {
+      this.openCalendar('checkOut');
+      return;
+    }
     this.loading.set(true);
     this.searched.set(true);
     this.closeCalendar();
