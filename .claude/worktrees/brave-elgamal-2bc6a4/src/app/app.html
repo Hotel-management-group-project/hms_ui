@@ -1,0 +1,15 @@
+@if (showNavbar()) {
+  <app-navbar />
+}
+
+@if (isRouteLoading()) {
+  <app-loading [fullscreen]="true" message="Loading..." />
+}
+
+<router-outlet />
+
+@if (showFooter()) {
+  <app-footer />
+}
+
+<app-toast />

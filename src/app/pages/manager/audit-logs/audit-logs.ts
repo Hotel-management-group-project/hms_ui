@@ -50,7 +50,7 @@ export class AuditLogsComponent implements OnInit {
     ).subscribe({
       next: result => {
         this.logs.set(result.items);
-        this.total.set(result.totalCount);
+        this.total.set(result.total);
         this.loading.set(false);
       },
       error: () => { this.error.set('Failed to load audit logs.'); this.loading.set(false); },

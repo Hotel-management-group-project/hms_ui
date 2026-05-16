@@ -1,8 +1,8 @@
 
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Booking } from '../models';
 
 export interface QrScanRequest {
@@ -30,12 +30,9 @@ export class CheckInService {
     return this.http.post<CheckInResponse>(`${this.api}/${bookingId}`, {});
   }
 
-  /** Look up a booking by reference number — filters client-side; backend GetAll ignores referenceNumber param */
+  /** Look up a booking by reference number — backend filters server-side via ?referenceNumber= */
   findByReference(referenceNumber: string): Observable<Booking[]> {
-    return this.http.get<Booking[]>(this.bookingsApi).pipe(
-      map(bookings => bookings.filter(b =>
-        b.referenceNumber.toLowerCase().includes(referenceNumber.toLowerCase())
-      ))
-    );
+    const params = new HttpParams().set('referenceNumber', referenceNumber);
+    return this.http.get<Booking[]>(this.bookingsApi, { params });
   }
 }
