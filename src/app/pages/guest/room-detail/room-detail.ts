@@ -1,6 +1,3 @@
-// Student ID: S2401885
-// Student Name: Aiman Ahmed
-// Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Component, inject, OnInit, signal, computed, afterNextRender, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';

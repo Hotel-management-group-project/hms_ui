@@ -1,6 +1,3 @@
-// Student ID: WP1234567
-// Student Name: Mohamed Iyaadh Ahmed
-// Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';

@@ -1,6 +1,3 @@
-// Student ID: S2401885
-// Student Name: Aiman Ahmed
-// Module: Advanced Software Development (UFCF8S-30-2)
 
 export type UserRole = 'Guest' | 'FrontDesk' | 'Manager' | 'Admin';
 
