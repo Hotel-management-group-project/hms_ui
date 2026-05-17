@@ -72,6 +72,15 @@ export class HomeComponent implements OnDestroy {
     return index % 2 === 0 ? 'luxury' : 'lifestyle';
   }
 
+  getHotelImage(hotel: DisplayHotel): string | null {
+    if (hotel.imageUrl) return hotel.imageUrl;
+    const text = (hotel.name + ' ' + hotel.location).toLowerCase();
+    if (text.includes('london') || text.includes('grand')) return '/assets/images/london-1.jpg';
+    if (text.includes('maldives') || text.includes('everblue')) return '/assets/images/maldives-1.jpg';
+    if (text.includes('paris') || text.includes('maison')) return '/assets/images/paris-1.jpg';
+    return null;
+  }
+
   setTab(tab: HotelTier) {
     this.activeTab.set(tab);
     this.sliderRef?.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });

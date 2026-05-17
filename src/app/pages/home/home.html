@@ -15,7 +15,7 @@
     loop
     playsinline
     aria-hidden="true"
-    poster="/assets/hero-poster.jpg"
+    poster="/assets/images/london-1.jpg"
   >
     <source src="/assets/hero-video.mp4" type="video/mp4">
   </video>
@@ -161,16 +161,21 @@
           style="overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;"
         >
           @for (hotel of filteredHotels(); track hotel.id) {
+            @let hotelImg = getHotelImage(hotel);
             <div
               class="relative shrink-0 overflow-hidden group"
               style="width: clamp(300px, 32vw, 460px); height: 88%; scroll-snap-align: start; border-radius: 2px;"
             >
               <!-- Background -->
-              @if (hotel.imageUrl) {
+              @if (hotelImg) {
                 <img
-                  [src]="hotel.imageUrl"
+                  #cardImg
+                  [src]="hotelImg"
                   [alt]="hotel.name"
-                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 opacity-0"
+                  style="transition: opacity 0.6s ease, transform 0.7s ease;"
+                  (load)="cardImg.style.opacity = '1'"
+                  loading="lazy"
                 >
                 <!-- Dark cinematic overlay — only on real images -->
                 <div class="absolute inset-0" style="background: linear-gradient(
@@ -194,8 +199,8 @@
                 <!-- Brand + tier -->
                 <div class="text-center">
                   <p class="font-sans text-[10px] tracking-[0.42em] uppercase mb-0.5"
-                     [class.text-white/65]="hotel.imageUrl"
-                     [class.text-ink-2/55]="!hotel.imageUrl">
+                     [class.text-white/65]="hotelImg"
+                     [class.text-ink-2/55]="!hotelImg">
                     HMS Hotels
                   </p>
                 </div>
@@ -203,8 +208,8 @@
                 <!-- Hotel name + arrow + tagline -->
                 <div class="text-center space-y-4">
                   <h3 class="font-serif font-bold leading-[0.92]"
-                      [class.text-white]="hotel.imageUrl"
-                      [class.text-ink]="!hotel.imageUrl"
+                      [class.text-white]="hotelImg"
+                      [class.text-ink]="!hotelImg"
                       style="font-size: clamp(2.8rem, 5vw, 4.4rem); letter-spacing: -0.015em;">
                     {{ hotel.name }}
                   </h3>
@@ -215,8 +220,8 @@
                   </svg>
 
                   <p class="font-sans text-[11px] tracking-[0.35em] uppercase leading-relaxed"
-                     [class.text-white/75]="hotel.imageUrl"
-                     [class.text-ink-2/70]="!hotel.imageUrl">
+                     [class.text-white/75]="hotelImg"
+                     [class.text-ink-2/70]="!hotelImg">
                     {{ hotel.location }}
                   </p>
                 </div>
@@ -228,12 +233,12 @@
                     [queryParams]="{ hotelId: hotel.id }"
                     class="px-7 py-2.5 rounded-full text-[10px] tracking-[0.22em] uppercase font-sans
                            transition-colors duration-200 cursor-pointer border"
-                    [class.border-white/45]="hotel.imageUrl"
-                    [class.text-white]="hotel.imageUrl"
-                    [class.hover:bg-white/12]="hotel.imageUrl"
-                    [class.border-rim]="!hotel.imageUrl"
-                    [class.text-ink]="!hotel.imageUrl"
-                    [class.hover:bg-raised]="!hotel.imageUrl"
+                    [class.border-white/45]="hotelImg"
+                    [class.text-white]="hotelImg"
+                    [class.hover:bg-white/12]="hotelImg"
+                    [class.border-rim]="!hotelImg"
+                    [class.text-ink]="!hotelImg"
+                    [class.hover:bg-raised]="!hotelImg"
                   >
                     View Hotel
                   </a>
@@ -242,12 +247,12 @@
                     [queryParams]="{ hotelId: hotel.id }"
                     class="px-7 py-2.5 rounded-full text-[10px] tracking-[0.22em] uppercase font-sans
                            transition-colors duration-200 cursor-pointer border"
-                    [class.border-white/45]="hotel.imageUrl"
-                    [class.text-white]="hotel.imageUrl"
-                    [class.hover:bg-white/12]="hotel.imageUrl"
-                    [class.border-gold/60]="!hotel.imageUrl"
-                    [class.text-gold]="!hotel.imageUrl"
-                    [class.hover:bg-gold/10]="!hotel.imageUrl"
+                    [class.border-white/45]="hotelImg"
+                    [class.text-white]="hotelImg"
+                    [class.hover:bg-white/12]="hotelImg"
+                    [class.border-gold/60]="!hotelImg"
+                    [class.text-gold]="!hotelImg"
+                    [class.hover:bg-gold/10]="!hotelImg"
                   >
                     Book Now
                   </a>

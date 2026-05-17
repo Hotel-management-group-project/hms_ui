@@ -13,11 +13,14 @@
 
   @if (!loading() && room(); as r) {
     <!-- Hero gallery — full width -->
-    <div class="relative h-[55vh] md:h-[65vh] overflow-hidden gsap-reveal">
+    <div class="relative h-[55vh] md:h-[65vh] overflow-hidden gsap-reveal bg-raised">
       <img
-        [src]="r.imageUrls[0] || 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1400&auto=format&fit=crop'"
+        #heroImg
+        [src]="getRoomImage(r, 0)"
         [alt]="r.type"
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover opacity-0"
+        style="transition: opacity 0.7s ease;"
+        (load)="heroImg.style.opacity = '1'"
       >
       <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/30 to-transparent"></div>
 
@@ -48,18 +51,26 @@
 
     <!-- Side image strip (below hero on mobile, hidden on sm) -->
     <div class="hidden md:grid grid-cols-2 gap-3 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 -mt-20 relative z-10 gsap-reveal">
-      <div class="aspect-video overflow-hidden rounded-xl">
+      <div class="aspect-video overflow-hidden rounded-xl bg-raised">
         <img
-          [src]="r.imageUrls[1] || 'https://images.unsplash.com/photo-1582719478250-c89404bb8a0e?q=80&w=800&auto=format&fit=crop'"
+          #sideImg1
+          [src]="getRoomImage(r, 1)"
           [alt]="r.type"
-          class="w-full h-full object-cover"
+          class="w-full h-full object-cover opacity-0"
+          style="transition: opacity 0.6s ease 0.15s;"
+          (load)="sideImg1.style.opacity = '1'"
+          loading="lazy"
         >
       </div>
-      <div class="aspect-video overflow-hidden rounded-xl">
+      <div class="aspect-video overflow-hidden rounded-xl bg-raised">
         <img
-          [src]="r.imageUrls[2] || 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800&auto=format&fit=crop'"
+          #sideImg2
+          [src]="getRoomImage(r, 2)"
           [alt]="r.type"
-          class="w-full h-full object-cover"
+          class="w-full h-full object-cover opacity-0"
+          style="transition: opacity 0.6s ease 0.25s;"
+          (load)="sideImg2.style.opacity = '1'"
+          loading="lazy"
         >
       </div>
     </div>

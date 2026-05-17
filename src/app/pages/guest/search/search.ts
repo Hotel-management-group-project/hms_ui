@@ -303,4 +303,15 @@ export class SearchComponent implements OnInit {
   getDisplayPrice(room: Room): number {
     return this.isPeakSeason() ? room.pricePeak : room.priceOffPeak;
   }
+
+  private readonly ROOM_IMAGES: Record<string, string> = {
+    'Standard Double': '/assets/images/standard-double.jpg',
+    'Deluxe King':     '/assets/images/deluxe-king.jpg',
+    'Family Suite':    '/assets/images/family-suite.jpg',
+    'Penthouse':       '/assets/images/penthouse.jpg',
+  };
+
+  getRoomImage(room: Room): string {
+    return room.imageUrls?.[0] || this.ROOM_IMAGES[room.type] || '/assets/images/standard-double.jpg';
+  }
 }

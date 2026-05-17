@@ -137,6 +137,19 @@ export class RoomDetailComponent implements OnInit {
     );
   }
 
+  private readonly ROOM_IMAGES: Record<string, string[]> = {
+    'Standard Double': ['/assets/images/standard-double.jpg', '/assets/images/deluxe-king.jpg',    '/assets/images/family-suite.jpg'],
+    'Deluxe King':     ['/assets/images/deluxe-king.jpg',     '/assets/images/standard-double.jpg', '/assets/images/penthouse.jpg'],
+    'Family Suite':    ['/assets/images/family-suite.jpg',    '/assets/images/standard-double.jpg', '/assets/images/deluxe-king.jpg'],
+    'Penthouse':       ['/assets/images/penthouse.jpg',       '/assets/images/pool.jpg',             '/assets/images/family-suite.jpg'],
+  };
+
+  getRoomImage(room: Room, index = 0): string {
+    return room.imageUrls?.[index]
+      || this.ROOM_IMAGES[room.type]?.[index]
+      || '/assets/images/standard-double.jpg';
+  }
+
   today(): string {
     return new Date().toISOString().split('T')[0];
   }
