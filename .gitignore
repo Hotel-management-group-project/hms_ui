@@ -45,3 +45,4 @@ Thumbs.db
 
 # Claude Code worktrees (internal tool artifacts — never commit)
 .claude/worktrees/
+.claude/worktrees/
