@@ -1,11 +1,10 @@
 <!-- Home Page — HMS Hotel -->
 
 <!-- ═══════════════════════════════════════════
-     HERO — Full-screen video with dark overlay
-     Always dark — overlay uses fixed navy values, not theme tokens
+     HERO — Full-screen video with theme-aware overlay
      ═══════════════════════════════════════════ -->
 <section
-  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-navy-900"
+  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury"
   aria-label="Hero section"
 >
   <!-- Video background (drop hero-video.mp4 into public/assets/) -->
@@ -21,8 +20,13 @@
     <source src="/assets/hero-video.mp4" type="video/mp4">
   </video>
 
-  <!-- Multi-layer dark overlay — fixed navy values so it stays dark in both themes -->
-  <div class="absolute inset-0" aria-hidden="true"
+  <!-- Overlay — dark in dark mode for video contrast, subtle in light mode -->
+  <div class="absolute inset-0 dark:hidden" aria-hidden="true"
+       style="background: linear-gradient(180deg,
+         rgba(10,22,40,0.08) 0%,
+         rgba(10,22,40,0.04) 50%,
+         rgba(10,22,40,0.12) 100%);"></div>
+  <div class="absolute inset-0 hidden dark:block" aria-hidden="true"
        style="background: linear-gradient(180deg,
          rgba(10,22,40,0.75) 0%,
          rgba(10,22,40,0.55) 50%,
@@ -40,7 +44,7 @@
       Welcome to
     </p>
 
-    <h1 class="font-serif font-semibold text-cream mb-5"
+    <h1 class="font-serif font-semibold text-ink mb-5"
         style="opacity:0; font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1.02; letter-spacing: -0.015em;">
       HMS Hotels
     </h1>
@@ -49,7 +53,7 @@
     <div class="mx-auto mb-6" style="opacity:0; width: 6rem; height: 1px;
          background: linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent);"></div>
 
-    <p class="font-sans font-light leading-relaxed max-w-xl mx-auto mb-10 text-cream/65"
+    <p class="font-sans font-light leading-relaxed max-w-xl mx-auto mb-10 text-ink-2/70"
        style="opacity:0; font-size: clamp(1rem, 2.2vw, 1.2rem);">
       Discover rooms crafted for comfort, elegance, and an unforgettable stay in the heart of Bristol.
     </p>
@@ -78,7 +82,7 @@
                border border-gold/50
                transition-all duration-300
                hover:bg-gold/10
-               focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-navy-900"
+               focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-[--color-bg]"
         aria-label="Explore our room types"
       >
         Explore Rooms
@@ -399,15 +403,12 @@
 
 <!-- ═══════════════════════════════════════
      CTA BANNER
-     Always dark — fixed navy gradient, branded section
+     Theme-aware — uses bg-luxury which switches cream ↔ navy
      ═══════════════════════════════════════ -->
 <section
-  class="relative py-28 overflow-hidden scroll-reveal"
+  class="relative py-28 overflow-hidden scroll-reveal bg-luxury"
   aria-label="Call to action"
 >
-  <!-- Gradient background — always dark navy -->
-  <div class="absolute inset-0" aria-hidden="true"
-       style="background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 50%, var(--color-navy) 100%);"></div>
   <!-- Diagonal gold accent line -->
   <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
     <div style="position: absolute; top: -20%; left: 50%; width: 1px; height: 140%;
@@ -419,12 +420,12 @@
     <p class="text-gold text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans">
       Start Your Journey
     </p>
-    <h2 class="font-serif text-cream" style="font-size: clamp(2rem, 5vw, 3.5rem);">
+    <h2 class="font-serif text-ink" style="font-size: clamp(2rem, 5vw, 3.5rem);">
       Ready for Your Stay?
     </h2>
     <div style="width: 4rem; height: 1px; margin: 0 auto;
          background: linear-gradient(90deg, transparent, var(--color-gold), transparent);"></div>
-    <p class="font-sans font-light max-w-lg mx-auto leading-relaxed text-cream/55"
+    <p class="font-sans font-light max-w-lg mx-auto leading-relaxed text-ink-2/70"
        style="font-size: 1.05rem;">
       Create a free account, browse our rooms, and reserve your perfect stay in seconds.
     </p>
@@ -434,7 +435,7 @@
              px-12 py-4 font-semibold text-sm tracking-[0.18em] uppercase font-sans
              bg-gold text-navy shadow-gold
              transition-all duration-200
-             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-navy-900"
+             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-[--color-bg]"
       aria-label="Create a free HMS account"
     >
       Create Account
