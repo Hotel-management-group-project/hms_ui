@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RoomService } from '../../../core/services/room.service';
 import { HotelService } from '../../../core/services/hotel.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Room, Hotel } from '../../../core/models';
 import { WaitlistModalComponent } from '../../../shared/components/waitlist-modal/waitlist-modal';
 import gsap from 'gsap';
@@ -26,6 +27,7 @@ export class SearchComponent implements OnInit {
   private fb = inject(FormBuilder);
   private roomService = inject(RoomService);
   private hotelService = inject(HotelService);
+  readonly auth = inject(AuthService);
 
   readonly hotels = signal<Hotel[]>([]);
   readonly rooms = signal<Room[]>([]);

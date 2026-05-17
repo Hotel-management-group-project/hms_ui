@@ -361,7 +361,11 @@
                   </p>
 
                   <span class="btn-secondary w-full py-2.5 text-center text-sm group-hover:border-gold-500/60 group-hover:text-gold-400 transition-colors duration-300">
-                    View Details &amp; Book
+                    @if (auth.isAuthenticated()) {
+                      View Details &amp; Book
+                    } @else {
+                      Sign in to Book
+                    }
                   </span>
                 </div>
               </a>

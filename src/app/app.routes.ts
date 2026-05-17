@@ -39,22 +39,24 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/auth/change-password/change-password').then(m => m.ChangePasswordComponent),
   },
 
-  // Guest routes
+  // Public browsing routes (no auth required)
+  {
+    path: 'guest/search',
+    title: 'HMS — Search Rooms',
+    loadComponent: () => import('./pages/guest/search/search').then(m => m.SearchComponent),
+  },
+  {
+    path: 'guest/rooms/:id',
+    title: 'HMS — Room Details',
+    loadComponent: () => import('./pages/guest/room-detail/room-detail').then(m => m.RoomDetailComponent),
+  },
+
+  // Guest routes (auth required)
   {
     path: 'guest',
     canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'search', pathMatch: 'full' },
-      {
-        path: 'search',
-        title: 'HMS — Search Rooms',
-        loadComponent: () => import('./pages/guest/search/search').then(m => m.SearchComponent),
-      },
-      {
-        path: 'rooms/:id',
-        title: 'HMS — Room Details',
-        loadComponent: () => import('./pages/guest/room-detail/room-detail').then(m => m.RoomDetailComponent),
-      },
       {
         path: 'booking',
         title: 'HMS — Book Your Stay',

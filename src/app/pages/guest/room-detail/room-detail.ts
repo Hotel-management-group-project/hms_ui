@@ -5,6 +5,7 @@ import { RoomService } from '../../../core/services/room.service';
 import { AncillaryServiceService } from '../../../core/services/ancillary.service';
 import { BookingService } from '../../../core/services/booking.service';
 import { ToastService } from '../../../shared/components/toast/toast';
+import { AuthService } from '../../../core/services/auth.service';
 import { Room, AncillaryService } from '../../../core/models';
 import gsap from 'gsap';
 
@@ -23,6 +24,7 @@ export class RoomDetailComponent implements OnInit {
   private bookingService = inject(BookingService);
   private toast = inject(ToastService);
   private el = inject(ElementRef);
+  readonly auth = inject(AuthService);
 
   readonly room = signal<Room | null>(null);
   readonly loading = signal(true);
@@ -140,6 +142,11 @@ export class RoomDetailComponent implements OnInit {
   }
 
   confirmBooking() {
+    if (!this.auth.isAuthenticated()) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
     const r = this.room();
     if (!r) return;
 
