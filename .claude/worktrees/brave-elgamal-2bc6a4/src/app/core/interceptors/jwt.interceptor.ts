@@ -9,10 +9,8 @@ let isRefreshing = false;
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
 
-  // Public auth endpoints that must never carry a token (they ARE the auth flow).
-  // logout is intentionally excluded: the backend requires [Authorize] to identify
-  // the user and revoke their refresh cookie; without the Bearer token it 401s silently.
-  const isPublicAuth = ['/api/auth/login', '/api/auth/register', '/api/auth/refresh-token']
+  // Public auth endpoints that must never carry a token (they ARE the auth flow)
+  const isPublicAuth = ['/api/auth/login', '/api/auth/register', '/api/auth/refresh-token', '/api/auth/logout']
     .some(path => req.url.includes(path));
 
   // Any /api/auth/ endpoint — authenticated ones (e.g. change-password) get the

@@ -1,0 +1,266 @@
+<!-- Register — HMS Hotels -->
+<div class="min-h-screen flex">
+
+  <!-- Left panel — branding -->
+  <div class="hidden lg:flex lg:w-[45%] xl:w-1/2 flex-col items-center justify-center relative overflow-hidden bg-luxury px-12">
+    <!-- Decorative rings -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-gold-400/10"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-gold-400/15"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] rounded-full border border-gold-400/20"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center space-y-6 gsap-reveal">
+      <a routerLink="/home" class="inline-block">
+        <span class="font-serif text-6xl xl:text-7xl tracking-[0.15em] text-gradient-gold">HMS</span>
+      </a>
+      <div class="w-24 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto"></div>
+      <p class="font-serif text-xl text-ink-2/80 italic tracking-wide leading-relaxed max-w-xs">
+        Begin your journey<br>with us today.
+      </p>
+    </div>
+
+    <p class="absolute bottom-10 text-center text-ink-2/30 text-xs tracking-[0.2em] uppercase gsap-reveal">
+      Advanced Software Development · UWE Bristol
+    </p>
+  </div>
+
+  <!-- Right panel — form -->
+  <div class="flex-1 flex flex-col items-center justify-center px-6 sm:px-12 py-16 bg-surface overflow-y-auto">
+
+    <!-- Mobile logo -->
+    <div class="lg:hidden mb-8 text-center gsap-reveal">
+      <a routerLink="/home">
+        <span class="font-serif text-4xl tracking-wider text-gradient-gold">HMS</span>
+      </a>
+    </div>
+
+    <div class="w-full max-w-md space-y-8">
+
+      <!-- Heading -->
+      <div class="space-y-2 gsap-reveal">
+        <p class="text-gold-400 text-xs tracking-[0.3em] uppercase font-semibold">Join Us</p>
+        <h1 class="font-serif text-4xl text-ink">Create Account</h1>
+        <div class="w-10 h-px bg-gradient-to-r from-gold-400 to-transparent mt-3"></div>
+      </div>
+
+      <!-- Form -->
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        novalidate
+        class="space-y-5"
+      >
+        <!-- Name row -->
+        <div class="grid grid-cols-2 gap-4 gsap-reveal">
+          <div>
+            <label for="reg-first" class="label text-ink-2">First name</label>
+            <input
+              id="reg-first"
+              type="text"
+              formControlName="firstName"
+              class="input"
+              placeholder="John"
+              autocomplete="given-name"
+              [class.border-red-500]="form.controls.firstName.touched && form.controls.firstName.invalid"
+            />
+            @if (form.controls.firstName.touched && form.controls.firstName.hasError('required')) {
+              <p class="text-red-400 text-xs mt-1.5">Required.</p>
+            }
+          </div>
+          <div>
+            <label for="reg-last" class="label text-ink-2">Last name</label>
+            <input
+              id="reg-last"
+              type="text"
+              formControlName="lastName"
+              class="input"
+              placeholder="Smith"
+              autocomplete="family-name"
+              [class.border-red-500]="form.controls.lastName.touched && form.controls.lastName.invalid"
+            />
+            @if (form.controls.lastName.touched && form.controls.lastName.hasError('required')) {
+              <p class="text-red-400 text-xs mt-1.5">Required.</p>
+            }
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="gsap-reveal">
+          <label for="reg-email" class="label text-ink-2">Email address</label>
+          <input
+            id="reg-email"
+            type="email"
+            formControlName="email"
+            class="input"
+            placeholder="you@example.com"
+            autocomplete="email"
+            [class.border-red-500]="form.controls.email.touched && form.controls.email.invalid"
+          />
+          @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+            <p class="text-red-400 text-xs mt-1.5">Email is required.</p>
+          }
+          @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+            <p class="text-red-400 text-xs mt-1.5">Enter a valid email address.</p>
+          }
+        </div>
+
+        <!-- Phone -->
+        <div class="gsap-reveal">
+          <label for="reg-phone" class="label text-ink-2">
+            Phone number
+            <span class="text-ink-2/40 font-normal ml-1">(optional)</span>
+          </label>
+          <input
+            id="reg-phone"
+            type="tel"
+            formControlName="phoneNumber"
+            class="input"
+            placeholder="+44 7700 900000"
+            autocomplete="tel"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="gsap-reveal">
+          <label for="reg-password" class="label text-ink-2">Password</label>
+          <div class="relative">
+            <input
+              id="reg-password"
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              class="input pr-11"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              [class.border-red-500]="form.controls.password.touched && form.controls.password.invalid"
+            />
+            <button
+              type="button"
+              (click)="togglePassword()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-2/40 hover:text-ink-2/70 transition-colors"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+            >
+              @if (showPassword()) {
+                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12c1.292 4.338 5.31 7.5 10.066 7.5.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"/>
+                </svg>
+              } @else {
+                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                </svg>
+              }
+            </button>
+          </div>
+
+          <!-- Strength bars -->
+          @if (form.controls.password.value) {
+            <div class="flex gap-1.5 mt-2.5">
+              @for (filled of strengthBars; track $index) {
+                <div
+                  class="h-1 flex-1 rounded-full transition-all duration-300"
+                  [class]="filled ? 'bg-gold-400' : 'bg-raised'"
+                ></div>
+              }
+            </div>
+          }
+
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <div class="space-y-1 mt-2">
+              @if (form.controls.password.hasError('required')) {
+                <p class="text-red-400 text-xs">Password is required.</p>
+              }
+              @if (form.controls.password.hasError('minlength')) {
+                <p class="text-red-400 text-xs">At least 8 characters.</p>
+              }
+              @if (form.controls.password.hasError('noUppercase')) {
+                <p class="text-red-400 text-xs">Include an uppercase letter.</p>
+              }
+              @if (form.controls.password.hasError('noLowercase')) {
+                <p class="text-red-400 text-xs">Include a lowercase letter.</p>
+              }
+              @if (form.controls.password.hasError('noDigit')) {
+                <p class="text-red-400 text-xs">Include a number.</p>
+              }
+              @if (form.controls.password.hasError('noSpecial')) {
+                <p class="text-red-400 text-xs">Include a special character (!&#64;#$%…).</p>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Confirm password -->
+        <div class="gsap-reveal">
+          <label for="reg-confirm" class="label text-ink-2">Confirm password</label>
+          <div class="relative">
+            <input
+              id="reg-confirm"
+              [type]="showConfirm() ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              class="input pr-11"
+              placeholder="••••••••"
+              autocomplete="new-password"
+              [class.border-red-500]="form.controls.confirmPassword.touched && (form.controls.confirmPassword.invalid || form.hasError('passwordMismatch'))"
+            />
+            <button
+              type="button"
+              (click)="toggleConfirm()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-2/40 hover:text-ink-2/70 transition-colors"
+              [attr.aria-label]="showConfirm() ? 'Hide password' : 'Show password'"
+            >
+              @if (showConfirm()) {
+                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12c1.292 4.338 5.31 7.5 10.066 7.5.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"/>
+                </svg>
+              } @else {
+                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                </svg>
+              }
+            </button>
+          </div>
+          @if (form.controls.confirmPassword.touched && form.hasError('passwordMismatch')) {
+            <p class="text-red-400 text-xs mt-1.5">Passwords do not match.</p>
+          }
+          @if (form.controls.confirmPassword.touched && form.controls.confirmPassword.hasError('required')) {
+            <p class="text-red-400 text-xs mt-1.5">Please confirm your password.</p>
+          }
+        </div>
+
+        <!-- Submit -->
+        <div class="gsap-reveal pt-1">
+          <button
+            type="submit"
+            class="btn-primary w-full py-4 text-base tracking-wide"
+            [disabled]="loading()"
+          >
+            @if (loading()) {
+              <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Creating account…</span>
+            } @else {
+              <span>Create Account</span>
+            }
+          </button>
+        </div>
+
+        <!-- Login link -->
+        <p class="text-center text-ink-2/50 text-sm gsap-reveal">
+          Already have an account?
+          <a routerLink="/auth/login" class="text-gold-400 hover:text-gold-300 transition-colors ml-1">Sign in</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

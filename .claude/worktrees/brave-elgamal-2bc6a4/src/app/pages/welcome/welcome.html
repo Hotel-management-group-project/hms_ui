@@ -1,0 +1,130 @@
+<!-- Welcome Page — HMS Hotel Door Animation -->
+<div
+  class="fixed inset-0 overflow-hidden select-none bg-navy-900"
+  role="main"
+  aria-label="HMS Hotels welcome screen"
+>
+
+  <!-- ── HMS content revealed behind doors ── -->
+  <div
+    class="hms-content absolute inset-0 flex flex-col items-center justify-center z-0 pointer-events-none"
+    aria-hidden="true"
+  >
+    <div class="text-center px-4 space-y-5">
+      <p class="text-gold text-[0.65rem] font-medium tracking-[0.45em] uppercase font-sans">
+        Est. 2025
+      </p>
+
+      <!-- Large serif HMS logotype -->
+      <h1
+        class="font-serif font-bold text-gold leading-none"
+        style="font-size: clamp(5.5rem, 20vw, 16rem); letter-spacing: -0.025em;"
+      >
+        HMS
+      </h1>
+
+      <!-- Gold rule -->
+      <div class="w-28 h-px mx-auto"
+           style="background: linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent);"></div>
+
+      <!-- Tagline fades in slightly after title -->
+      <p class="hms-tagline font-sans font-light tracking-[0.18em] uppercase text-cream/65"
+         style="font-size: clamp(0.7rem, 2vw, 0.95rem);">
+        Where luxury meets comfort
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Door system — perspective wrapper ── -->
+  <div
+    class="absolute inset-0 z-10 flex"
+    style="perspective: 1400px; perspective-origin: 50% 50%;"
+    aria-hidden="true"
+  >
+
+    <!-- Left door -->
+    <div
+      class="door-left relative w-1/2 h-full flex-shrink-0 bg-navy-800"
+      style="backface-visibility: hidden; will-change: transform;"
+    >
+      <!-- Outer decorative border -->
+      <div class="absolute inset-5 pointer-events-none border border-gold/[0.12]"></div>
+      <!-- Inner panel inset -->
+      <div class="absolute inset-9 pointer-events-none border border-gold/[0.06]"></div>
+
+      <!-- Top & bottom gold accent lines -->
+      <div class="absolute top-0 inset-x-0 h-px"
+           style="background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);"></div>
+      <div class="absolute bottom-0 inset-x-0 h-px"
+           style="background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);"></div>
+
+      <!-- Door handle — right edge (near centre seam) -->
+      <div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-0.5">
+        <div class="w-0.5 h-7 rounded-full"
+             style="background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);"></div>
+        <div class="w-3 h-3 rounded-full"
+             style="background: radial-gradient(circle at 35% 35%, var(--color-gold-light), var(--color-gold-dark)); box-shadow: 0 1px 4px rgba(0,0,0,0.6);"></div>
+        <div class="w-0.5 h-7 rounded-full"
+             style="background: linear-gradient(180deg, var(--color-gold-dark) 0%, var(--color-gold) 100%);"></div>
+      </div>
+    </div>
+
+    <!-- Right door -->
+    <div
+      class="door-right relative w-1/2 h-full flex-shrink-0 bg-navy-800"
+      style="backface-visibility: hidden; will-change: transform;"
+    >
+      <!-- Outer decorative border -->
+      <div class="absolute inset-5 pointer-events-none border border-gold/[0.12]"></div>
+      <!-- Inner panel inset -->
+      <div class="absolute inset-9 pointer-events-none border border-gold/[0.06]"></div>
+
+      <!-- Top & bottom gold accent lines -->
+      <div class="absolute top-0 inset-x-0 h-px"
+           style="background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);"></div>
+      <div class="absolute bottom-0 inset-x-0 h-px"
+           style="background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);"></div>
+
+      <!-- Door handle — left edge (near centre seam) -->
+      <div class="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-0.5">
+        <div class="w-0.5 h-7 rounded-full"
+             style="background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);"></div>
+        <div class="w-3 h-3 rounded-full"
+             style="background: radial-gradient(circle at 35% 35%, var(--color-gold-light), var(--color-gold-dark)); box-shadow: 0 1px 4px rgba(0,0,0,0.6);"></div>
+        <div class="w-0.5 h-7 rounded-full"
+             style="background: linear-gradient(180deg, var(--color-gold-dark) 0%, var(--color-gold) 100%);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Centre seam gold line ── -->
+  <div
+    class="door-seam absolute top-0 left-1/2 z-20 w-px h-full pointer-events-none -translate-x-px"
+    style="background: linear-gradient(180deg, transparent 0%, rgba(201,168,76,0.55) 15%, rgba(201,168,76,0.55) 85%, transparent 100%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- ── Skip / Enter button ── -->
+  @if (animating()) {
+    <button
+      (click)="enter()"
+      class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 cursor-pointer
+             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-4
+             focus:ring-offset-navy-900"
+      aria-label="Skip animation and enter HMS"
+      type="button"
+    >
+      <span class="flex items-center gap-2.5 px-9 py-3.5 border border-gold/45
+                   text-gold text-xs font-medium tracking-[0.25em] uppercase font-sans
+                   transition-all duration-300
+                   hover:bg-gold/10">
+        Enter
+        <!-- Arrow right SVG -->
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+        </svg>
+      </span>
+    </button>
+  }
+</div>

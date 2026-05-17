@@ -1,0 +1,138 @@
+<!-- Admin Dashboard -->
+<div class="min-h-screen bg-luxury pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto space-y-8">
+
+    <!-- Header -->
+    <div>
+      <p class="text-red-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1">System Administrator</p>
+      <h1 class="font-serif text-4xl text-ink">Admin Dashboard</h1>
+      <p class="text-ink-2/40 text-sm mt-1">{{ today }}</p>
+    </div>
+
+    <!-- KPI Stat Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <!-- Total Users -->
+      <div class="gsap-stat-card bg-surface border border-rim rounded-xl p-5 hover:border-blue-400/30 transition-colors">
+        <div class="flex items-start justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-400/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+        </div>
+        @if (loadingStats()) {
+          <div class="h-8 w-16 bg-raised animate-pulse rounded mb-1"></div>
+        } @else {
+          <p class="font-serif text-3xl text-blue-400">{{ totalUsers() }}</p>
+        }
+        <p class="text-ink-2/50 text-xs uppercase tracking-widest mt-1">Total Users</p>
+      </div>
+
+      <!-- Total Hotels -->
+      <div class="gsap-stat-card bg-surface border border-rim rounded-xl p-5 hover:border-gold-400/30 transition-colors">
+        <div class="flex items-start justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-gold-400/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+        </div>
+        <p class="font-serif text-3xl text-gold-400">{{ totalHotels() }}</p>
+        <p class="text-ink-2/50 text-xs uppercase tracking-widest mt-1">Hotels</p>
+      </div>
+
+      <!-- Bookings This Month -->
+      <div class="gsap-stat-card bg-surface border border-rim rounded-xl p-5 hover:border-green-400/30 transition-colors">
+        <div class="flex items-start justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-green-400/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+        </div>
+        <p class="font-serif text-3xl text-green-400">{{ bookingsThisMonth() }}</p>
+        <p class="text-ink-2/50 text-xs uppercase tracking-widest mt-1">Bookings / Month</p>
+      </div>
+
+      <!-- Active Check-ins -->
+      <div class="gsap-stat-card bg-surface border border-rim rounded-xl p-5 hover:border-purple-400/30 transition-colors">
+        <div class="flex items-start justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-purple-400/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </div>
+        </div>
+        <p class="font-serif text-3xl text-purple-400">{{ activeCheckIns() }}</p>
+        <p class="text-ink-2/50 text-xs uppercase tracking-widest mt-1">Active Check-ins</p>
+      </div>
+    </div>
+
+    <!-- Main grid: Recent Logs + Quick Nav -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Recent Audit Logs -->
+      <div class="lg:col-span-2 bg-surface border border-rim rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-rim flex items-center justify-between">
+          <h2 class="font-serif text-lg text-ink">Recent Activity</h2>
+          <a routerLink="/manager/audit-logs"
+             class="text-xs text-gold-400 hover:text-gold-300 transition-colors cursor-pointer">
+            View all →
+          </a>
+        </div>
+
+        @if (loadingLogs()) {
+          <div class="p-4 space-y-3">
+            @for (i of [1,2,3,4,5]; track i) {
+              <div class="h-10 bg-raised/50 animate-pulse rounded"></div>
+            }
+          </div>
+        } @else if (recentLogs().length === 0) {
+          <div class="p-12 text-center text-ink-2/40 text-sm">No audit log entries found.</div>
+        } @else {
+          <div class="divide-y divide-rim/50">
+            @for (log of recentLogs(); track log.id) {
+              <div class="px-6 py-3 flex items-start gap-4 hover:bg-raised/20 transition-colors">
+                <div class="shrink-0 pt-0.5">
+                  <span class="text-xs px-2 py-0.5 rounded border font-medium" [class]="actionClass(log.action)">
+                    {{ log.action }}
+                  </span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-ink text-xs truncate">{{ log.userEmail }}</p>
+                  @if (log.entityType) {
+                    <p class="text-ink-2/40 text-xs">{{ log.entityType }} · {{ log.entityId | slice:0:8 }}…</p>
+                  }
+                </div>
+                <p class="text-ink-2/30 text-xs shrink-0 whitespace-nowrap">{{ log.createdAt | date:'dd MMM HH:mm' }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Quick Navigation -->
+      <div class="space-y-3">
+        <h2 class="font-serif text-lg text-ink px-1">System Tools</h2>
+        @for (link of navLinks; track link.path) {
+          <a [routerLink]="link.path"
+             class="gsap-nav-card flex items-start gap-4 p-4 rounded-xl border transition-all hover:scale-[1.01] cursor-pointer"
+             [class]="link.border + ' ' + link.bg + ' hover:border-opacity-60'">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                 [class]="link.bg.replace('/5', '/15')">
+              <svg class="w-4 h-4" [class]="link.color" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="link.icon"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-ink text-sm font-medium">{{ link.label }}</p>
+              <p class="text-ink-2/40 text-xs mt-0.5">{{ link.desc }}</p>
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>
