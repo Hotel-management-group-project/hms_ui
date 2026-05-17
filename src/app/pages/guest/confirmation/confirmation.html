@@ -131,7 +131,7 @@
           @if (qrCodeUrl()) {
             <div class="px-8 py-7 flex flex-col items-center gap-4 border-b border-rim">
               <p class="text-xs uppercase tracking-widest text-ink-2/40">Check-in QR Code</p>
-              <div class="bg-white p-4 rounded-xl shadow-lg">
+              <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg">
                 <img [src]="qrCodeUrl()" alt="Check-in QR Code" class="w-44 h-44 object-contain">
               </div>
               <p class="text-ink-2/30 text-xs text-center max-w-xs">
