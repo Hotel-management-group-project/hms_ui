@@ -1,7 +1,8 @@
 
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { AuditLogService, AuditLog } from '../../../core/services/audit-log.service';
 
 const ACTIONS = ['Login', 'Logout', 'BookingCreated', 'BookingCancelled', 'CheckIn', 'CheckOut', 'PaymentProcessed', 'PasswordChanged', 'UserCreated', 'UserDeactivated'];
@@ -11,8 +12,10 @@ const ACTIONS = ['Login', 'Logout', 'BookingCreated', 'BookingCancelled', 'Check
   imports: [FormsModule, DatePipe],
   templateUrl: './audit-logs.html',
 })
-export class AuditLogsComponent implements OnInit {
+export class AuditLogsComponent implements OnInit, OnDestroy {
   private auditLogService = inject(AuditLogService);
+  private destroy$ = new Subject<void>();
+  private userInput$ = new Subject<void>();
 
   readonly logs = signal<AuditLog[]>([]);
   readonly loading = signal(false);
@@ -32,7 +35,15 @@ export class AuditLogsComponent implements OnInit {
   readonly actions = ACTIONS;
 
   ngOnInit(): void {
+    this.userInput$
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(() => this.loadLogs(true));
     this.loadLogs();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadLogs(resetPage = false): void {
@@ -50,7 +61,7 @@ export class AuditLogsComponent implements OnInit {
     ).subscribe({
       next: result => {
         this.logs.set(result.items);
-        this.total.set(result.totalCount);
+        this.total.set(result.total);
         this.loading.set(false);
       },
       error: () => { this.error.set('Failed to load audit logs.'); this.loading.set(false); },
@@ -67,6 +78,10 @@ export class AuditLogsComponent implements OnInit {
     if (this.page() >= this.totalPages) return;
     this.page.update(p => p + 1);
     this.loadLogs();
+  }
+
+  onUserFilterChange(): void {
+    this.userInput$.next();
   }
 
   clearFilters(): void {

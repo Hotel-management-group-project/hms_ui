@@ -25,9 +25,9 @@
         </div>
 
         <div>
-          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-2">User (email/ID)</label>
-          <input type="text" [(ngModel)]="filterUser" (ngModelChange)="loadLogs(true)"
-                 placeholder="Search by user..."
+          <label class="block text-ink-2/60 text-xs uppercase tracking-widest mb-2">User ID</label>
+          <input type="text" [(ngModel)]="filterUser" (ngModelChange)="onUserFilterChange()"
+                 placeholder="Paste user ID..."
                  class="w-full bg-deep border border-rim-2 text-ink placeholder-cream-300/30 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-400/60">
         </div>
 
@@ -118,7 +118,7 @@
                       </span>
                     </td>
                     <td class="px-6 py-3">
-                      <p class="text-ink text-xs truncate max-w-[160px]">{{ log.userEmail }}</p>
+                      <p class="text-ink text-xs truncate max-w-[160px]">{{ log.userName }}</p>
                     </td>
                     <td class="px-6 py-3 hidden md:table-cell">
                       @if (log.entityType) {

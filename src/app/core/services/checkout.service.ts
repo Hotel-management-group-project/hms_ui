@@ -22,13 +22,11 @@ export class CheckOutService {
     return this.http.post<CheckOutResponse>(`${this.api}/${bookingId}`, {});
   }
 
-  /** Look up a checked-in booking by reference number — filters client-side; backend ignores referenceNumber param */
+  /** Look up checked-in bookings by reference number — backend filters by reference, client filters by status */
   findCheckedIn(referenceNumber: string): Observable<Booking[]> {
-    const params = new HttpParams().set('status', 'CheckedIn');
+    const params = new HttpParams().set('referenceNumber', referenceNumber);
     return this.http.get<Booking[]>(this.bookingsApi, { params }).pipe(
-      map(bookings => bookings.filter(b =>
-        b.referenceNumber.toLowerCase().includes(referenceNumber.toLowerCase())
-      ))
+      map(bookings => bookings.filter(b => b.status === 'CheckedIn'))
     );
   }
 

@@ -5,22 +5,22 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
 export interface AuditLog {
-  id: string;
+  id: number;
   userId: string;
-  userEmail: string;
+  userName: string;
   action: string;
   entityType: string;
-  entityId: string;
-  ipAddress: string;
-  details: string;
+  entityId: string | null;
+  ipAddress: string | null;
+  details: string | null;
   createdAt: string;
 }
 
 export interface PagedResult<T> {
   items: T[];
-  totalCount: number;
+  total: number;
   page: number;
-  pageSize: number;
+  limit: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -38,7 +38,7 @@ export class AuditLogService {
   ): Observable<PagedResult<AuditLog>> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('limit', limit.toString());
+      .set('pageSize', limit.toString());
     if (action) params = params.set('action', action);
     if (userId) params = params.set('userId', userId);
     if (from) params = params.set('from', from);
