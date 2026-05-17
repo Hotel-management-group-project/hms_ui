@@ -1,13 +1,13 @@
-<!-- Home Page — HMS Hotel -->
+<!-- Home Page — HMS Hotels -->
 
 <!-- ═══════════════════════════════════════════
-     HERO — Full-screen video with theme-aware overlay
+     HERO — Full viewport height, video background
      ═══════════════════════════════════════════ -->
 <section
-  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury"
+  class="relative h-screen flex items-center justify-center overflow-hidden"
   aria-label="Hero section"
 >
-  <!-- Video background (drop hero-video.mp4 into public/assets/) -->
+  <!-- Video background -->
   <video
     class="absolute inset-0 w-full h-full object-cover"
     autoplay
@@ -20,53 +20,109 @@
     <source src="/assets/hero-video.mp4" type="video/mp4">
   </video>
 
-  <!-- Overlay — dark in dark mode for video contrast, subtle in light mode -->
-  <div class="absolute inset-0 dark:hidden" aria-hidden="true"
-       style="background: linear-gradient(180deg,
-         rgba(10,22,40,0.08) 0%,
-         rgba(10,22,40,0.04) 50%,
-         rgba(10,22,40,0.12) 100%);"></div>
-  <div class="absolute inset-0 hidden dark:block" aria-hidden="true"
-       style="background: linear-gradient(180deg,
-         rgba(10,22,40,0.75) 0%,
-         rgba(10,22,40,0.55) 50%,
-         rgba(10,22,40,0.92) 100%);"></div>
+  <!-- Overlay — spec: linear-gradient from rgba(0,0,0,0.5) to rgba(0,0,0,0.2) -->
+  <div
+    class="absolute inset-0"
+    aria-hidden="true"
+    style="background: linear-gradient(
+      180deg,
+      rgba(0,0,0,0.52) 0%,
+      rgba(0,0,0,0.20) 45%,
+      rgba(0,0,0,0.60) 100%
+    );"
+  ></div>
 
-  <!-- Subtle grain texture -->
-  <div class="absolute inset-0 opacity-[0.03] pointer-events-none" aria-hidden="true"
-       style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 stitchTiles=%22stitch%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%221%22/></svg>');"></div>
+  <!-- Subtle film grain -->
+  <div
+    class="absolute inset-0 opacity-[0.025] pointer-events-none"
+    aria-hidden="true"
+    style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 stitchTiles=%22stitch%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22/></svg>');"
+  ></div>
 
-  <!-- Hero content — classes targeted by GSAP entrance animation -->
-  <div class="hero-content relative z-10 text-center px-4 max-w-4xl mx-auto pt-20">
+  <!-- Hero content — GSAP animates .hero-content > * -->
+  <div class="hero-content relative z-10 text-center px-4 max-w-4xl mx-auto pt-16 w-full">
 
-    <p class="text-gold text-[0.65rem] font-medium tracking-[0.45em] uppercase font-sans mb-4"
-       style="opacity:0">
+    <!-- Eyebrow -->
+    <p
+      class="text-gold-400 text-[0.65rem] font-medium tracking-[0.45em] uppercase font-sans mb-4"
+      style="opacity: 0;"
+    >
       Welcome to
     </p>
 
-    <h1 class="font-serif font-semibold text-ink mb-5"
-        style="opacity:0; font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1.02; letter-spacing: -0.015em;">
+    <!-- Headline -->
+    <h1
+      class="font-serif font-semibold text-white mb-5"
+      style="opacity: 0;
+             font-size: clamp(3rem, 9vw, 7.5rem);
+             line-height: 1.02;
+             letter-spacing: -0.02em;"
+    >
       HMS Hotels
     </h1>
 
     <!-- Gold rule -->
-    <div class="mx-auto mb-6" style="opacity:0; width: 6rem; height: 1px;
-         background: linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent);"></div>
+    <div
+      class="mx-auto mb-6"
+      style="opacity: 0;
+             width: 6rem;
+             height: 1px;
+             background: linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent);"
+    ></div>
 
-    <p class="font-sans font-light leading-relaxed max-w-xl mx-auto mb-10 text-ink-2/70"
-       style="opacity:0; font-size: clamp(1rem, 2.2vw, 1.2rem);">
+    <!-- Sub-headline — italic, white/80 -->
+    <p
+      class="font-serif italic leading-relaxed max-w-xl mx-auto mb-10 text-white/80"
+      style="opacity: 0; font-size: clamp(1rem, 2.2vw, 1.2rem);"
+    >
       Discover rooms crafted for comfort, elegance, and an unforgettable stay in the heart of Bristol.
     </p>
 
+    <!-- Frosted glass search bar -->
+    <div
+      class="mx-auto mb-10 max-w-2xl"
+      style="opacity: 0;"
+    >
+      <a
+        routerLink="/guest/search"
+        class="flex items-center gap-4 px-6 py-4 cursor-pointer
+               border border-white/20 w-full"
+        style="backdrop-filter: blur(12px);
+               -webkit-backdrop-filter: blur(12px);
+               background: rgba(255,255,255,0.10);"
+        aria-label="Search available rooms"
+      >
+        <svg class="w-4 h-4 text-white/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <span class="flex-1 text-left font-sans text-sm text-white/60 tracking-wide">
+          Search by location, room type, dates…
+        </span>
+        <span class="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase
+                     text-gold-400 border border-gold-400/40 px-4 py-2 shrink-0
+                     transition-colors duration-200 hover:bg-gold-400/10">
+          Search
+        </span>
+      </a>
+    </div>
+
     <!-- CTA buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center" style="opacity:0">
+    <div class="flex flex-col sm:flex-row gap-4 justify-center" style="opacity: 0;">
       <a
         routerLink="/guest/search"
         class="cursor-pointer inline-flex items-center justify-center gap-2.5
                px-10 py-4 font-semibold text-sm tracking-[0.18em] uppercase font-sans
-               bg-gold text-navy shadow-gold
-               transition-all duration-200
-               focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-navy-900"
+               bg-gold-400 text-navy-900
+               focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-black/60"
+        style="box-shadow: 0 4px 24px rgba(201, 168, 76, 0.35);
+               transition: transform var(--dur-micro) var(--ease-micro),
+                           box-shadow var(--dur-micro) var(--ease-micro),
+                           background-color var(--dur-micro) var(--ease-micro);"
+        onmouseenter="this.style.transform='scale(1.02)'; this.style.boxShadow='0 6px 32px rgba(201,168,76,0.5)';"
+        onmouseleave="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 24px rgba(201,168,76,0.35)';"
+        onmousedown="this.style.transform='scale(0.97)';"
+        onmouseup="this.style.transform='scale(1.02)';"
         aria-label="Browse available rooms and make a booking"
       >
         Book Now
@@ -78,11 +134,16 @@
       <a
         routerLink="/guest/search"
         class="cursor-pointer inline-flex items-center justify-center gap-2.5
-               px-10 py-4 text-gold text-sm tracking-[0.18em] uppercase font-sans
-               border border-gold/50
-               transition-all duration-300
-               hover:bg-gold/10
-               focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-[--color-bg]"
+               px-10 py-4 text-white text-sm tracking-[0.18em] uppercase font-sans
+               border border-white/40
+               focus:outline-none focus:ring-2 focus:ring-white/40 focus:ring-offset-2"
+        style="transition: background-color var(--dur-micro) var(--ease-micro),
+                           border-color var(--dur-micro) var(--ease-micro),
+                           transform var(--dur-micro) var(--ease-micro);"
+        onmouseenter="this.style.backgroundColor='rgba(255,255,255,0.10)'; this.style.borderColor='rgba(255,255,255,0.7)'; this.style.transform='scale(1.02)';"
+        onmouseleave="this.style.backgroundColor='transparent'; this.style.borderColor='rgba(255,255,255,0.4)'; this.style.transform='scale(1)';"
+        onmousedown="this.style.transform='scale(0.97)';"
+        onmouseup="this.style.transform='scale(1.02)';"
         aria-label="Explore our room types"
       >
         Explore Rooms
@@ -90,45 +151,52 @@
     </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gold/45"
-       aria-hidden="true">
+  <!-- Scroll indicator — animated bounce arrow -->
+  <div
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+    style="color: rgba(201,168,76,0.55);"
+    aria-hidden="true"
+  >
     <span class="font-sans text-[0.6rem] tracking-[0.35em] uppercase">Scroll</span>
-    <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m19 8.5-7 7-7-7"/>
     </svg>
   </div>
 </section>
 
 
-<!-- ═══════════════════════════════════════
-     OUR PROPERTIES — Sun Siyam-style layout
-     Tab columns on left, portrait cards right
-     ═══════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════
+     OUR PROPERTIES — Sun Siyam-style vertical tab slider
+     ═══════════════════════════════════════════════ -->
 <section class="bg-luxury overflow-hidden" aria-label="Our properties">
 
-  <!-- Main layout: tab columns + card slider, fills viewport height -->
   <div class="flex" style="height: 85vh; min-height: 560px; max-height: 860px;">
 
-    <!-- ── Tab columns — each is a full-height vertical strip ── -->
+    <!-- Tab columns — vertical strips -->
     <div class="flex shrink-0">
       @for (tab of tabs; track tab.id; let last = $last) {
         <button
           type="button"
           (click)="setTab(tab.id)"
-          class="relative flex items-center justify-center cursor-pointer transition-all duration-300 group"
+          class="relative flex items-center justify-center cursor-pointer group"
           [class.border-r]="!last"
           [class.border-rim]="true"
-          style="width: clamp(72px, 9vw, 116px);"
+          style="width: clamp(72px, 9vw, 116px);
+                 transition: background-color var(--dur-micro) var(--ease-micro);"
         >
-          <!-- Active: gold left-edge rule -->
+          <!-- Active gold left-edge rule -->
           @if (activeTab() === tab.id) {
-            <div class="absolute left-0 inset-y-0 w-[2px] bg-gold"></div>
+            <div class="absolute left-0 inset-y-0 w-[2px] bg-gold-400"
+                 style="animation: fadeIn 0.3s var(--ease-entrance) both;"></div>
           }
 
           <span
-            class="font-serif select-none transition-all duration-300 leading-none"
-            style="writing-mode: vertical-rl; transform: rotate(180deg); font-size: clamp(1.1rem, 1.6vw, 1.65rem);"
+            class="font-serif select-none leading-none"
+            style="writing-mode: vertical-rl;
+                   transform: rotate(180deg);
+                   font-size: clamp(1.1rem, 1.6vw, 1.65rem);
+                   transition: color var(--dur-micro) var(--ease-micro),
+                               font-weight var(--dur-micro) var(--ease-micro);"
             [class.text-ink]="activeTab() === tab.id"
             [class.font-semibold]="activeTab() === tab.id"
             [class.text-ink-2/30]="activeTab() !== tab.id"
@@ -140,53 +208,58 @@
       }
     </div>
 
-    <!-- ── Card slider ── -->
+    <!-- Card slider -->
     <div class="relative flex-1 overflow-hidden">
 
-      <!-- Loading -->
+      <!-- Loading skeletons -->
       @if (hotelsLoading()) {
         <div class="flex h-full items-center gap-6 px-10">
           @for (n of [1, 2]; track n) {
-            <div class="shrink-0 bg-raised animate-pulse rounded-sm"
-                 style="width: 380px; height: 85%;"></div>
+            <div class="shrink-0 skeleton" style="width: 380px; height: 85%; border-radius: 2px;"></div>
           }
         </div>
       }
 
-      <!-- Cards -->
+      <!-- Hotel cards -->
       @if (!hotelsLoading() && filteredHotels().length > 0) {
         <div
           #hotelSlider
           class="flex h-full items-center gap-6 px-10 no-scrollbar"
           style="overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;"
         >
-          @for (hotel of filteredHotels(); track hotel.id) {
+          @for (hotel of filteredHotels(); track hotel.id; let i = $index) {
             @let hotelImg = getHotelImage(hotel);
             <div
-              class="relative shrink-0 overflow-hidden group"
-              style="width: clamp(300px, 32vw, 460px); height: 88%; scroll-snap-align: start; border-radius: 2px;"
+              class="relative shrink-0 overflow-hidden group img-zoom"
+              style="width: clamp(300px, 32vw, 460px);
+                     height: 88%;
+                     scroll-snap-align: start;
+                     border-radius: 2px;
+                     animation: fadeIn 0.5s var(--ease-entrance) both;
+                     animation-delay: {{ i * 80 }}ms;"
             >
-              <!-- Background -->
+              <!-- Background image -->
               @if (hotelImg) {
                 <img
                   #cardImg
                   [src]="hotelImg"
                   [alt]="hotel.name"
-                  class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 opacity-0"
-                  style="transition: opacity 0.6s ease, transform 0.7s ease;"
+                  class="absolute inset-0 w-full h-full object-cover opacity-0"
+                  style="transition: opacity 0.6s var(--ease-entrance),
+                                     transform var(--dur-page) var(--ease-entrance);"
                   (load)="cardImg.style.opacity = '1'"
                   loading="lazy"
                 >
-                <!-- Dark cinematic overlay — only on real images -->
+                <!-- Cinematic gradient overlay -->
                 <div class="absolute inset-0" style="background: linear-gradient(
                   to bottom,
-                  rgba(5,13,26,0.38) 0%,
-                  rgba(5,13,26,0.05) 30%,
-                  rgba(5,13,26,0.05) 55%,
-                  rgba(5,13,26,0.72) 100%
+                  rgba(0,0,0,0.30) 0%,
+                  rgba(0,0,0,0.04) 30%,
+                  rgba(0,0,0,0.04) 55%,
+                  rgba(0,0,0,0.72) 100%
                 );"></div>
               } @else {
-                <!-- Fallback: theme-aware, subtle watermark -->
+                <!-- Fallback -->
                 <div class="absolute inset-0 bg-surface/70 flex items-center justify-center">
                   <span class="font-serif font-bold select-none pointer-events-none text-ink/[0.04]"
                         style="font-size: clamp(6rem, 12vw, 11rem);">HMS</span>
@@ -196,7 +269,7 @@
               <!-- Card content -->
               <div class="absolute inset-0 flex flex-col justify-between py-10 px-8">
 
-                <!-- Brand + tier -->
+                <!-- Brand label -->
                 <div class="text-center">
                   <p class="font-sans text-[10px] tracking-[0.42em] uppercase mb-0.5"
                      [class.text-white/65]="hotelImg"
@@ -205,17 +278,17 @@
                   </p>
                 </div>
 
-                <!-- Hotel name + arrow + tagline -->
+                <!-- Hotel name + location -->
                 <div class="text-center space-y-4">
                   <h3 class="font-serif font-bold leading-[0.92]"
                       [class.text-white]="hotelImg"
                       [class.text-ink]="!hotelImg"
-                      style="font-size: clamp(2.8rem, 5vw, 4.4rem); letter-spacing: -0.015em;">
+                      style="font-size: clamp(2.8rem, 5vw, 4.4rem); letter-spacing: -0.02em;">
                     {{ hotel.name }}
                   </h3>
 
-                  <!-- Upward triangle -->
-                  <svg class="w-3 h-3 mx-auto text-gold opacity-85" viewBox="0 0 12 10" fill="currentColor">
+                  <!-- Gold upward triangle -->
+                  <svg class="w-3 h-3 mx-auto text-gold-400 opacity-85" viewBox="0 0 12 10" fill="currentColor">
                     <path d="M6 0 L12 10 L0 10 Z"/>
                   </svg>
 
@@ -226,13 +299,14 @@
                   </p>
                 </div>
 
-                <!-- Pill buttons -->
+                <!-- Action pills -->
                 <div class="flex gap-4 justify-center">
                   <a
                     routerLink="/guest/search"
                     [queryParams]="{ hotelId: hotel.id }"
                     class="px-7 py-2.5 rounded-full text-[10px] tracking-[0.22em] uppercase font-sans
-                           transition-colors duration-200 cursor-pointer border"
+                           cursor-pointer border"
+                    style="transition: background-color var(--dur-micro) var(--ease-micro);"
                     [class.border-white/45]="hotelImg"
                     [class.text-white]="hotelImg"
                     [class.hover:bg-white/12]="hotelImg"
@@ -246,13 +320,14 @@
                     routerLink="/guest/search"
                     [queryParams]="{ hotelId: hotel.id }"
                     class="px-7 py-2.5 rounded-full text-[10px] tracking-[0.22em] uppercase font-sans
-                           transition-colors duration-200 cursor-pointer border"
+                           cursor-pointer border"
+                    style="transition: background-color var(--dur-micro) var(--ease-micro);"
                     [class.border-white/45]="hotelImg"
                     [class.text-white]="hotelImg"
                     [class.hover:bg-white/12]="hotelImg"
-                    [class.border-gold/60]="!hotelImg"
-                    [class.text-gold]="!hotelImg"
-                    [class.hover:bg-gold/10]="!hotelImg"
+                    [class.border-gold-400/60]="!hotelImg"
+                    [class.text-gold-400]="!hotelImg"
+                    [class.hover:bg-gold-400/10]="!hotelImg"
                   >
                     Book Now
                   </a>
@@ -262,21 +337,41 @@
           }
         </div>
 
-        <!-- Prev / Next arrows -->
-        <button type="button" (click)="scrollPrev()" aria-label="Previous"
-          class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full
-                 bg-surface/75 backdrop-blur-sm border border-rim text-ink
-                 flex items-center justify-center
-                 hover:bg-raised hover:border-gold/40 transition-all duration-200 cursor-pointer">
+        <!-- Slider arrows -->
+        <button
+          type="button"
+          (click)="scrollPrev()"
+          aria-label="Previous hotel"
+          class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9
+                 bg-surface/80 backdrop-blur-sm border border-rim text-ink
+                 flex items-center justify-center cursor-pointer"
+          style="transition: background-color var(--dur-micro) var(--ease-micro),
+                             border-color var(--dur-micro) var(--ease-micro),
+                             transform var(--dur-micro) var(--ease-micro);"
+          onmouseenter="this.style.transform='scale(1.08)'; this.style.borderColor='rgba(201,168,76,0.4)';"
+          onmouseleave="this.style.transform='scale(1)'; this.style.borderColor='';"
+          onmousedown="this.style.transform='scale(0.95)';"
+          onmouseup="this.style.transform='scale(1.08)';"
+        >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
         </button>
-        <button type="button" (click)="scrollNext()" aria-label="Next"
-          class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full
-                 bg-surface/75 backdrop-blur-sm border border-rim text-ink
-                 flex items-center justify-center
-                 hover:bg-raised hover:border-gold/40 transition-all duration-200 cursor-pointer">
+        <button
+          type="button"
+          (click)="scrollNext()"
+          aria-label="Next hotel"
+          class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9
+                 bg-surface/80 backdrop-blur-sm border border-rim text-ink
+                 flex items-center justify-center cursor-pointer"
+          style="transition: background-color var(--dur-micro) var(--ease-micro),
+                             border-color var(--dur-micro) var(--ease-micro),
+                             transform var(--dur-micro) var(--ease-micro);"
+          onmouseenter="this.style.transform='scale(1.08)'; this.style.borderColor='rgba(201,168,76,0.4)';"
+          onmouseleave="this.style.transform='scale(1)'; this.style.borderColor='';"
+          onmousedown="this.style.transform='scale(0.95)';"
+          onmouseup="this.style.transform='scale(1.08)';"
+        >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
@@ -296,12 +391,18 @@
     </div>
   </div>
 
-  <!-- Explore link -->
+  <!-- Explore all link -->
   <div class="text-center py-8 scroll-reveal border-t border-rim">
-    <a routerLink="/guest/search"
-       class="cursor-pointer inline-flex items-center gap-2 font-sans text-sm text-gold
-              tracking-[0.15em] uppercase transition-colors duration-200
-              focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2">
+    <a
+      routerLink="/guest/search"
+      class="cursor-pointer inline-flex items-center gap-2 font-sans text-sm text-gold-400
+             tracking-[0.15em] uppercase
+             focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2"
+      style="transition: color var(--dur-micro) var(--ease-micro),
+                         gap var(--dur-micro) var(--ease-micro);"
+      onmouseenter="this.style.gap='12px';"
+      onmouseleave="this.style.gap='';"
+    >
       Explore All Properties
       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
@@ -311,94 +412,94 @@
 </section>
 
 
-<!-- ═══════════════════════════════════════
-     SERVICES — Ancillary offerings grid
-     Theme-aware: bg-deep / text-ink
-     ═══════════════════════════════════════ -->
-<section class="py-28 border-t bg-deep border-rim"
-         aria-label="Hotel services">
+<!-- ═══════════════════════════════════════════════
+     SERVICES — Ancillary offerings
+     ═══════════════════════════════════════════════ -->
+<section class="py-20 md:py-32 border-t border-rim bg-deep" aria-label="Hotel services">
   <div class="container-luxury">
 
     <div class="text-center mb-16 scroll-reveal">
-      <p class="text-gold text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans mb-3">
+      <p class="text-gold-400 text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans mb-3">
         Premium Experience
       </p>
-      <h2 class="font-serif text-ink mb-4"
-          style="font-size: clamp(2rem, 4vw, 3rem);">
+      <h2 class="font-serif text-ink mb-4" style="font-size: clamp(2rem, 4vw, 2.5rem);">
         Our Services
       </h2>
-      <div style="width: 4rem; height: 1px; margin: 0 auto;
-           background: linear-gradient(90deg, transparent, var(--color-gold), transparent);"></div>
+      <div class="gold-divider w-16 mx-auto"></div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 animate-stagger">
 
       <!-- Airport Transfer -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold/25
-                    transition-colors duration-300 group-hover:border-gold/50"
+        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+                    group-hover:border-gold-400/55"
+             style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
-          <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/>
           </svg>
         </div>
         <h3 class="font-serif text-lg text-ink">Airport Transfer</h3>
-        <p class="font-sans text-sm leading-relaxed text-ink-2/80">
+        <p class="font-sans text-sm leading-relaxed text-ink-2/75">
           Private one-way transfer to and from Bristol Airport, available 24/7.
         </p>
-        <p class="font-sans text-sm font-medium text-gold">£50 per transfer</p>
+        <p class="font-sans text-sm font-medium text-gold-400">£50 per transfer</p>
       </div>
 
-      <!-- Full English Breakfast -->
+      <!-- Full Breakfast -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold/25
-                    transition-colors duration-300 group-hover:border-gold/50"
+        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+                    group-hover:border-gold-400/55"
+             style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
-          <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5M3.375 19.5h17.25c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125Z"/>
           </svg>
         </div>
         <h3 class="font-serif text-lg text-ink">Full Breakfast</h3>
-        <p class="font-sans text-sm leading-relaxed text-ink-2/80">
+        <p class="font-sans text-sm leading-relaxed text-ink-2/75">
           Traditional full English breakfast served each morning in our dining room.
         </p>
-        <p class="font-sans text-sm font-medium text-gold">£20 per person / day</p>
+        <p class="font-sans text-sm font-medium text-gold-400">£20 per person / day</p>
       </div>
 
       <!-- Spa Access -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold/25
-                    transition-colors duration-300 group-hover:border-gold/50"
+        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+                    group-hover:border-gold-400/55"
+             style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
-          <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
           </svg>
         </div>
         <h3 class="font-serif text-lg text-ink">Spa Access</h3>
-        <p class="font-sans text-sm leading-relaxed text-ink-2/80">
+        <p class="font-sans text-sm leading-relaxed text-ink-2/75">
           Full day access to our spa, sauna, steam room, and heated pool.
         </p>
-        <p class="font-sans text-sm font-medium text-gold">£35 per person / day</p>
+        <p class="font-sans text-sm font-medium text-gold-400">£35 per person / day</p>
       </div>
 
       <!-- Late Check-out -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold/25
-                    transition-colors duration-300 group-hover:border-gold/50"
+        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+                    group-hover:border-gold-400/55"
+             style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
-          <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
           </svg>
         </div>
         <h3 class="font-serif text-lg text-ink">Late Check-out</h3>
-        <p class="font-sans text-sm leading-relaxed text-ink-2/80">
+        <p class="font-sans text-sm leading-relaxed text-ink-2/75">
           Extend your stay until 2 PM and savour every last moment of your visit.
         </p>
-        <p class="font-sans text-sm font-medium text-gold">£40 per room</p>
+        <p class="font-sans text-sm font-medium text-gold-400">£40 per room</p>
       </div>
 
     </div>
@@ -406,12 +507,11 @@
 </section>
 
 
-<!-- ═══════════════════════════════════════
+<!-- ═══════════════════════════════════════════════
      CTA BANNER
-     Theme-aware — uses bg-luxury which switches cream ↔ navy
-     ═══════════════════════════════════════ -->
+     ═══════════════════════════════════════════════ -->
 <section
-  class="relative py-28 overflow-hidden scroll-reveal bg-luxury"
+  class="relative py-20 md:py-32 overflow-hidden scroll-reveal bg-luxury"
   aria-label="Call to action"
 >
   <!-- Diagonal gold accent line -->
@@ -422,25 +522,19 @@
   </div>
 
   <div class="relative z-10 container-luxury text-center space-y-8">
-    <p class="text-gold text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans">
+    <p class="text-gold-400 text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans">
       Start Your Journey
     </p>
-    <h2 class="font-serif text-ink" style="font-size: clamp(2rem, 5vw, 3.5rem);">
+    <h2 class="font-serif text-ink" style="font-size: clamp(2rem, 5vw, 2.5rem);">
       Ready for Your Stay?
     </h2>
-    <div style="width: 4rem; height: 1px; margin: 0 auto;
-         background: linear-gradient(90deg, transparent, var(--color-gold), transparent);"></div>
-    <p class="font-sans font-light max-w-lg mx-auto leading-relaxed text-ink-2/70"
-       style="font-size: 1.05rem;">
+    <div class="gold-divider w-16 mx-auto"></div>
+    <p class="font-sans font-light max-w-lg mx-auto leading-relaxed text-ink-2/70">
       Create a free account, browse our rooms, and reserve your perfect stay in seconds.
     </p>
     <a
       routerLink="/auth/register"
-      class="cursor-pointer inline-flex items-center justify-center gap-2.5
-             px-12 py-4 font-semibold text-sm tracking-[0.18em] uppercase font-sans
-             bg-gold text-navy shadow-gold
-             transition-all duration-200
-             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-[--color-bg]"
+      class="btn-primary px-12 py-4 text-sm tracking-[0.18em] uppercase"
       aria-label="Create a free HMS account"
     >
       Create Account

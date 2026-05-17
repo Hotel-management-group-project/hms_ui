@@ -52,15 +52,18 @@ module.exports = {
         'rim-2': 'rgb(var(--hms-rim-2)   / <alpha-value>)',
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans:  ['DM Sans', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'Georgia', 'serif'],
+        sans:  ['Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
-        'fade-in':   'fadeIn 0.6s ease-out',
-        'fade-up':   'fadeUp 0.8s ease-out',
-        'slide-in':  'slideIn 0.5s ease-out',
-        'slide-up':  'slideUp 0.4s cubic-bezier(0.16,1,0.3,1)',
-        'gold-shimmer': 'goldShimmer 2s ease-in-out infinite',
+        'fade-in':       'fadeIn 0.6s cubic-bezier(0.16,1,0.3,1)',
+        'fade-up':       'fadeUp 0.8s cubic-bezier(0.16,1,0.3,1)',
+        'slide-in':      'slideIn 0.5s cubic-bezier(0.16,1,0.3,1)',
+        'slide-up':      'slideUp 0.4s cubic-bezier(0.16,1,0.3,1)',
+        'page-reveal':   'pageReveal 0.6s cubic-bezier(0.16,1,0.3,1) both',
+        'gold-shimmer':  'goldShimmer 2s ease-in-out infinite',
+        'bounce':        'scrollBounce 1.4s cubic-bezier(0.23,1,0.32,1) infinite',
+        'skeleton-pulse':'skeletonPulse 1.8s cubic-bezier(0.23,1,0.32,1) infinite',
       },
       keyframes: {
         fadeIn: {
@@ -79,9 +82,21 @@ module.exports = {
           '0%':   { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        pageReveal: {
+          '0%':   { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
         goldShimmer: {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%':      { backgroundPosition: '100% 50%' },
+        },
+        scrollBounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%':      { transform: 'translateY(6px)' },
+        },
+        skeletonPulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%':      { opacity: '0.4' },
         },
       },
       boxShadow: {

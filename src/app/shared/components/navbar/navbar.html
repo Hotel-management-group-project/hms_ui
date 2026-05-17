@@ -1,78 +1,117 @@
-<!-- Navbar: glass morphism, role-aware, dark mode toggle -->
-<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-deep/80 border-b border-white/10 transition-all duration-300">
+<!-- Public Navbar — scroll-aware transparency, luxury typography -->
+<nav
+  class="fixed top-0 inset-x-0 z-50"
+  [class]="scrolled() ? 'navbar-solid' : 'navbar-transparent'"
+  style="transition: background var(--dur-layout) var(--ease-entrance),
+                     border-color var(--dur-layout) var(--ease-entrance),
+                     box-shadow var(--dur-layout) var(--ease-entrance);"
+  aria-label="Main navigation"
+>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
+    <div class="flex items-center justify-between h-16 lg:h-[72px]">
 
       <!-- Logo -->
-      <a routerLink="/home" class="flex items-center gap-2.5 shrink-0 cursor-pointer group">
-        <div class="w-8 h-8 rounded-sm bg-gold-400/10 border border-gold-400/30 flex items-center justify-center group-hover:bg-gold-400/20 transition-colors">
+      <a routerLink="/home" class="flex items-center gap-2.5 shrink-0 cursor-pointer group" aria-label="HMS Hotels home">
+        <div class="w-8 h-8 flex items-center justify-center border transition-colors duration-200"
+             [class]="scrolled()
+               ? 'border-gold-400/40 bg-gold-400/8 group-hover:bg-gold-400/15'
+               : 'border-white/30 bg-white/10 group-hover:bg-white/15'">
           <span class="font-serif text-sm font-bold text-gold-400">H</span>
         </div>
         <div>
-          <span class="font-serif text-lg text-gold-400 tracking-wider leading-none block">HMS</span>
-          <span class="text-ink-2/40 text-[9px] tracking-[0.2em] uppercase leading-none block">Hotels</span>
+          <span class="font-serif text-lg font-semibold leading-none block"
+                [class]="scrolled() ? 'text-gold-400' : 'text-gold-400'">HMS</span>
+          <span class="text-[9px] tracking-[0.22em] uppercase leading-none block font-sans"
+                [class]="scrolled() ? 'text-ink-2/45' : 'text-white/50'">Hotels</span>
         </div>
       </a>
 
-      <!-- Desktop nav links -->
+      <!-- Desktop nav links — centered -->
       <div class="hidden md:flex items-center gap-1">
         @for (link of navLinks(); track link.path) {
-          <a [routerLink]="link.path" routerLinkActive="text-gold-400"
-             class="nav-link px-3 py-2 text-sm text-ink-2/70 hover:text-ink rounded-md hover:bg-white/5 dark:hover:bg-white/10 transition-all duration-200 cursor-pointer">
+          <a
+            [routerLink]="link.path"
+            routerLinkActive="active text-gold-400"
+            class="nav-link px-4 py-2 transition-colors duration-200 cursor-pointer"
+            [class]="scrolled() || auth.isAuthenticated()
+              ? 'text-ink-2/65 hover:text-ink'
+              : 'text-white/75 hover:text-white'"
+          >
             {{ link.label }}
           </a>
         }
       </div>
 
-      <!-- Right side: user info + theme + logout -->
+      <!-- Right side: user info + theme + auth actions -->
       <div class="hidden md:flex items-center gap-3">
 
         @if (auth.isAuthenticated()) {
           <!-- User name + role badge -->
           <div class="flex items-center gap-2">
             <span class="text-ink text-sm font-medium">{{ userDisplayName() }}</span>
-            <span class="text-xs px-1.5 py-0.5 rounded border" [class]="roleBadgeClass()">
+            <span class="text-xs px-1.5 py-0.5 rounded border font-sans" [class]="roleBadgeClass()">
               {{ roleLabel() }}
             </span>
           </div>
-
           <!-- Divider -->
-          <div class="h-4 w-px bg-raised"></div>
+          <div class="h-4 w-px bg-rim"></div>
         }
 
         <!-- Dark mode toggle -->
-        <button (click)="theme.toggle()" aria-label="Toggle dark mode"
-                class="w-8 h-8 flex items-center justify-center rounded-md text-ink-2/60 hover:text-gold-400 hover:bg-white/5 dark:hover:bg-white/10 transition-all duration-200 cursor-pointer">
+        <button
+          (click)="theme.toggle()"
+          aria-label="Toggle dark mode"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-200 cursor-pointer"
+          [class]="scrolled() || auth.isAuthenticated()
+            ? 'text-ink-2/55 hover:text-gold-400'
+            : 'text-white/60 hover:text-white'"
+        >
           @if (theme.isDark()) {
-            <!-- Sun icon -->
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
           } @else {
-            <!-- Moon icon -->
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
             </svg>
           }
         </button>
 
         @if (auth.isAuthenticated()) {
           <!-- Logout -->
-          <button (click)="logout()"
-                  class="flex items-center gap-1.5 px-3 py-1.5 text-xs text-ink-2/60 hover:text-red-400 border border-rim-2 hover:border-red-400/30 rounded-md transition-all duration-200 cursor-pointer">
+          <button
+            (click)="logout()"
+            class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-sans border rounded
+                   text-ink-2/60 hover:text-red-400 border-rim hover:border-red-400/30
+                   transition-all duration-200 cursor-pointer"
+          >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
             </svg>
             Logout
           </button>
         } @else {
-          <!-- Auth buttons for public users -->
-          <a routerLink="/auth/login"
-             class="px-3 py-1.5 text-xs text-ink-2/70 hover:text-ink border border-rim-2 hover:border-rim-2 rounded-md transition-all duration-200 cursor-pointer">
+          <!-- Public auth buttons -->
+          <a
+            routerLink="/auth/login"
+            class="px-4 py-1.5 font-sans text-xs tracking-[0.1em] uppercase border
+                   transition-all duration-200 cursor-pointer"
+            [class]="scrolled()
+              ? 'text-ink-2/70 border-rim hover:text-ink hover:border-rim-2'
+              : 'text-white/75 border-white/30 hover:text-white hover:border-white/60'"
+          >
             Sign In
           </a>
-          <a routerLink="/auth/register"
-             class="px-3 py-1.5 text-xs bg-gold-400 text-navy-900 font-semibold rounded-md hover:bg-gold-300 transition-colors cursor-pointer">
+          <a
+            routerLink="/auth/register"
+            class="px-5 py-1.5 font-sans text-xs font-semibold tracking-[0.1em] uppercase
+                   bg-gold-400 text-navy-900 cursor-pointer
+                   transition-all duration-200 hover:bg-gold-300"
+            style="transition-timing-function: var(--ease-micro);"
+          >
             Book Now
           </a>
         }
@@ -80,77 +119,109 @@
 
       <!-- Mobile: theme toggle + hamburger -->
       <div class="md:hidden flex items-center gap-2">
-        <button (click)="theme.toggle()" aria-label="Toggle dark mode"
-                class="w-8 h-8 flex items-center justify-center rounded-md text-ink-2/60 hover:text-gold-400 transition-colors cursor-pointer">
+        <button
+          (click)="theme.toggle()"
+          aria-label="Toggle dark mode"
+          class="w-8 h-8 flex items-center justify-center transition-colors cursor-pointer"
+          [class]="scrolled() ? 'text-ink-2/60 hover:text-gold-400' : 'text-white/70 hover:text-white'"
+        >
           @if (theme.isDark()) {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
           } @else {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
             </svg>
           }
         </button>
 
-        <button (click)="toggleMenu()" aria-label="Toggle menu"
-                class="w-9 h-9 flex items-center justify-center rounded-md text-ink-2/70 hover:text-ink hover:bg-white/5 dark:hover:bg-white/10 transition-all cursor-pointer">
+        <button
+          (click)="toggleMenu()"
+          aria-label="Toggle mobile menu"
+          aria-expanded="{{ menuOpen() }}"
+          class="w-9 h-9 flex items-center justify-center transition-colors cursor-pointer"
+          [class]="scrolled() ? 'text-ink-2/70 hover:text-ink' : 'text-white/80 hover:text-white'"
+        >
           @if (menuOpen()) {
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           } @else {
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
           }
         </button>
       </div>
+
     </div>
   </div>
 
   <!-- Mobile drawer -->
   @if (menuOpen()) {
-    <div class="md:hidden border-t border-white/10 bg-deep/95 backdrop-blur-md animate-fade-in">
-      <div class="max-w-7xl mx-auto px-4 py-4 space-y-1">
+    <div
+      class="md:hidden border-t border-rim/30 animate-fade-in"
+      style="background: rgb(var(--hms-surface) / 0.98); backdrop-filter: blur(16px);"
+    >
+      <div class="max-w-7xl mx-auto px-4 py-5 space-y-1">
 
         @for (link of navLinks(); track link.path) {
-          <a [routerLink]="link.path" routerLinkActive="text-gold-400 bg-gold-400/5"
-             (click)="closeMenu()"
-             class="flex items-center px-3 py-2.5 text-sm text-ink-2/70 hover:text-ink hover:bg-white/5 dark:hover:bg-white/10 rounded-md transition-all cursor-pointer">
+          <a
+            [routerLink]="link.path"
+            routerLinkActive="text-gold-400 bg-gold-400/5"
+            (click)="closeMenu()"
+            class="flex items-center px-3 py-3 font-sans text-xs font-medium
+                   tracking-[0.12em] uppercase text-ink-2/70 hover:text-ink
+                   hover:bg-raised/60 transition-all cursor-pointer"
+          >
             {{ link.label }}
           </a>
         }
 
-        <div class="pt-3 border-t border-rim mt-3 space-y-2">
+        <div class="pt-4 border-t border-rim/40 mt-2 space-y-2">
           @if (auth.isAuthenticated()) {
-            <!-- User info -->
             <div class="flex items-center gap-2 px-3 py-2">
-              <div class="w-7 h-7 rounded-full bg-raised border border-rim-2 flex items-center justify-center">
+              <div class="w-7 h-7 rounded-full bg-raised border border-rim flex items-center justify-center">
                 <span class="text-xs font-medium text-ink-2/70">
                   {{ auth.currentUser()?.firstName?.[0] }}{{ auth.currentUser()?.lastName?.[0] }}
                 </span>
               </div>
               <div>
                 <p class="text-ink text-sm font-medium leading-tight">{{ userDisplayName() }}</p>
-                <p class="text-ink-2/40 text-xs">{{ roleLabel() }}</p>
+                <p class="text-ink-2/40 text-xs font-sans">{{ roleLabel() }}</p>
               </div>
             </div>
-            <!-- Logout -->
-            <button (click)="logout()"
-                    class="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-400 hover:bg-red-400/10 rounded-md transition-colors cursor-pointer">
+            <button
+              (click)="logout()"
+              class="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-400
+                     hover:bg-red-400/10 transition-colors cursor-pointer font-sans"
+            >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
               </svg>
               Logout
             </button>
           } @else {
-            <a routerLink="/auth/login" (click)="closeMenu()"
-               class="flex items-center justify-center px-4 py-2.5 text-sm border border-rim-2 text-ink-2/70 rounded-md hover:border-rim-2 transition-colors cursor-pointer">
+            <a
+              routerLink="/auth/login"
+              (click)="closeMenu()"
+              class="flex items-center justify-center px-4 py-2.5 font-sans text-xs
+                     tracking-[0.12em] uppercase border border-rim text-ink-2/70
+                     hover:border-rim-2 transition-colors cursor-pointer"
+            >
               Sign In
             </a>
-            <a routerLink="/auth/register" (click)="closeMenu()"
-               class="flex items-center justify-center px-4 py-2.5 text-sm bg-gold-400 text-navy-900 font-semibold rounded-md hover:bg-gold-300 transition-colors cursor-pointer">
+            <a
+              routerLink="/auth/register"
+              (click)="closeMenu()"
+              class="flex items-center justify-center px-4 py-2.5 font-sans text-xs font-semibold
+                     tracking-[0.12em] uppercase bg-gold-400 text-navy-900
+                     hover:bg-gold-300 transition-colors cursor-pointer"
+            >
               Book Now
             </a>
           }

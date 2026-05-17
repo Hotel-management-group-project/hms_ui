@@ -1,165 +1,226 @@
 <!-- Room Detail — HMS Hotels -->
-<div class="min-h-screen bg-luxury pb-16">
+<div class="min-h-screen bg-deep pb-20 animate-page-reveal">
 
-  <!-- Loading -->
+  <!-- Loading state -->
   @if (loading()) {
     <div class="flex items-center justify-center min-h-screen">
-      <div class="flex flex-col items-center gap-4">
-        <div class="w-10 h-10 border-t-2 border-gold-400 rounded-full animate-spin"></div>
-        <p class="font-serif text-ink-2/60 text-sm tracking-wider">Loading your sanctuary…</p>
+      <div class="flex flex-col items-center gap-5">
+        <div class="w-10 h-10 border-t border-gold-400 rounded-full animate-spin"></div>
+        <p class="font-serif text-ink-2/55 text-sm tracking-[0.15em]">Loading your sanctuary…</p>
       </div>
     </div>
   }
 
   @if (!loading() && room(); as r) {
-    <!-- Hero gallery — full width -->
-    <div class="relative h-[55vh] md:h-[65vh] overflow-hidden gsap-reveal bg-raised">
+
+    <!-- ── Hero image — 60vh ───────────────────────────────── -->
+    <div class="relative overflow-hidden bg-raised" style="height: 60vh;">
       <img
         #heroImg
         [src]="getRoomImage(r, 0)"
         [alt]="r.type"
         class="w-full h-full object-cover opacity-0"
-        style="transition: opacity 0.7s ease;"
+        style="transition: opacity 0.7s var(--ease-entrance);"
         (load)="heroImg.style.opacity = '1'"
       >
-      <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/30 to-transparent"></div>
+      <!-- Dark gradient overlay -->
+      <div class="absolute inset-0"
+           style="background: linear-gradient(
+             to bottom,
+             rgba(0,0,0,0.30) 0%,
+             rgba(0,0,0,0.10) 35%,
+             rgba(0,0,0,0.65) 100%
+           );"></div>
 
       <!-- Overlay content -->
       <div class="absolute inset-0 flex flex-col justify-end px-6 sm:px-10 lg:px-16 pb-10">
-        <a routerLink="/guest/search" class="inline-flex items-center gap-2 text-ink-2/70 hover:text-gold-400 text-sm transition-colors mb-6 w-fit cursor-pointer">
+        <a
+          routerLink="/guest/search"
+          class="inline-flex items-center gap-2 text-white/65 hover:text-white text-sm font-sans
+                 mb-6 w-fit cursor-pointer"
+          style="transition: color var(--dur-micro) var(--ease-micro);"
+        >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
           Back to Search
         </a>
-        <div class="flex items-center gap-3 mb-3">
-          <span class="bg-deep/80 backdrop-blur-sm text-ink text-xs px-3 py-1 rounded-full border border-rim/50 tracking-widest uppercase">
+
+        <!-- Badges -->
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-surface/85 text-ink text-[10px] px-3 py-1.5 font-sans
+                       tracking-[0.2em] uppercase border border-rim/40">
             Room {{ r.roomNumber }}
           </span>
-          <span class="bg-gold-500/90 text-navy-900 text-xs px-3 py-1 rounded-full font-semibold tracking-wider uppercase">
+          <span class="bg-gold-400 text-navy-900 text-[10px] px-3 py-1.5 font-semibold
+                       tracking-[0.15em] uppercase font-sans">
             {{ r.type }}
           </span>
           @if (isPeakSeason()) {
-            <span class="bg-amber-500/80 text-white text-xs px-2.5 py-1 rounded-full tracking-wider uppercase">
+            <span class="bg-amber-500/80 text-white text-[10px] px-2.5 py-1.5
+                         tracking-[0.15em] uppercase font-sans">
               Peak Season
             </span>
           }
         </div>
-        <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl text-ink">{{ r.type }}</h1>
+
+        <h1 class="font-serif text-white" style="font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.02em;">
+          {{ r.type }}
+        </h1>
       </div>
     </div>
 
-    <!-- Side image strip (below hero on mobile, hidden on sm) -->
-    <div class="hidden md:grid grid-cols-2 gap-3 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 -mt-20 relative z-10 gsap-reveal">
-      <div class="aspect-video overflow-hidden rounded-xl bg-raised">
+    <!-- ── Image gallery — 1 large + 2 stacked ───────────── -->
+    <div class="hidden md:grid grid-cols-3 gap-3 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 -mt-16 relative z-10">
+
+      <!-- Large left image: spans 2 cols -->
+      <div class="col-span-2 overflow-hidden bg-raised img-zoom" style="aspect-ratio: 4/3;">
         <img
           #sideImg1
           [src]="getRoomImage(r, 1)"
           [alt]="r.type"
           class="w-full h-full object-cover opacity-0"
-          style="transition: opacity 0.6s ease 0.15s;"
+          style="transition: opacity 0.6s var(--ease-entrance) 0.15s,
+                             transform var(--dur-page) var(--ease-entrance);"
           (load)="sideImg1.style.opacity = '1'"
           loading="lazy"
         >
       </div>
-      <div class="aspect-video overflow-hidden rounded-xl bg-raised">
-        <img
-          #sideImg2
-          [src]="getRoomImage(r, 2)"
-          [alt]="r.type"
-          class="w-full h-full object-cover opacity-0"
-          style="transition: opacity 0.6s ease 0.25s;"
-          (load)="sideImg2.style.opacity = '1'"
-          loading="lazy"
-        >
+
+      <!-- Two stacked images on the right -->
+      <div class="flex flex-col gap-3">
+        <div class="flex-1 overflow-hidden bg-raised img-zoom" style="min-height: 0;">
+          <img
+            #sideImg2
+            [src]="getRoomImage(r, 2)"
+            [alt]="r.type"
+            class="w-full h-full object-cover opacity-0"
+            style="transition: opacity 0.6s var(--ease-entrance) 0.25s,
+                               transform var(--dur-page) var(--ease-entrance);"
+            (load)="sideImg2.style.opacity = '1'"
+            loading="lazy"
+          >
+        </div>
+        <!-- Third image — same source rotated for variety -->
+        <div class="flex-1 overflow-hidden bg-raised img-zoom" style="min-height: 0;">
+          <img
+            [src]="getRoomImage(r, 0)"
+            [alt]="r.type"
+            class="w-full h-full object-cover"
+            style="filter: brightness(0.85);
+                   transition: transform var(--dur-page) var(--ease-entrance);"
+            loading="lazy"
+          >
+        </div>
       </div>
     </div>
 
-    <!-- Main content layout -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 lg:mt-12">
+    <!-- ── Two-column layout: details + booking widget ─────── -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 lg:mt-14">
       <div class="flex flex-col lg:flex-row gap-10 lg:gap-14">
 
-        <!-- Left: details & services -->
-        <div class="flex-1 space-y-10">
+        <!-- LEFT: Room details + services + policy -->
+        <div class="flex-1 space-y-12">
 
-          <!-- Room info -->
-          <section class="gsap-reveal">
-            <h2 class="font-serif text-2xl text-ink mb-5">About this Room</h2>
-            <p class="text-ink-2/75 leading-relaxed text-sm sm:text-base">{{ r.description }}</p>
+          <!-- About this room -->
+          <section style="animation: fadeUp 0.6s var(--ease-entrance) 0.1s both;">
+            <h2 class="font-serif text-ink mb-5" style="font-size: 1.75rem; letter-spacing: -0.02em;">
+              About this Room
+            </h2>
+            <p class="text-ink-2/75 leading-relaxed text-sm sm:text-base font-sans">
+              {{ r.description }}
+            </p>
 
-            <!-- Feature chips -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
-              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
+            <!-- Feature grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-8">
+
+              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 <div class="text-sm">
                   <span class="block text-ink font-medium">Capacity</span>
-                  <span class="text-ink-2/55">Up to {{ r.capacity }}</span>
+                  <span class="text-ink-2/55 font-sans">Up to {{ r.capacity }}</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
+
+              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
                 <div class="text-sm">
                   <span class="block text-ink font-medium">Floor</span>
-                  <span class="text-ink-2/55">Level {{ r.floor }}</span>
+                  <span class="text-ink-2/55 font-sans">Level {{ r.floor }}</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
+
+              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                 </svg>
                 <div class="text-sm">
                   <span class="block text-ink font-medium">WiFi</span>
-                  <span class="text-ink-2/55">High Speed</span>
+                  <span class="text-ink-2/55 font-sans">High Speed</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim">
+
+              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
                 </svg>
                 <div class="text-sm">
                   <span class="block text-ink font-medium">Service</span>
-                  <span class="text-ink-2/55">24 / 7</span>
+                  <span class="text-ink-2/55 font-sans">24 / 7</span>
                 </div>
               </div>
-              <div class="flex items-center gap-3 bg-surface p-4 rounded-xl border border-rim col-span-2 sm:col-span-1">
+
+              <div class="flex items-center gap-3 bg-surface p-4 border border-rim col-span-2 sm:col-span-1">
                 <div class="flex flex-col text-sm w-full">
                   <span class="block text-ink font-medium mb-2">Pricing</span>
-                  <div class="flex justify-between text-xs">
+                  <div class="flex justify-between text-xs font-sans">
                     <span class="text-ink-2/55">Off-peak</span>
                     <span class="text-ink">£{{ r.priceOffPeak }}/night</span>
                   </div>
-                  <div class="flex justify-between text-xs mt-1">
+                  <div class="flex justify-between text-xs mt-1 font-sans">
                     <span class="text-gold-400">Peak season</span>
                     <span class="text-gold-400">£{{ r.pricePeak }}/night</span>
                   </div>
                 </div>
               </div>
+
             </div>
           </section>
 
           <!-- Ancillary services -->
           @if (services().length > 0) {
-            <section class="gsap-reveal">
-              <h2 class="font-serif text-2xl text-ink mb-2">Enhance Your Stay</h2>
-              <p class="text-ink-2/55 text-sm mb-6">Optional extras added to your booking total.</p>
+            <section style="animation: fadeUp 0.6s var(--ease-entrance) 0.2s both;">
+              <h2 class="font-serif text-ink mb-2" style="font-size: 1.75rem; letter-spacing: -0.02em;">
+                Enhance Your Stay
+              </h2>
+              <p class="text-ink-2/55 text-sm font-sans mb-6">Optional extras added to your booking total.</p>
               <div class="space-y-3">
                 @for (svc of services(); track svc.id) {
                   <div
                     (click)="toggleService(svc.id)"
-                    class="flex items-start justify-between p-4 rounded-xl border transition-all duration-300 cursor-pointer select-none"
-                    [class]="svc.selected
-                      ? 'bg-raised/80 border-gold-500/40 shadow-[0_0_12px_rgba(201,168,76,0.08)]'
-                      : 'bg-surface/60 border-rim hover:border-rim-2'"
+                    class="flex items-start justify-between p-4 border cursor-pointer select-none"
+                    style="transition: background-color var(--dur-micro) var(--ease-micro),
+                                       border-color var(--dur-micro) var(--ease-micro),
+                                       box-shadow var(--dur-micro) var(--ease-micro);"
+                    [style.background]="svc.selected ? 'rgb(var(--hms-raised) / 0.8)' : ''"
+                    [style.border-color]="svc.selected ? 'rgba(201,168,76,0.45)' : ''"
+                    [class]="svc.selected ? 'bg-raised/80 border-gold-400/40' : 'bg-surface/60 border-rim hover:border-rim-2'"
                   >
                     <div class="flex items-start gap-4">
-                      <!-- Custom checkbox -->
+                      <!-- Checkbox -->
                       <div
-                        class="mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 shrink-0"
-                        [class]="svc.selected ? 'bg-gold-500 border-gold-500' : 'border-rim-2 bg-deep'"
+                        class="mt-0.5 w-5 h-5 border-2 flex items-center justify-center shrink-0"
+                        style="transition: background-color var(--dur-micro) var(--ease-micro),
+                                           border-color var(--dur-micro) var(--ease-micro);"
+                        [class]="svc.selected ? 'bg-gold-400 border-gold-400' : 'border-rim-2 bg-deep'"
                       >
                         @if (svc.selected) {
                           <svg class="w-3 h-3 text-navy-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -169,29 +230,43 @@
                       </div>
                       <div>
                         <p class="text-ink font-medium text-sm">{{ svc.name }}</p>
-                        <p class="text-ink-2/50 text-xs mt-0.5 leading-relaxed">{{ svc.description }}</p>
+                        <p class="text-ink-2/50 text-xs mt-0.5 leading-relaxed font-sans">{{ svc.description }}</p>
                         <p class="text-gold-400 text-sm font-medium mt-1.5">£{{ svc.price }}</p>
                       </div>
                     </div>
 
-                    <!-- Quantity -->
+                    <!-- Quantity stepper -->
                     @if (svc.selected) {
                       <div
-                        class="flex items-center gap-2 bg-deep border border-rim rounded-lg p-1 shrink-0 ml-4"
+                        class="flex items-center gap-2 bg-deep border border-rim p-1 shrink-0 ml-4"
                         (click)="$event.stopPropagation()"
                       >
                         <button
                           (click)="updateQty(svc.id, -1)"
-                          class="w-7 h-7 rounded flex items-center justify-center text-ink-2 hover:bg-raised hover:text-ink transition-colors cursor-pointer"
+                          class="w-7 h-7 flex items-center justify-center text-ink-2 hover:text-ink
+                                 cursor-pointer"
+                          style="transition: background-color var(--dur-micro) var(--ease-micro),
+                                             transform var(--dur-micro) var(--ease-micro);"
+                          onmousedown="this.style.transform='scale(0.9)';"
+                          onmouseup="this.style.transform='scale(1)';"
                         >
-                          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/></svg>
+                          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/>
+                          </svg>
                         </button>
-                        <span class="w-5 text-center text-ink text-sm tabular-nums">{{ svc.quantity }}</span>
+                        <span class="w-5 text-center text-ink text-sm tabular-nums font-sans">{{ svc.quantity }}</span>
                         <button
                           (click)="updateQty(svc.id, 1)"
-                          class="w-7 h-7 rounded flex items-center justify-center text-ink-2 hover:bg-raised hover:text-ink transition-colors cursor-pointer"
+                          class="w-7 h-7 flex items-center justify-center text-ink-2 hover:text-ink
+                                 cursor-pointer"
+                          style="transition: background-color var(--dur-micro) var(--ease-micro),
+                                             transform var(--dur-micro) var(--ease-micro);"
+                          onmousedown="this.style.transform='scale(0.9)';"
+                          onmouseup="this.style.transform='scale(1)';"
                         >
-                          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                          </svg>
                         </button>
                       </div>
                     }
@@ -202,19 +277,27 @@
           }
 
           <!-- Cancellation policy -->
-          <section class="gsap-reveal border-t border-rim pt-8">
-            <h3 class="font-serif text-lg text-ink mb-3">Cancellation Policy</h3>
-            <div class="space-y-2 text-sm text-ink-2/65">
-              <div class="flex items-start gap-2">
-                <svg class="w-4 h-4 text-green-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          <section class="border-t border-rim pt-8"
+                   style="animation: fadeUp 0.6s var(--ease-entrance) 0.3s both;">
+            <h3 class="font-serif text-ink mb-4" style="font-size: 1.2rem;">Cancellation Policy</h3>
+            <div class="space-y-3 text-sm font-sans text-ink-2/65">
+              <div class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-green-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <span>Free cancellation — more than 14 days before check-in</span>
               </div>
-              <div class="flex items-start gap-2">
-                <svg class="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <div class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
                 <span>50% of first night — 3 to 14 days before check-in</span>
               </div>
-              <div class="flex items-start gap-2">
-                <svg class="w-4 h-4 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <div class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
                 <span>100% of first night — less than 72 hours before check-in</span>
               </div>
             </div>
@@ -222,57 +305,74 @@
 
         </div>
 
-        <!-- Right: booking sidebar -->
-        <div class="w-full lg:w-[340px] xl:w-[360px] shrink-0 gsap-reveal">
-          <div class="bg-surface/95 border border-rim rounded-2xl p-6 lg:sticky lg:top-24 shadow-luxury-lg space-y-6">
+        <!-- RIGHT: Booking widget — sticky on scroll -->
+        <div class="w-full lg:w-[340px] xl:w-[360px] shrink-0"
+             style="animation: fadeUp 0.6s var(--ease-entrance) 0.15s both;">
+          <div class="bg-surface border border-rim p-6 lg:sticky lg:top-24 space-y-6"
+               style="box-shadow: 0 8px 48px rgba(28,25,23,0.10);">
 
             <!-- Price display -->
             <div class="flex items-end justify-between">
               <div>
-                <p class="text-xs uppercase tracking-wider text-ink-2/50 mb-1">
+                <p class="text-[10px] uppercase tracking-[0.2em] text-ink-2/50 font-sans mb-1">
                   {{ isPeakSeason() ? 'Peak Season Rate' : 'Off-Peak Rate' }}
                 </p>
                 <div class="flex items-baseline gap-1.5">
-                  <span class="font-serif text-4xl text-gold-400">£{{ displayPrice() }}</span>
-                  <span class="text-ink-2/40 text-sm">/ night</span>
+                  <span class="font-serif text-gold-400" style="font-size: 2.5rem; letter-spacing: -0.02em;">
+                    <span class="text-xl font-sans font-light mr-0.5">£</span>{{ displayPrice() }}
+                  </span>
+                  <span class="text-ink-2/40 text-sm font-sans">/ night</span>
                 </div>
               </div>
               @if (isPeakSeason()) {
-                <span class="text-xs bg-amber-500/15 text-amber-400 border border-amber-500/25 px-2.5 py-1 rounded-full uppercase tracking-wider">Peak</span>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/25
+                             px-2.5 py-1 tracking-wider uppercase font-sans">Peak</span>
               }
             </div>
 
-            <div class="w-full h-px bg-gradient-to-r from-transparent via-navy-600 to-transparent"></div>
+            <!-- Divider -->
+            <div class="gold-divider w-full"></div>
 
             <!-- Date pickers -->
             <div class="space-y-4">
               <div>
-                <label for="rd-checkin" class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Check-in</label>
+                <label for="rd-checkin"
+                       class="block text-[10px] uppercase tracking-[0.2em] text-ink-2/50 font-sans mb-2">
+                  Check-in
+                </label>
                 <input
                   id="rd-checkin"
                   type="date"
                   [min]="today()"
                   [value]="checkIn()"
                   (change)="setCheckIn($any($event.target).value)"
-                  class="input bg-deep/60 [color-scheme:dark] cursor-pointer w-full"
+                  class="input [color-scheme:dark] cursor-pointer"
+                  style="transition: border-color var(--dur-micro) var(--ease-micro),
+                                     box-shadow var(--dur-micro) var(--ease-micro);"
                 >
               </div>
               <div>
-                <label for="rd-checkout" class="block text-xs uppercase tracking-wider text-ink-2/50 mb-2">Check-out</label>
+                <label for="rd-checkout"
+                       class="block text-[10px] uppercase tracking-[0.2em] text-ink-2/50 font-sans mb-2">
+                  Check-out
+                </label>
                 <input
                   id="rd-checkout"
                   type="date"
                   [min]="checkIn() || today()"
                   [value]="checkOut()"
                   (change)="setCheckOut($any($event.target).value)"
-                  class="input bg-deep/60 [color-scheme:dark] cursor-pointer w-full"
+                  class="input [color-scheme:dark] cursor-pointer"
+                  style="transition: border-color var(--dur-micro) var(--ease-micro),
+                                     box-shadow var(--dur-micro) var(--ease-micro);"
                 >
               </div>
             </div>
 
-            <!-- Price breakdown (only when dates selected) -->
+            <!-- Price breakdown -->
             @if (datesValid()) {
-              <div class="space-y-2 text-sm">
+              <div class="space-y-2 text-sm font-sans"
+                   style="animation: fadeIn 0.3s var(--ease-entrance) both;">
                 <div class="flex justify-between text-ink-2/65">
                   <span>£{{ displayPrice() }} × {{ nights() }} {{ nights() === 1 ? 'night' : 'nights' }}</span>
                   <span class="text-ink">£{{ roomSubtotal() }}</span>
@@ -286,17 +386,20 @@
                   }
                 }
                 <div class="flex justify-between items-end pt-3 border-t border-rim mt-3">
-                  <span class="text-ink uppercase tracking-wider text-xs">Total</span>
-                  <span class="font-serif text-3xl text-gold-400">£{{ grandTotal() }}</span>
+                  <span class="text-ink uppercase tracking-wider text-xs font-sans">Total</span>
+                  <span class="font-serif text-gold-400" style="font-size: 2rem; letter-spacing: -0.02em;">
+                    £{{ grandTotal() }}
+                  </span>
                 </div>
-                <p class="text-ink-2/35 text-xs text-right">Inclusive of all taxes and fees</p>
+                <p class="text-ink-2/35 text-xs text-right font-sans">Inclusive of all taxes and fees</p>
               </div>
             } @else {
-              <div class="bg-deep/60 border border-rim rounded-lg p-4 text-center">
-                <svg class="w-8 h-8 text-ink-2/20 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              <div class="bg-deep border border-rim p-5 text-center">
+                <svg class="w-7 h-7 text-ink-2/20 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <p class="text-ink-2/40 text-xs">Select dates to see total price</p>
+                <p class="text-ink-2/40 text-xs font-sans">Select dates to see total price</p>
               </div>
             }
 
@@ -305,12 +408,13 @@
               <button
                 (click)="confirmBooking()"
                 [disabled]="submitting() || !datesValid()"
-                class="btn-primary w-full py-4 text-base tracking-wide cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                class="btn-primary w-full py-4 text-sm tracking-[0.18em] uppercase cursor-pointer"
               >
                 @if (submitting()) {
-                  <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                  <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
                   <span>Creating booking…</span>
                 } @else {
@@ -318,13 +422,15 @@
                 }
               </button>
             } @else {
-              <a routerLink="/auth/login"
-                 class="btn-primary w-full py-4 text-base tracking-wide flex items-center justify-center">
+              <a
+                routerLink="/auth/login"
+                class="btn-primary w-full py-4 text-sm tracking-[0.18em] uppercase flex items-center justify-center"
+              >
                 Sign in to Book
               </a>
             }
 
-            <p class="text-center text-ink-2/35 text-xs leading-relaxed">
+            <p class="text-center text-ink-2/35 text-xs leading-relaxed font-sans">
               No charge today — payment collected on the next step.
             </p>
           </div>
@@ -334,10 +440,11 @@
     </div>
   }
 
+  <!-- Not found -->
   @if (!loading() && !room()) {
     <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-      <h2 class="font-serif text-3xl text-ink mb-2">Room Not Found</h2>
-      <p class="text-ink-2/55 mb-6 text-sm">This room does not exist or is unavailable.</p>
+      <h2 class="font-serif text-3xl text-ink mb-2" style="letter-spacing: -0.02em;">Room Not Found</h2>
+      <p class="text-ink-2/55 mb-6 text-sm font-sans">This room does not exist or is unavailable.</p>
       <a routerLink="/guest/search" class="btn-secondary px-8 py-3">Return to Search</a>
     </div>
   }

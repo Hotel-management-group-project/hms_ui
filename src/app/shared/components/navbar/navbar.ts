@@ -1,5 +1,5 @@
 
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, afterNextRender } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ThemeService } from '../../../core/services/theme.service';
@@ -12,9 +12,18 @@ interface NavLink { path: string; label: string; }
   templateUrl: './navbar.html',
 })
 export class NavbarComponent {
-  readonly auth = inject(AuthService);
+  readonly auth  = inject(AuthService);
   readonly theme = inject(ThemeService);
   readonly menuOpen = signal(false);
+  readonly scrolled = signal(false);
+
+  constructor() {
+    afterNextRender(() => {
+      const handler = () => this.scrolled.set(window.scrollY > 48);
+      window.addEventListener('scroll', handler, { passive: true });
+      handler(); // run once on init
+    });
+  }
 
   readonly navLinks = computed<NavLink[]>(() => {
     if (!this.auth.isAuthenticated()) {

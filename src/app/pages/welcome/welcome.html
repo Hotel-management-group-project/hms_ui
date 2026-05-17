@@ -1,6 +1,7 @@
 <!-- Welcome Page — HMS Hotel Door Animation -->
 <div
-  class="fixed inset-0 overflow-hidden select-none bg-navy-900"
+  class="fixed inset-0 overflow-hidden select-none"
+  style="background-color: #0F0E0D;"
   role="main"
   aria-label="HMS Hotels welcome screen"
 >
@@ -44,7 +45,8 @@
 
     <!-- Left door -->
     <div
-      class="door-left relative w-1/2 h-full flex-shrink-0 bg-navy-800"
+      class="door-left relative w-1/2 h-full flex-shrink-0"
+    style="background-color: #1C1917;"
       style="backface-visibility: hidden; will-change: transform;"
     >
       <!-- Outer decorative border -->
@@ -71,7 +73,8 @@
 
     <!-- Right door -->
     <div
-      class="door-right relative w-1/2 h-full flex-shrink-0 bg-navy-800"
+      class="door-right relative w-1/2 h-full flex-shrink-0"
+    style="background-color: #1C1917;"
       style="backface-visibility: hidden; will-change: transform;"
     >
       <!-- Outer decorative border -->
@@ -109,17 +112,24 @@
     <button
       (click)="enter()"
       class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 cursor-pointer
-             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-4
-             focus:ring-offset-navy-900"
+             focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-4
+             focus:ring-offset-[#0F0E0D]"
       aria-label="Skip animation and enter HMS"
       type="button"
+      style="animation: fadeIn 0.8s var(--ease-entrance) 1.2s both;"
     >
-      <span class="flex items-center gap-2.5 px-9 py-3.5 border border-gold/45
-                   text-gold text-xs font-medium tracking-[0.25em] uppercase font-sans
-                   transition-all duration-300
-                   hover:bg-gold/10">
+      <span
+        class="flex items-center gap-2.5 px-9 py-3.5 border border-gold-400/45
+               text-gold-400 text-xs font-medium tracking-[0.25em] uppercase font-sans"
+        style="transition: background-color var(--dur-micro) var(--ease-micro),
+                           border-color var(--dur-micro) var(--ease-micro),
+                           transform var(--dur-micro) var(--ease-micro);"
+        onmouseenter="this.style.backgroundColor='rgba(201,168,76,0.10)'; this.style.borderColor='rgba(201,168,76,0.7)';"
+        onmouseleave="this.style.backgroundColor=''; this.style.borderColor='';"
+        onmousedown="this.style.transform='scale(0.97)';"
+        onmouseup="this.style.transform='scale(1)';"
+      >
         Enter
-        <!-- Arrow right SVG -->
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
