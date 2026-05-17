@@ -19,7 +19,9 @@ module.exports = {
           700: '#0A1628',
           800: '#050D1A',
           900: '#02060D',
-          DEFAULT: '#0A1628',
+          DEFAULT: '#0a0f1e',
+          mid:     '#0f1729',
+          light:   '#1a2540',
         },
         gold: {
           50:  '#FBF6E9',
@@ -32,7 +34,9 @@ module.exports = {
           700: '#7C6428',
           800: '#5E4B1E',
           900: '#3F3214',
-          DEFAULT: '#C9A84C',
+          DEFAULT: '#c9a96e',
+          light:   '#e8d5b0',
+          dark:    '#a07840',
         },
         cream: {
           50:  '#FDFCF9',
@@ -40,7 +44,7 @@ module.exports = {
           200: '#F5F0E8',
           300: '#EDE5D5',
           400: '#E0D4BC',
-          DEFAULT: '#F5F0E8',
+          DEFAULT: '#f5f0e8',
         },
         /* ── Semantic theme tokens (CSS-variable driven) ── */
         surface: 'rgb(var(--hms-surface) / <alpha-value>)',
