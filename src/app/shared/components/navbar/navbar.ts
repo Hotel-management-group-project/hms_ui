@@ -1,6 +1,8 @@
 
 import { Component, inject, signal, computed, afterNextRender } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 import { ThemeService } from '../../../core/services/theme.service';
 
@@ -12,16 +14,33 @@ interface NavLink { path: string; label: string; }
   templateUrl: './navbar.html',
 })
 export class NavbarComponent {
-  readonly auth  = inject(AuthService);
-  readonly theme = inject(ThemeService);
+  readonly auth   = inject(AuthService);
+  readonly theme  = inject(ThemeService);
+  readonly router = inject(Router);
   readonly menuOpen = signal(false);
   readonly scrolled = signal(false);
+
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map(e => e.urlAfterRedirects),
+    ),
+    { initialValue: this.router.url },
+  );
+
+  readonly isHomePage = computed(() => {
+    const url = this.currentUrl() ?? '';
+    return url === '/' || url === '/home' || url.startsWith('/home?') || url.startsWith('/home#');
+  });
+
+  // Transparent only when on the home page and not yet scrolled (hero video is visible)
+  readonly isTransparent = computed(() => this.isHomePage() && !this.scrolled());
 
   constructor() {
     afterNextRender(() => {
       const handler = () => this.scrolled.set(window.scrollY > 48);
       window.addEventListener('scroll', handler, { passive: true });
-      handler(); // run once on init
+      handler();
     });
   }
 

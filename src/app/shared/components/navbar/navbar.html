@@ -1,7 +1,7 @@
 <!-- Public Navbar — scroll-aware transparency, luxury typography -->
 <nav
   class="fixed top-0 inset-x-0 z-50"
-  [class]="scrolled() ? 'navbar-solid' : 'navbar-transparent'"
+  [class]="isTransparent() ? 'navbar-transparent' : 'navbar-solid'"
   style="transition: background var(--dur-layout) var(--ease-entrance),
                      border-color var(--dur-layout) var(--ease-entrance),
                      box-shadow var(--dur-layout) var(--ease-entrance);"
@@ -13,7 +13,7 @@
       <!-- Logo -->
       <a routerLink="/home" class="flex items-center gap-2.5 shrink-0 cursor-pointer group" aria-label="HMS Hotels home">
         <div class="w-8 h-8 flex items-center justify-center border transition-colors duration-200"
-             [class]="scrolled()
+             [class]="!isTransparent()
                ? 'border-gold-400/40 bg-gold-400/8 group-hover:bg-gold-400/15'
                : 'border-white/30 bg-white/10 group-hover:bg-white/15'">
           <span class="font-serif text-sm font-bold text-gold-400">H</span>
@@ -22,7 +22,7 @@
           <span class="font-serif text-lg font-semibold leading-none block"
                 [class]="scrolled() ? 'text-gold-400' : 'text-gold-400'">HMS</span>
           <span class="text-[9px] tracking-[0.22em] uppercase leading-none block font-sans"
-                [class]="scrolled() ? 'text-ink-2/45' : 'text-white/50'">Hotels</span>
+                [class]="!isTransparent() ? 'text-ink-2/45' : 'text-white/50'">Hotels</span>
         </div>
       </a>
 
@@ -33,7 +33,7 @@
             [routerLink]="link.path"
             routerLinkActive="active text-gold-400"
             class="nav-link px-4 py-2 transition-colors duration-200 cursor-pointer"
-            [class]="scrolled() || auth.isAuthenticated()
+            [class]="!isTransparent() || auth.isAuthenticated()
               ? 'text-ink-2/65 hover:text-ink'
               : 'text-white/75 hover:text-white'"
           >
@@ -62,7 +62,7 @@
           (click)="theme.toggle()"
           aria-label="Toggle dark mode"
           class="w-8 h-8 flex items-center justify-center transition-colors duration-200 cursor-pointer"
-          [class]="scrolled() || auth.isAuthenticated()
+          [class]="!isTransparent() || auth.isAuthenticated()
             ? 'text-ink-2/55 hover:text-gold-400'
             : 'text-white/60 hover:text-white'"
         >
@@ -99,7 +99,7 @@
             routerLink="/auth/login"
             class="px-4 py-1.5 font-sans text-xs tracking-[0.1em] uppercase border
                    transition-all duration-200 cursor-pointer"
-            [class]="scrolled()
+            [class]="!isTransparent()
               ? 'text-ink-2/70 border-rim hover:text-ink hover:border-rim-2'
               : 'text-white/75 border-white/30 hover:text-white hover:border-white/60'"
           >
@@ -108,8 +108,10 @@
           <a
             routerLink="/auth/register"
             class="px-5 py-1.5 font-sans text-xs font-semibold tracking-[0.1em] uppercase
-                   bg-gold-400 text-navy-900 cursor-pointer
-                   transition-all duration-200 hover:bg-gold-300"
+                   cursor-pointer transition-all duration-200"
+            [class]="isTransparent()
+              ? 'bg-gold-400 text-white hover:bg-gold-300'
+              : 'dark:bg-gold-400 dark:text-white dark:hover:bg-gold-300 bg-[#1C1917] text-white hover:bg-stone-800'"
             style="transition-timing-function: var(--ease-micro);"
           >
             Book Now
@@ -123,7 +125,7 @@
           (click)="theme.toggle()"
           aria-label="Toggle dark mode"
           class="w-8 h-8 flex items-center justify-center transition-colors cursor-pointer"
-          [class]="scrolled() ? 'text-ink-2/60 hover:text-gold-400' : 'text-white/70 hover:text-white'"
+          [class]="!isTransparent() ? 'text-ink-2/60 hover:text-gold-400' : 'text-white/70 hover:text-white'"
         >
           @if (theme.isDark()) {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,7 +145,7 @@
           aria-label="Toggle mobile menu"
           aria-expanded="{{ menuOpen() }}"
           class="w-9 h-9 flex items-center justify-center transition-colors cursor-pointer"
-          [class]="scrolled() ? 'text-ink-2/70 hover:text-ink' : 'text-white/80 hover:text-white'"
+          [class]="!isTransparent() ? 'text-ink-2/70 hover:text-ink' : 'text-white/80 hover:text-white'"
         >
           @if (menuOpen()) {
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
