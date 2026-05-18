@@ -7,7 +7,7 @@
       <p class="text-gold-400 text-[0.65rem] tracking-[0.4em] uppercase font-semibold font-sans">
         Discover Your Stay
       </p>
-      <h1 class="font-serif text-ink" style="font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.02em;">
+      <h1 class="font-serif text-ink" style="font-size: clamp(1.5rem, 3.5vw, 2.75rem); letter-spacing: -0.02em;">
         Find Your Sanctuary
       </h1>
       <div class="gold-divider w-16 mx-auto"></div>
@@ -303,7 +303,7 @@
             @for (n of skeletons; track n) {
               <div class="bg-surface border border-rim overflow-hidden flex flex-col md:flex-row"
                    style="animation: skeletonPulse 1.8s var(--ease-micro) infinite;">
-                <div class="w-full md:w-[320px] shrink-0 aspect-[4/3] md:aspect-auto md:h-[220px] bg-raised"></div>
+                <div class="w-full md:w-[260px] shrink-0 aspect-[4/3] md:aspect-auto md:h-[220px] bg-raised"></div>
                 <div class="flex-1 p-6 space-y-4">
                   <div class="flex justify-between items-start">
                     <div class="space-y-2">
@@ -348,7 +348,7 @@
                 onmouseleave="this.style.borderColor=''; this.style.boxShadow='';"
               >
                 <!-- Image — 320px fixed width on desktop, full-width on mobile -->
-                <div class="relative w-full md:w-[320px] shrink-0 overflow-hidden bg-raised
+                <div class="relative w-full md:w-[260px] shrink-0 overflow-hidden bg-raised
                              aspect-[4/3] md:aspect-auto md:h-auto">
                   <img
                     #roomImg
@@ -385,13 +385,13 @@
                 </div>
 
                 <!-- Details — right side -->
-                <div class="flex-1 flex flex-col justify-between p-6 md:p-8">
+                <div class="flex-1 flex flex-col justify-between p-5 md:p-6">
                   <div class="space-y-4">
 
                     <!-- Name + price -->
                     <div class="flex justify-between items-start gap-4">
                       <div>
-                        <h3 class="font-serif text-2xl text-ink"
+                        <h3 class="font-serif text-xl text-ink"
                             style="letter-spacing: -0.02em;
                                    transition: color var(--dur-micro) var(--ease-micro);">
                           Room {{ room.roomNumber }}
@@ -411,7 +411,7 @@
                       <div class="text-right shrink-0">
                         <p class="text-ink-2/40 text-[10px] uppercase tracking-wider font-sans">From</p>
                         <p class="font-serif text-gold-400 leading-none mt-1"
-                           style="font-size: 2rem; letter-spacing: -0.02em;">
+                           style="font-size: 1.6rem; letter-spacing: -0.02em;">
                           <span class="text-lg mr-0.5 font-sans font-light">£</span>{{ getDisplayPrice(room) }}
                         </p>
                         <p class="text-ink-2/35 text-xs font-sans">per night</p>
@@ -470,7 +470,7 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-serif text-2xl text-ink mb-2" style="letter-spacing: -0.02em;">No Rooms Available</h3>
+              <h3 class="font-serif text-xl text-ink mb-2" style="letter-spacing: -0.02em;">No Rooms Available</h3>
               <p class="text-ink-2/55 max-w-sm mx-auto text-sm leading-relaxed font-sans">
                 No rooms match your criteria for these dates. Try adjusting your filters, or join our waitlist.
               </p>

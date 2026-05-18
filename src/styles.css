@@ -92,7 +92,7 @@
     color: rgb(var(--hms-ink));
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -106,9 +106,9 @@
 
   /* Desktop heading scale */
   @media (min-width: 768px) {
-    h1 { font-size: 3.5rem; }   /* 56px */
-    h2 { font-size: 2.5rem; }   /* 40px */
-    h3 { font-size: 1.75rem; }  /* 28px */
+    h1 { font-size: 2.75rem; }  /* 44px */
+    h2 { font-size: 1.875rem; } /* 30px */
+    h3 { font-size: 1.25rem; }  /* 20px */
   }
 
   * {
@@ -178,7 +178,7 @@
 
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
-           px-6 py-3 bg-gold-400 text-navy-900 font-semibold text-sm
+           px-5 py-2.5 bg-gold-400 text-navy-900 font-semibold text-sm
            tracking-wide rounded-sm
            focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2
            disabled:opacity-50 disabled:cursor-not-allowed;
@@ -201,7 +201,7 @@
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2
-           px-6 py-3 border border-gold-400 text-gold-400 font-semibold text-sm
+           px-5 py-2.5 border border-gold-400 text-gold-400 font-semibold text-sm
            tracking-wide rounded-sm bg-transparent
            focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2;
     transition: transform var(--dur-micro) var(--ease-micro),
@@ -232,7 +232,7 @@
   /* ── Form inputs ───────────────────────────────────────── */
 
   .input {
-    @apply w-full px-4 py-3 bg-deep border border-rim rounded-sm
+    @apply w-full px-3.5 py-2.5 bg-deep border border-rim rounded-sm
            text-ink placeholder-ink-2/40
            focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent
            text-sm;
@@ -294,11 +294,11 @@
   }
 
   .section-title {
-    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight;
+    @apply font-serif text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight;
   }
 
   .section-subtitle {
-    @apply text-base md:text-lg leading-relaxed;
+    @apply text-sm md:text-base leading-relaxed;
     color: rgb(var(--hms-ink-2));
   }
 

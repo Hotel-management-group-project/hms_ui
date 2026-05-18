@@ -64,7 +64,7 @@
           }
         </div>
 
-        <h1 class="font-serif text-white" style="font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.02em;">
+        <h1 class="font-serif text-white" style="font-size: clamp(1.5rem, 4vw, 2.75rem); letter-spacing: -0.02em;">
           {{ r.type }}
         </h1>
       </div>
@@ -117,14 +117,14 @@
 
     <!-- ── Two-column layout: details + booking widget ─────── -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 lg:mt-14">
-      <div class="flex flex-col lg:flex-row gap-10 lg:gap-14">
+      <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
 
         <!-- LEFT: Room details + services + policy -->
-        <div class="flex-1 space-y-12">
+        <div class="flex-1 space-y-10">
 
           <!-- About this room -->
           <section style="animation: fadeUp 0.6s var(--ease-entrance) 0.1s both;">
-            <h2 class="font-serif text-ink mb-5" style="font-size: 1.75rem; letter-spacing: -0.02em;">
+            <h2 class="font-serif text-ink mb-4" style="font-size: 1.25rem; letter-spacing: -0.02em;">
               About this Room
             </h2>
             <p class="text-ink-2/75 leading-relaxed text-sm sm:text-base font-sans">
@@ -132,9 +132,9 @@
             </p>
 
             <!-- Feature grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-6">
 
-              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
+              <div class="flex items-center gap-3 bg-surface p-3 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -145,7 +145,7 @@
                 </div>
               </div>
 
-              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
+              <div class="flex items-center gap-3 bg-surface p-3 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
@@ -156,7 +156,7 @@
                 </div>
               </div>
 
-              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
+              <div class="flex items-center gap-3 bg-surface p-3 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
@@ -167,7 +167,7 @@
                 </div>
               </div>
 
-              <div class="flex items-center gap-3 bg-surface p-4 border border-rim">
+              <div class="flex items-center gap-3 bg-surface p-3 border border-rim">
                 <svg class="w-5 h-5 text-gold-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
@@ -178,7 +178,7 @@
                 </div>
               </div>
 
-              <div class="flex items-center gap-3 bg-surface p-4 border border-rim col-span-2 sm:col-span-1">
+              <div class="flex items-center gap-3 bg-surface p-3 border border-rim col-span-2 sm:col-span-1">
                 <div class="flex flex-col text-sm w-full">
                   <span class="block text-ink font-medium mb-2">Pricing</span>
                   <div class="flex justify-between text-xs font-sans">
@@ -198,7 +198,7 @@
           <!-- Ancillary services -->
           @if (services().length > 0) {
             <section style="animation: fadeUp 0.6s var(--ease-entrance) 0.2s both;">
-              <h2 class="font-serif text-ink mb-2" style="font-size: 1.75rem; letter-spacing: -0.02em;">
+              <h2 class="font-serif text-ink mb-2" style="font-size: 1.25rem; letter-spacing: -0.02em;">
                 Enhance Your Stay
               </h2>
               <p class="text-ink-2/55 text-sm font-sans mb-6">Optional extras added to your booking total.</p>
@@ -308,7 +308,7 @@
         <!-- RIGHT: Booking widget — sticky on scroll -->
         <div class="w-full lg:w-[340px] xl:w-[360px] shrink-0"
              style="animation: fadeUp 0.6s var(--ease-entrance) 0.15s both;">
-          <div class="bg-surface border border-rim p-6 lg:sticky lg:top-24 space-y-6"
+          <div class="bg-surface border border-rim p-5 lg:sticky lg:top-[72px] space-y-5"
                style="box-shadow: 0 8px 48px rgba(28,25,23,0.10);">
 
             <!-- Price display -->
@@ -318,7 +318,7 @@
                   {{ isPeakSeason() ? 'Peak Season Rate' : 'Off-Peak Rate' }}
                 </p>
                 <div class="flex items-baseline gap-1.5">
-                  <span class="font-serif text-gold-400" style="font-size: 2.5rem; letter-spacing: -0.02em;">
+                  <span class="font-serif text-gold-400" style="font-size: 1.875rem; letter-spacing: -0.02em;">
                     <span class="text-xl font-sans font-light mr-0.5">£</span>{{ displayPrice() }}
                   </span>
                   <span class="text-ink-2/40 text-sm font-sans">/ night</span>
@@ -387,7 +387,7 @@
                 }
                 <div class="flex justify-between items-end pt-3 border-t border-rim mt-3">
                   <span class="text-ink uppercase tracking-wider text-xs font-sans">Total</span>
-                  <span class="font-serif text-gold-400" style="font-size: 2rem; letter-spacing: -0.02em;">
+                  <span class="font-serif text-gold-400" style="font-size: 1.5rem; letter-spacing: -0.02em;">
                     £{{ grandTotal() }}
                   </span>
                 </div>
@@ -408,7 +408,7 @@
               <button
                 (click)="confirmBooking()"
                 [disabled]="submitting() || !datesValid()"
-                class="btn-primary w-full py-4 text-sm tracking-[0.18em] uppercase cursor-pointer"
+                class="btn-primary w-full py-3 text-sm tracking-[0.18em] uppercase cursor-pointer"
               >
                 @if (submitting()) {
                   <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -424,7 +424,7 @@
             } @else {
               <a
                 routerLink="/auth/login"
-                class="btn-primary w-full py-4 text-sm tracking-[0.18em] uppercase flex items-center justify-center"
+                class="btn-primary w-full py-3 text-sm tracking-[0.18em] uppercase flex items-center justify-center"
               >
                 Sign in to Book
               </a>
@@ -443,7 +443,7 @@
   <!-- Not found -->
   @if (!loading() && !room()) {
     <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-      <h2 class="font-serif text-3xl text-ink mb-2" style="letter-spacing: -0.02em;">Room Not Found</h2>
+      <h2 class="font-serif text-2xl text-ink mb-2" style="letter-spacing: -0.02em;">Room Not Found</h2>
       <p class="text-ink-2/55 mb-6 text-sm font-sans">This room does not exist or is unavailable.</p>
       <a routerLink="/guest/search" class="btn-secondary px-8 py-3">Return to Search</a>
     </div>

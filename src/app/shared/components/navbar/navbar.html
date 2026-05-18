@@ -8,18 +8,18 @@
   aria-label="Main navigation"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 lg:h-[72px]">
+    <div class="flex items-center justify-between h-14 lg:h-[64px]">
 
       <!-- Logo -->
       <a routerLink="/home" class="flex items-center gap-2.5 shrink-0 cursor-pointer group" aria-label="HMS Hotels home">
-        <div class="w-8 h-8 flex items-center justify-center border transition-colors duration-200"
+        <div class="w-7 h-7 flex items-center justify-center border transition-colors duration-200"
              [class]="!isTransparent()
                ? 'border-gold-400/40 bg-gold-400/8 group-hover:bg-gold-400/15'
                : 'border-white/30 bg-white/10 group-hover:bg-white/15'">
           <span class="font-serif text-sm font-bold text-gold-400">H</span>
         </div>
         <div>
-          <span class="font-serif text-lg font-semibold leading-none block"
+          <span class="font-serif text-base font-semibold leading-none block"
                 [class]="scrolled() ? 'text-gold-400' : 'text-gold-400'">HMS</span>
           <span class="text-[9px] tracking-[0.22em] uppercase leading-none block font-sans"
                 [class]="!isTransparent() ? 'text-ink-2/45' : 'text-white/50'">Hotels</span>
@@ -32,7 +32,7 @@
           <a
             [routerLink]="link.path"
             routerLinkActive="active text-gold-400"
-            class="nav-link px-4 py-2 transition-colors duration-200 cursor-pointer"
+            class="nav-link px-3 py-1.5 transition-colors duration-200 cursor-pointer"
             [class]="!isTransparent() || auth.isAuthenticated()
               ? 'text-ink-2/65 hover:text-ink'
               : 'text-white/75 hover:text-white'"
@@ -97,7 +97,7 @@
           <!-- Public auth buttons -->
           <a
             routerLink="/auth/login"
-            class="px-4 py-1.5 font-sans text-xs tracking-[0.1em] uppercase border
+            class="px-3.5 py-1.5 font-sans text-xs tracking-[0.1em] uppercase border
                    transition-all duration-200 cursor-pointer"
             [class]="!isTransparent()
               ? 'text-ink-2/70 border-rim hover:text-ink hover:border-rim-2'

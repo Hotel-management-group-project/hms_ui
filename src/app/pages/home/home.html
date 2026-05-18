@@ -54,7 +54,7 @@
     <h1
       class="font-serif font-semibold text-white mb-5"
       style="opacity: 0;
-             font-size: clamp(3rem, 9vw, 7.5rem);
+             font-size: clamp(2.5rem, 7vw, 5.5rem);
              line-height: 1.02;
              letter-spacing: -0.02em;"
     >
@@ -73,7 +73,7 @@
     <!-- Sub-headline — italic, white/80 -->
     <p
       class="font-serif italic leading-relaxed max-w-xl mx-auto mb-10 text-white/80"
-      style="opacity: 0; font-size: clamp(1rem, 2.2vw, 1.2rem);"
+      style="opacity: 0; font-size: clamp(0.875rem, 1.8vw, 1.05rem);"
     >
       Discover rooms crafted for comfort, elegance, and an unforgettable stay in the heart of Bristol.
     </p>
@@ -85,7 +85,7 @@
     >
       <a
         routerLink="/guest/search"
-        class="flex items-center gap-4 px-6 py-4 cursor-pointer
+        class="flex items-center gap-3 px-5 py-3 cursor-pointer
                border border-white/20 w-full"
         style="backdrop-filter: blur(12px);
                -webkit-backdrop-filter: blur(12px);
@@ -100,7 +100,7 @@
           Search by location, room type, dates…
         </span>
         <span class="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase
-                     text-gold-400 border border-gold-400/40 px-4 py-2 shrink-0
+                     text-gold-400 border border-gold-400/40 px-3 py-1.5 shrink-0
                      transition-colors duration-200 hover:bg-gold-400/10">
           Search
         </span>
@@ -112,7 +112,7 @@
       <a
         routerLink="/guest/search"
         class="cursor-pointer inline-flex items-center justify-center gap-2.5
-               px-10 py-4 font-semibold text-sm tracking-[0.18em] uppercase font-sans
+               px-8 py-3 font-semibold text-sm tracking-[0.18em] uppercase font-sans
                bg-gold-400 text-navy-900
                focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-black/60"
         style="box-shadow: 0 4px 24px rgba(201, 168, 76, 0.35);
@@ -134,7 +134,7 @@
       <a
         routerLink="/guest/search"
         class="cursor-pointer inline-flex items-center justify-center gap-2.5
-               px-10 py-4 text-white text-sm tracking-[0.18em] uppercase font-sans
+               px-8 py-3 text-white text-sm tracking-[0.18em] uppercase font-sans
                border border-white/40
                focus:outline-none focus:ring-2 focus:ring-white/40 focus:ring-offset-2"
         style="transition: background-color var(--dur-micro) var(--ease-micro),
@@ -170,7 +170,7 @@
      ═══════════════════════════════════════════════ -->
 <section class="bg-luxury overflow-hidden" aria-label="Our properties">
 
-  <div class="flex" style="height: 85vh; min-height: 560px; max-height: 860px;">
+  <div class="flex" style="height: 80vh; min-height: 500px; max-height: 760px;">
 
     <!-- Tab columns — vertical strips -->
     <div class="flex shrink-0">
@@ -231,7 +231,7 @@
             @let hotelImg = getHotelImage(hotel);
             <div
               class="relative shrink-0 overflow-hidden group img-zoom"
-              style="width: clamp(300px, 32vw, 460px);
+              style="width: clamp(260px, 28vw, 400px);
                      height: 88%;
                      scroll-snap-align: start;
                      border-radius: 2px;
@@ -267,7 +267,7 @@
               }
 
               <!-- Card content -->
-              <div class="absolute inset-0 flex flex-col justify-between py-10 px-8">
+              <div class="absolute inset-0 flex flex-col justify-between py-8 px-6">
 
                 <!-- Brand label -->
                 <div class="text-center">
@@ -283,7 +283,7 @@
                   <h3 class="font-serif font-bold leading-[0.92]"
                       [class.text-white]="hotelImg"
                       [class.text-ink]="!hotelImg"
-                      style="font-size: clamp(2.8rem, 5vw, 4.4rem); letter-spacing: -0.02em;">
+                      style="font-size: clamp(1.8rem, 3.5vw, 3rem); letter-spacing: -0.02em;">
                     {{ hotel.name }}
                   </h3>
 
@@ -415,24 +415,24 @@
 <!-- ═══════════════════════════════════════════════
      SERVICES — Ancillary offerings
      ═══════════════════════════════════════════════ -->
-<section class="py-20 md:py-32 border-t border-rim bg-deep" aria-label="Hotel services">
+<section class="py-14 md:py-24 border-t border-rim bg-deep" aria-label="Hotel services">
   <div class="container-luxury">
 
-    <div class="text-center mb-16 scroll-reveal">
+    <div class="text-center mb-10 scroll-reveal">
       <p class="text-gold-400 text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans mb-3">
         Premium Experience
       </p>
-      <h2 class="font-serif text-ink mb-4" style="font-size: clamp(2rem, 4vw, 2.5rem);">
+      <h2 class="font-serif text-ink mb-4" style="font-size: clamp(1.375rem, 2.5vw, 1.875rem);">
         Our Services
       </h2>
       <div class="gold-divider w-16 mx-auto"></div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 animate-stagger">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-stagger">
 
       <!-- Airport Transfer -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+        <div class="w-12 h-12 mx-auto flex items-center justify-center border border-gold-400/25
                     group-hover:border-gold-400/55"
              style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
@@ -450,7 +450,7 @@
 
       <!-- Full Breakfast -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+        <div class="w-12 h-12 mx-auto flex items-center justify-center border border-gold-400/25
                     group-hover:border-gold-400/55"
              style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
@@ -468,7 +468,7 @@
 
       <!-- Spa Access -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+        <div class="w-12 h-12 mx-auto flex items-center justify-center border border-gold-400/25
                     group-hover:border-gold-400/55"
              style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
@@ -486,7 +486,7 @@
 
       <!-- Late Check-out -->
       <div class="scroll-reveal text-center space-y-4 group">
-        <div class="w-14 h-14 mx-auto flex items-center justify-center border border-gold-400/25
+        <div class="w-12 h-12 mx-auto flex items-center justify-center border border-gold-400/25
                     group-hover:border-gold-400/55"
              style="transition: border-color var(--dur-layout) var(--ease-micro);"
              aria-hidden="true">
@@ -511,7 +511,7 @@
      CTA BANNER
      ═══════════════════════════════════════════════ -->
 <section
-  class="relative py-20 md:py-32 overflow-hidden scroll-reveal bg-luxury"
+  class="relative py-14 md:py-24 overflow-hidden scroll-reveal bg-luxury"
   aria-label="Call to action"
 >
   <!-- Diagonal gold accent line -->
@@ -525,7 +525,7 @@
     <p class="text-gold-400 text-[0.65rem] font-medium tracking-[0.4em] uppercase font-sans">
       Start Your Journey
     </p>
-    <h2 class="font-serif text-ink" style="font-size: clamp(2rem, 5vw, 2.5rem);">
+    <h2 class="font-serif text-ink" style="font-size: clamp(1.375rem, 3vw, 1.875rem);">
       Ready for Your Stay?
     </h2>
     <div class="gold-divider w-16 mx-auto"></div>
@@ -534,7 +534,7 @@
     </p>
     <a
       routerLink="/auth/register"
-      class="btn-primary px-12 py-4 text-sm tracking-[0.18em] uppercase"
+      class="btn-primary px-10 py-3 text-sm tracking-[0.18em] uppercase"
       aria-label="Create a free HMS account"
     >
       Create Account
