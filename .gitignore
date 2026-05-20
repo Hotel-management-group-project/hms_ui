@@ -26,7 +26,6 @@ yarn-error.log
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-!.vscode/mcp.json
 .history/*
 
 # Miscellaneous
@@ -43,6 +42,6 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-# Claude Code worktrees (internal tool artifacts — never commit)
-.claude/worktrees/
-.claude/worktrees/
+# Claude Code (dev tool artifacts — never commit)
+.claude/
+CLAUDE.md
