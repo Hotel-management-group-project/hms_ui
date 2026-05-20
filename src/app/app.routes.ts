@@ -1,3 +1,6 @@
+// Student ID: S2401276, S2401885, S2401709
+// Student Names: Mohamed Iyaadh Ahmed, Aiman Ahmed, Ahmed Arkaan Afrah
+// Module: Advanced Software Development (UFCF8S-30-2)
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';

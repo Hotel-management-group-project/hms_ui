@@ -1,3 +1,6 @@
+// Student ID: S2401276, S2401885, S2401709
+// Student Names: Mohamed Iyaadh Ahmed, Aiman Ahmed, Ahmed Arkaan Afrah
+// Module: Advanced Software Development (UFCF8S-30-2)
 import { Component, OnDestroy, afterNextRender, inject, signal, computed, ViewChild, ElementRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HotelService } from '../../core/services/hotel.service';
