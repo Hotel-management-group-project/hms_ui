@@ -12,6 +12,13 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Room, AncillaryService } from '../../../core/models';
 import gsap from 'gsap';
 
+export interface CalDay {
+  date: Date | null;
+  day: number;
+  inMonth: boolean;
+  isPast: boolean;
+}
+
 type ServiceRow = AncillaryService & { selected: boolean; quantity: number };
 
 @Component({
@@ -34,8 +41,28 @@ export class RoomDetailComponent implements OnInit {
   readonly submitting = signal(false);
   readonly services = signal<ServiceRow[]>([]);
 
-  readonly checkIn = signal('');
-  readonly checkOut = signal('');
+  // ── Calendar state ──────────────────────────────────────
+  readonly calendarOpen = signal(false);
+  readonly calPhase = signal<'checkIn' | 'checkOut'>('checkIn');
+  readonly calViewMonth = signal(new Date().getMonth());
+  readonly calViewYear = signal(new Date().getFullYear());
+  readonly checkInDate = signal<Date | null>(null);
+  readonly checkOutDate = signal<Date | null>(null);
+  readonly hoverDate = signal<Date | null>(null);
+
+  readonly WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  readonly MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+                     'July', 'August', 'September', 'October', 'November', 'December'];
+  readonly todayDate = new Date();
+
+  readonly monthGrid = computed(() => this.buildGrid(this.calViewYear(), this.calViewMonth()));
+
+  readonly checkIn = computed(() =>
+    this.checkInDate() ? this.toISO(this.checkInDate()!) : ''
+  );
+  readonly checkOut = computed(() =>
+    this.checkOutDate() ? this.toISO(this.checkOutDate()!) : ''
+  );
 
   constructor() {
     afterNextRender(() => {
@@ -88,8 +115,13 @@ export class RoomDetailComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       const ci = params.get('checkIn');
       const co = params.get('checkOut');
-      if (ci) this.checkIn.set(ci);
-      if (co) this.checkOut.set(co);
+      if (ci) {
+        const d = new Date(ci);
+        this.checkInDate.set(d);
+        this.calViewMonth.set(d.getMonth());
+        this.calViewYear.set(d.getFullYear());
+      }
+      if (co) this.checkOutDate.set(new Date(co));
     });
 
     this.route.paramMap.subscribe(params => {
@@ -125,8 +157,134 @@ export class RoomDetailComponent implements OnInit {
     });
   }
 
-  setCheckIn(value: string) { this.checkIn.set(value); }
-  setCheckOut(value: string) { this.checkOut.set(value); }
+  // ── Calendar methods ────────────────────────────────────
+
+  buildGrid(year: number, month: number): CalDay[] {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const firstWeekday = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const grid: CalDay[] = [];
+    for (let i = 0; i < firstWeekday; i++) {
+      grid.push({ date: null, day: 0, inMonth: false, isPast: true });
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      grid.push({ date, day: d, inMonth: true, isPast: date < today });
+    }
+    while (grid.length < 42) {
+      grid.push({ date: null, day: 0, inMonth: false, isPast: true });
+    }
+    return grid;
+  }
+
+  openCalendar(phase: 'checkIn' | 'checkOut') {
+    this.calPhase.set(phase);
+    this.calendarOpen.set(true);
+  }
+
+  closeCalendar() {
+    this.calendarOpen.set(false);
+    this.hoverDate.set(null);
+  }
+
+  prevMonth() {
+    const now = new Date();
+    if (this.calViewYear() === now.getFullYear() && this.calViewMonth() === now.getMonth()) return;
+    let m = this.calViewMonth() - 1;
+    let y = this.calViewYear();
+    if (m < 0) { m = 11; y--; }
+    this.calViewMonth.set(m);
+    this.calViewYear.set(y);
+  }
+
+  nextMonth() {
+    let m = this.calViewMonth() + 1;
+    let y = this.calViewYear();
+    if (m > 11) { m = 0; y++; }
+    this.calViewMonth.set(m);
+    this.calViewYear.set(y);
+  }
+
+  onDayClick(day: CalDay) {
+    if (!day.date || day.isPast) return;
+    if (this.calPhase() === 'checkIn') {
+      this.checkInDate.set(day.date);
+      this.checkOutDate.set(null);
+      this.calPhase.set('checkOut');
+    } else {
+      const ci = this.checkInDate();
+      if (!ci || day.date <= ci) {
+        this.checkInDate.set(day.date);
+        this.checkOutDate.set(null);
+        this.calPhase.set('checkOut');
+      } else {
+        this.checkOutDate.set(day.date);
+        this.closeCalendar();
+      }
+    }
+  }
+
+  onDayHover(day: CalDay) {
+    this.hoverDate.set(day.date && !day.isPast ? day.date : null);
+  }
+
+  getDayCellClass(day: CalDay): string {
+    const base = 'flex items-center justify-center h-8 w-8 rounded-full text-xs transition-all duration-100 ';
+    if (!day.inMonth) return base + 'invisible';
+    if (day.isPast) return base + 'text-ink-2/25 cursor-default';
+    if (this.isCheckIn(day) || this.isCheckOut(day))
+      return base + 'bg-gold-600 text-white font-semibold cursor-pointer';
+    if (this.isInRange(day))
+      return base + 'bg-gold-500/15 text-ink cursor-pointer rounded-none';
+    return base + 'text-ink hover:bg-raised hover:text-gold-400 cursor-pointer';
+  }
+
+  isCheckIn(day: CalDay): boolean {
+    return !!day.date && !!this.checkInDate() && this.sameDay(day.date, this.checkInDate()!);
+  }
+
+  isCheckOut(day: CalDay): boolean {
+    if (!day.date) return false;
+    const co = this.checkOutDate() ?? (this.calPhase() === 'checkOut' ? this.hoverDate() : null);
+    return !!co && this.sameDay(day.date, co);
+  }
+
+  isInRange(day: CalDay): boolean {
+    if (!day.date) return false;
+    const ci = this.checkInDate();
+    const co = this.checkOutDate() ?? (this.calPhase() === 'checkOut' ? this.hoverDate() : null);
+    if (!ci || !co) return false;
+    return day.date > ci && day.date < co;
+  }
+
+  isToday(day: CalDay): boolean {
+    return !!day.date && this.sameDay(day.date, new Date());
+  }
+
+  clearDates() {
+    this.checkInDate.set(null);
+    this.checkOutDate.set(null);
+    this.calPhase.set('checkIn');
+  }
+
+  formatDate(d: Date | null): string {
+    if (!d) return '';
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  private sameDay(a: Date, b: Date): boolean {
+    return a.getFullYear() === b.getFullYear() &&
+           a.getMonth() === b.getMonth() &&
+           a.getDate() === b.getDate();
+  }
+
+  private toISO(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}T00:00:00`;
+  }
 
   toggleService(id: string) {
     this.services.update(list =>

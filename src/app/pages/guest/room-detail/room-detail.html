@@ -338,40 +338,111 @@
             <!-- Divider -->
             <div class="gold-divider w-full"></div>
 
-            <!-- Date pickers -->
-            <div class="space-y-4">
-              <div>
-                <label for="rd-checkin"
-                       class="block text-[10px] uppercase tracking-[0.2em] text-ink-2/50 font-sans mb-2">
-                  Check-in
-                </label>
-                <input
-                  id="rd-checkin"
-                  type="date"
-                  [min]="today()"
-                  [value]="checkIn()"
-                  (change)="setCheckIn($any($event.target).value)"
-                  class="input [color-scheme:dark] cursor-pointer"
-                  style="transition: border-color var(--dur-micro) var(--ease-micro),
-                                     box-shadow var(--dur-micro) var(--ease-micro);"
-                >
+            <!-- Date picker -->
+            <div class="relative">
+
+              <!-- Trigger buttons -->
+              <div class="grid grid-cols-2 border border-rim divide-x divide-rim">
+                <!-- Check-in trigger -->
+                <button type="button"
+                  (click)="openCalendar('checkIn')"
+                  class="px-3 py-2.5 text-left hover:bg-raised/40 transition-colors duration-150 cursor-pointer"
+                  [class.border-b-2]="calendarOpen() && calPhase() === 'checkIn'"
+                  [class.border-gold-400]="calendarOpen() && calPhase() === 'checkIn'">
+                  <p class="text-[9px] uppercase tracking-[0.18em] text-ink-2/45 font-sans mb-0.5">Check-in</p>
+                  <p class="text-sm font-sans"
+                     [class.text-ink]="checkInDate()"
+                     [class.text-ink-2/35]="!checkInDate()">
+                    {{ checkInDate() ? formatDate(checkInDate()) : 'Select date' }}
+                  </p>
+                </button>
+                <!-- Check-out trigger -->
+                <button type="button"
+                  (click)="openCalendar('checkOut')"
+                  class="px-3 py-2.5 text-left hover:bg-raised/40 transition-colors duration-150 cursor-pointer"
+                  [class.border-b-2]="calendarOpen() && calPhase() === 'checkOut'"
+                  [class.border-gold-400]="calendarOpen() && calPhase() === 'checkOut'">
+                  <p class="text-[9px] uppercase tracking-[0.18em] text-ink-2/45 font-sans mb-0.5">Check-out</p>
+                  <p class="text-sm font-sans"
+                     [class.text-ink]="checkOutDate()"
+                     [class.text-ink-2/35]="!checkOutDate()">
+                    {{ checkOutDate() ? formatDate(checkOutDate()) : 'Select date' }}
+                  </p>
+                </button>
               </div>
-              <div>
-                <label for="rd-checkout"
-                       class="block text-[10px] uppercase tracking-[0.2em] text-ink-2/50 font-sans mb-2">
-                  Check-out
-                </label>
-                <input
-                  id="rd-checkout"
-                  type="date"
-                  [min]="checkIn() || today()"
-                  [value]="checkOut()"
-                  (change)="setCheckOut($any($event.target).value)"
-                  class="input [color-scheme:dark] cursor-pointer"
-                  style="transition: border-color var(--dur-micro) var(--ease-micro),
-                                     box-shadow var(--dur-micro) var(--ease-micro);"
-                >
-              </div>
+
+              <!-- Calendar panel -->
+              @if (calendarOpen()) {
+                <div class="absolute z-30 left-0 right-0 top-full mt-1 bg-surface border border-rim shadow-xl p-4"
+                     style="animation: fadeIn 0.15s var(--ease-entrance) both;">
+
+                  <!-- Month header -->
+                  <div class="flex items-center justify-between mb-3">
+                    <button type="button" (click)="prevMonth()"
+                      class="w-7 h-7 flex items-center justify-center text-ink-2/50 hover:text-gold-400 hover:bg-raised rounded transition-colors cursor-pointer"
+                      [disabled]="calViewYear() === todayDate.getFullYear() && calViewMonth() === todayDate.getMonth()">
+                      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                      </svg>
+                    </button>
+                    <span class="text-xs font-sans font-medium text-ink tracking-wide">
+                      {{ MONTHS[calViewMonth()] }} {{ calViewYear() }}
+                    </span>
+                    <button type="button" (click)="nextMonth()"
+                      class="w-7 h-7 flex items-center justify-center text-ink-2/50 hover:text-gold-400 hover:bg-raised rounded transition-colors cursor-pointer">
+                      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <!-- Weekday headers -->
+                  <div class="grid grid-cols-7 mb-1">
+                    @for (wd of WEEKDAYS; track wd) {
+                      <div class="flex items-center justify-center text-[9px] text-ink-2/40 font-sans uppercase tracking-wide h-6">
+                        {{ wd }}
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Day grid -->
+                  <div class="grid grid-cols-7" (mouseleave)="hoverDate.set(null)">
+                    @for (day of monthGrid(); track $index) {
+                      <div class="flex items-center justify-center py-0.5">
+                        @if (day.inMonth) {
+                          <button type="button"
+                            [class]="getDayCellClass(day)"
+                            (click)="onDayClick(day)"
+                            (mouseenter)="onDayHover(day)"
+                            [disabled]="day.isPast">
+                            <span [class.ring-1]="isToday(day)"
+                                  [class.ring-gold-400]="isToday(day)"
+                                  class="w-6 h-6 flex items-center justify-center rounded-full">
+                              {{ day.day }}
+                            </span>
+                          </button>
+                        }
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Footer -->
+                  <div class="flex items-center justify-between mt-3 pt-3 border-t border-rim">
+                    <p class="text-[9px] text-ink-2/40 font-sans uppercase tracking-wide">
+                      {{ calPhase() === 'checkIn' ? 'Select arrival' : 'Select departure' }}
+                    </p>
+                    @if (checkInDate() || checkOutDate()) {
+                      <button type="button" (click)="clearDates()"
+                        class="text-[10px] text-ink-2/45 hover:text-gold-400 font-sans transition-colors cursor-pointer">
+                        Clear
+                      </button>
+                    }
+                  </div>
+                </div>
+
+                <!-- Backdrop to close -->
+                <div class="fixed inset-0 z-20" (click)="closeCalendar()"></div>
+              }
             </div>
 
             <!-- Price breakdown -->
