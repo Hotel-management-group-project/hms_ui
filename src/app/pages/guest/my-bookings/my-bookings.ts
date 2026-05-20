@@ -1,9 +1,14 @@
+// Student ID: S2401276, S2401885, S2401709
+// Student Names: Mohamed Iyaadh Ahmed, Aiman Ahmed, Ahmed Arkaan Afrah
+// Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
 import { BookingService } from '../../../core/services/booking.service';
+import { AncillaryServiceService } from '../../../core/services/ancillary.service';
 import { ToastService } from '../../../shared/components/toast/toast';
-import { Booking } from '../../../core/models';
+import { AncillaryService, Booking } from '../../../core/models';
 
 @Component({
   selector: 'app-my-bookings',
@@ -12,6 +17,7 @@ import { Booking } from '../../../core/models';
 })
 export class MyBookingsComponent implements OnInit {
   private bookingService = inject(BookingService);
+  private ancillaryService = inject(AncillaryServiceService);
   private toast = inject(ToastService);
 
   readonly bookings = signal<Booking[]>([]);
@@ -26,6 +32,21 @@ export class MyBookingsComponent implements OnInit {
   readonly qrModalBooking = signal<Booking | null>(null);
   readonly qrCodeUrl = signal('');
   readonly loadingQr = signal(false);
+
+  // Services modal
+  readonly servicesBooking = signal<Booking | null>(null);
+  readonly allServices = signal<AncillaryService[]>([]);
+  readonly loadingServices = signal(false);
+  readonly serviceSelections = signal<{ [id: string]: number }>({});
+  readonly isSavingServices = signal(false);
+
+  readonly servicesTotal = computed(() => {
+    const sels = this.serviceSelections();
+    return this.allServices().reduce((sum, svc) => {
+      const qty = sels[String(svc.id)] ?? 0;
+      return sum + svc.price * qty;
+    }, 0);
+  });
 
   readonly upcomingBookings = computed(() => {
     const now = new Date();
@@ -136,6 +157,83 @@ export class MyBookingsComponent implements OnInit {
     });
   }
 
+  // ── Services Modal ─────────────────────────────────────────
+  openServicesModal(b: Booking) {
+    this.servicesBooking.set(b);
+    this.serviceSelections.set({});
+    this.loadingServices.set(true);
+
+    // Fetch the full booking (list endpoint omits ancillaryServices) and the
+    // service catalogue in parallel; reuse cached catalogue when available.
+    const services$ = this.allServices().length > 0
+      ? of(this.allServices())
+      : this.ancillaryService.getAncillaryServices();
+
+    forkJoin({ services: services$, booking: this.bookingService.getBooking(b.id) }).subscribe({
+      next: ({ services, booking }) => {
+        this.allServices.set(services);
+        const existing: { [id: string]: number } = {};
+        booking.ancillaryServices?.forEach(s => { existing[String(s.serviceId)] = s.quantity; });
+        this.serviceSelections.set(existing);
+        this.loadingServices.set(false);
+      },
+      error: (err: unknown) => {
+        console.error(err);
+        this.toast.error('Failed to load services.');
+        this.loadingServices.set(false);
+      },
+    });
+  }
+
+  closeServicesModal() { this.servicesBooking.set(null); }
+
+  isSelected(id: string | number): boolean {
+    return (this.serviceSelections()[String(id)] ?? 0) > 0;
+  }
+
+  getQty(id: string | number): number {
+    return this.serviceSelections()[String(id)] ?? 1;
+  }
+
+  toggleService(id: string | number) {
+    const s = { ...this.serviceSelections() };
+    const key = String(id);
+    if (s[key]) { delete s[key]; } else { s[key] = 1; }
+    this.serviceSelections.set(s);
+  }
+
+  setQty(id: string | number, qty: number) {
+    const s = { ...this.serviceSelections() };
+    const key = String(id);
+    if (qty <= 0) { delete s[key]; } else { s[key] = Math.min(qty, 10); }
+    this.serviceSelections.set(s);
+  }
+
+  saveServices() {
+    const b = this.servicesBooking();
+    if (!b) return;
+
+    this.isSavingServices.set(true);
+    const services = Object.entries(this.serviceSelections())
+      .filter(([, qty]) => qty > 0)
+      .map(([id, qty]) => ({ serviceId: Number(id), quantity: qty }));
+
+    this.bookingService.updateServices(b.id, services).subscribe({
+      next: () => {
+        this.isSavingServices.set(false);
+        this.toast.success('Services updated successfully.');
+        this.closeServicesModal();
+        this.fetchBookings();
+      },
+      error: (err: unknown) => {
+        console.error(err);
+        this.toast.error('Failed to update services.');
+        this.isSavingServices.set(false);
+      },
+    });
+  }
+
+  // ── Invoice ────────────────────────────────────────────────
   downloadInvoice(bookingId: string) {
     this.toast.info('Preparing invoice…');
     this.bookingService.downloadInvoice(bookingId).subscribe({

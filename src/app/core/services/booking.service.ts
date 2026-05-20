@@ -1,3 +1,6 @@
+// Student ID: S2401276, S2401885, S2401709
+// Student Names: Mohamed Iyaadh Ahmed, Aiman Ahmed, Ahmed Arkaan Afrah
+// Module: Advanced Software Development (UFCF8S-30-2)
 
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -41,6 +44,11 @@ export class BookingService {
   /** Get the QR code URL for check-in */
   getQrCode(id: string): Observable<{ qrCodeUrl: string }> {
     return this.http.get<{ qrCodeUrl: string }>(`${this.api}/${id}/qr`);
+  }
+
+  /** Replace ancillary services on a guest's own Confirmed booking */
+  updateServices(id: string, services: { serviceId: number; quantity: number }[]): Observable<Booking> {
+    return this.http.put<Booking>(`${this.api}/${id}/services`, { ancillaryServices: services });
   }
 
   /** Download invoice as PDF (Blob) */
